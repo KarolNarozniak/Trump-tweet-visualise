@@ -7,5 +7,9 @@ pytest-cache-files-*/
 *.pyc
 streamlit.out.log
 streamlit.err.log
+.env
 
 data/processed/
+docs-site/node_modules/
+docs-site/build/
+tests_runtime_temp/

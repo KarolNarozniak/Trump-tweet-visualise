@@ -17,8 +17,8 @@ from trump_graph.app import (
     load_week_artifacts,
     load_week_index,
 )
+from trump_graph.settings import load_settings
 
-DEFAULT_PROCESSED_DIR = ROOT_DIR / "data" / "processed"
 
 
 @st.cache_data(show_spinner=False)
@@ -56,21 +56,56 @@ def _inject_ui_styles() -> None:
 
 
 def main() -> None:
+    settings = load_settings()
+
     st.set_page_config(page_title="Trump Mention Network", layout="wide")
     _inject_ui_styles()
 
-    st.title("Trump Mention Network")
-    st.caption("One stable graph over time: nodes flare with weekly heat and edges thicken cumulatively.")
+    title_col, docs_col = st.columns([0.8, 0.2])
+    title_col.title("Trump Mention Network")
+    title_col.caption("One stable graph over time: nodes flare with weekly heat and edges thicken cumulatively.")
+    docs_col.link_button("Open Docs", settings.runtime.docs_url, use_container_width=True)
 
     st.sidebar.header("Graph Controls")
-    processed_dir_input = st.sidebar.text_input("Processed data directory", value=str(DEFAULT_PROCESSED_DIR))
-    include_hub = st.sidebar.checkbox("Include @realdonaldtrump", value=True)
-    always_label_top = st.sidebar.checkbox("Always label top 40 nodes", value=False)
-    playback_speed = st.sidebar.slider("Initial playback speed (weeks/sec)", min_value=0.5, max_value=8.0, value=8.0, step=0.5)
-    node_size_multiplier = st.sidebar.slider("Node size multiplier", min_value=0.5, max_value=2.0, value=2.0, step=0.05)
-    layout_spread = st.sidebar.slider("Layout spread", min_value=1.0, max_value=4.0, value=1.0, step=0.1)
-    initial_zoom_boost = st.sidebar.slider("Initial graph zoom", min_value=0.6, max_value=1.8, value=0.8, step=0.05)
-    graph_height = st.sidebar.slider("Graph height (px)", min_value=560, max_value=1200, value=1000, step=20)
+    st.sidebar.caption(f"Docs endpoint: {settings.runtime.docs_url}")
+    processed_dir_input = st.sidebar.text_input("Processed data directory", value=str(settings.app.processed_dir))
+    include_hub = st.sidebar.checkbox("Include @realdonaldtrump", value=settings.app.include_hub)
+    always_label_top = st.sidebar.checkbox("Always label top 40 nodes", value=settings.app.always_label_top_nodes)
+    playback_speed = st.sidebar.slider(
+        "Initial playback speed (weeks/sec)",
+        min_value=0.5,
+        max_value=8.0,
+        value=float(max(0.5, min(8.0, settings.app.playback_speed))),
+        step=0.5,
+    )
+    node_size_multiplier = st.sidebar.slider(
+        "Node size multiplier",
+        min_value=0.5,
+        max_value=2.5,
+        value=float(max(0.5, min(2.5, settings.app.node_size_multiplier))),
+        step=0.05,
+    )
+    layout_spread = st.sidebar.slider(
+        "Layout spread",
+        min_value=0.8,
+        max_value=4.0,
+        value=float(max(0.8, min(4.0, settings.app.layout_spread))),
+        step=0.1,
+    )
+    initial_zoom_boost = st.sidebar.slider(
+        "Initial graph zoom",
+        min_value=0.55,
+        max_value=2.5,
+        value=float(max(0.55, min(2.5, settings.app.initial_zoom_boost))),
+        step=0.05,
+    )
+    graph_height = st.sidebar.slider(
+        "Graph height (px)",
+        min_value=560,
+        max_value=1200,
+        value=int(max(560, min(1200, settings.app.graph_height_px))),
+        step=20,
+    )
 
     processed_dir = Path(processed_dir_input)
     if not processed_dir.exists():
@@ -83,7 +118,9 @@ def main() -> None:
     except FileNotFoundError:
         st.warning("Processed artifacts not found. Run the build command first.")
         st.code(
-            "venv\\Scripts\\python.exe -m trump_graph build --input tweets_01-08-2021.csv --out data/processed --min-mention-count 1 --global-min-mentions 8 --include-retweets"
+            f'python -m trump_graph build --input "{settings.build.default_input_csv}" --out "{settings.build.default_output_dir}" '
+            f"--min-mention-count {settings.build.min_mention_count} --global-min-mentions {settings.build.global_min_mentions} "
+            f"--heat-decay {settings.build.heat_decay} --layout-seed {settings.build.layout_seed}"
         )
         return
     except ValueError as error:

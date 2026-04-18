@@ -6,7 +6,12 @@ from typing import Any
 
 import pandas as pd
 
-from .global_animation import DEFAULT_GLOBAL_MIN_MENTIONS, build_global_animation_payload
+from .global_animation import (
+    DEFAULT_GLOBAL_MIN_MENTIONS,
+    DEFAULT_HEAT_DECAY,
+    DEFAULT_LAYOUT_SEED,
+    build_global_animation_payload,
+)
 from .graph_build import build_week_graph, graph_edges_to_frame, graph_nodes_to_frame
 from .io import read_tweets_csv, write_global_animation_artifacts, write_index_files, write_week_artifacts
 from .metrics import compute_week_metrics
@@ -64,6 +69,8 @@ def build_weekly_artifacts(
     min_mention_count: int = 1,
     include_retweets: bool = True,
     global_min_mentions: int = DEFAULT_GLOBAL_MIN_MENTIONS,
+    heat_decay: float = DEFAULT_HEAT_DECAY,
+    layout_seed: int = DEFAULT_LAYOUT_SEED,
 ) -> BuildStats:
     if min_mention_count < 1:
         raise ValueError("min_mention_count must be >= 1")
@@ -139,6 +146,8 @@ def build_weekly_artifacts(
         tweets_df=tweets_df,
         week_index_df=week_index_df,
         global_min_mentions=global_min_mentions,
+        heat_decay=heat_decay,
+        layout_seed=layout_seed,
     )
     write_global_animation_artifacts(output_dir=output_dir, animation_payload=animation_payload)
 

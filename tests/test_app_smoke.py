@@ -11,8 +11,8 @@ from trump_graph.app import (
 from trump_graph.pipeline import build_weekly_artifacts
 
 
-def test_app_helpers_load_and_render(sample_tweets_csv_path: Path, tmp_path: Path) -> None:
-    output_dir = tmp_path / "processed"
+def test_app_helpers_load_and_render(sample_tweets_csv_path: Path, local_temp_dir: Path) -> None:
+    output_dir = local_temp_dir / "processed"
     build_weekly_artifacts(
         input_csv=sample_tweets_csv_path,
         output_dir=output_dir,

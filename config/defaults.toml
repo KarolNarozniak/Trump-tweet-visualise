@@ -1,0 +1,26 @@
+[build]
+input_csv = "tweets_01-08-2021.csv"
+output_dir = "data/processed"
+min_mention_count = 1
+global_min_mentions = 8
+include_retweets = true
+heat_decay = 0.85
+layout_seed = 42
+
+[app]
+processed_dir = "data/processed"
+include_hub = true
+always_label_top_nodes = false
+playback_speed = 8.0
+node_size_multiplier = 2.0
+layout_spread = 1.0
+initial_zoom_boost = 0.8
+graph_height_px = 1000
+
+[runtime]
+streamlit_host = "0.0.0.0"
+streamlit_port = 3001
+docs_host = "0.0.0.0"
+docs_port = 3002
+docs_url = "http://localhost:3002"
+docs_site_dir = "docs-site"

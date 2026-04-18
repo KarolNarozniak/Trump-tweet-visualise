@@ -9,8 +9,8 @@ from trump_graph.global_animation import replay_week_state
 from trump_graph.pipeline import build_weekly_artifacts
 
 
-def test_build_weekly_artifacts_writes_expected_outputs(sample_tweets_csv_path: Path, tmp_path: Path) -> None:
-    output_dir = tmp_path / "processed"
+def test_build_weekly_artifacts_writes_expected_outputs(sample_tweets_csv_path: Path, local_temp_dir: Path) -> None:
+    output_dir = local_temp_dir / "processed"
 
     stats = build_weekly_artifacts(
         input_csv=sample_tweets_csv_path,
