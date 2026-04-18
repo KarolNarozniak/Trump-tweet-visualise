@@ -6,8 +6,9 @@ from typing import Any
 
 import pandas as pd
 
+from .global_animation import DEFAULT_GLOBAL_MIN_MENTIONS, build_global_animation_payload
 from .graph_build import build_week_graph, graph_edges_to_frame, graph_nodes_to_frame
-from .io import read_tweets_csv, write_index_files, write_week_artifacts
+from .io import read_tweets_csv, write_global_animation_artifacts, write_index_files, write_week_artifacts
 from .metrics import compute_week_metrics
 from .preprocess import prepare_tweets
 
@@ -17,6 +18,8 @@ class BuildStats:
     total_tweets: int
     processed_tweets: int
     weeks_built: int
+    global_nodes: int
+    global_edges: int
     output_dir: Path
 
 
@@ -60,9 +63,12 @@ def build_weekly_artifacts(
     output_dir: Path,
     min_mention_count: int = 1,
     include_retweets: bool = True,
+    global_min_mentions: int = DEFAULT_GLOBAL_MIN_MENTIONS,
 ) -> BuildStats:
     if min_mention_count < 1:
         raise ValueError("min_mention_count must be >= 1")
+    if global_min_mentions < 1:
+        raise ValueError("global_min_mentions must be >= 1")
 
     raw_df = read_tweets_csv(input_csv)
     tweets_df = prepare_tweets(raw_df, include_retweets=include_retweets)
@@ -129,9 +135,18 @@ def build_weekly_artifacts(
     weekly_summary_df = weekly_summary_df.reset_index(drop=True)
     write_index_files(output_dir=output_dir, week_index_df=week_index_df, weekly_summary_df=weekly_summary_df)
 
+    animation_payload = build_global_animation_payload(
+        tweets_df=tweets_df,
+        week_index_df=week_index_df,
+        global_min_mentions=global_min_mentions,
+    )
+    write_global_animation_artifacts(output_dir=output_dir, animation_payload=animation_payload)
+
     return BuildStats(
         total_tweets=int(len(raw_df)),
         processed_tweets=int(len(tweets_df)),
         weeks_built=int(len(week_index_df)),
+        global_nodes=int(len(animation_payload.get("global_nodes", []))),
+        global_edges=int(len(animation_payload.get("global_edges", []))),
         output_dir=output_dir,
     )

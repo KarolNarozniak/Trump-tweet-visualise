@@ -18,7 +18,7 @@ venv\Scripts\activate
 ## Build Artifacts
 
 ```bash
-venv\Scripts\python.exe -m trump_graph build --input tweets_01-08-2021.csv --out data/processed --min-mention-count 1 --include-retweets
+venv\Scripts\python.exe -m trump_graph build --input tweets_01-08-2021.csv --out data/processed --min-mention-count 1 --global-min-mentions 8 --include-retweets
 ```
 
 ## Run App

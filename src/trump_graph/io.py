@@ -52,3 +52,14 @@ def write_index_files(
     ensure_directory(output_dir)
     week_index_df.to_csv(output_dir / "week_index.csv", index=False)
     weekly_summary_df.to_csv(output_dir / "weekly_summary.csv", index=False)
+
+
+def write_global_animation_artifacts(
+    output_dir: Path,
+    animation_payload: Mapping[str, Any],
+) -> None:
+    animation_dir = ensure_directory(output_dir / "global_animation")
+    (animation_dir / "animation_state.json").write_text(
+        json.dumps(animation_payload, sort_keys=False),
+        encoding="utf-8",
+    )

@@ -24,6 +24,12 @@ def _build_parser() -> argparse.ArgumentParser:
         help="Minimum per-week mention frequency required for a node.",
     )
     build_parser.add_argument(
+        "--global-min-mentions",
+        type=int,
+        default=8,
+        help="Minimum global mention frequency required for nodes in the stable animation graph.",
+    )
+    build_parser.add_argument(
         "--include-retweets",
         dest="include_retweets",
         action="store_true",
@@ -49,10 +55,13 @@ def main(argv: list[str] | None = None) -> int:
             output_dir=args.out,
             min_mention_count=args.min_mention_count,
             include_retweets=args.include_retweets,
+            global_min_mentions=args.global_min_mentions,
         )
         print(f"Total tweets read: {stats.total_tweets}")
         print(f"Tweets processed: {stats.processed_tweets}")
         print(f"Weeks built: {stats.weeks_built}")
+        print(f"Global animation nodes: {stats.global_nodes}")
+        print(f"Global animation edges: {stats.global_edges}")
         print(f"Artifacts written to: {stats.output_dir}")
         return 0
 

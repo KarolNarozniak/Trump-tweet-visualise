@@ -1,5 +1,4 @@
 pandas>=2.2
 networkx>=3.3
 streamlit>=1.30
-pyvis>=0.3.2
 pytest>=8.0

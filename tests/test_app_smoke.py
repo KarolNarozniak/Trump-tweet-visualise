@@ -2,7 +2,12 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from trump_graph.app import build_pyvis_html, load_week_artifacts, load_week_index
+from trump_graph.app import (
+    build_global_animation_html,
+    load_global_animation_artifacts,
+    load_week_artifacts,
+    load_week_index,
+)
 from trump_graph.pipeline import build_weekly_artifacts
 
 
@@ -13,6 +18,7 @@ def test_app_helpers_load_and_render(sample_tweets_csv_path: Path, tmp_path: Pat
         output_dir=output_dir,
         min_mention_count=1,
         include_retweets=True,
+        global_min_mentions=1,
     )
 
     week_index = load_week_index(output_dir)
@@ -20,9 +26,20 @@ def test_app_helpers_load_and_render(sample_tweets_csv_path: Path, tmp_path: Pat
 
     selected_week = str(week_index.iloc[0]["week_id"])
     nodes_df, edges_df, metrics = load_week_artifacts(output_dir, selected_week)
-    html, displayed_edges, total_edges = build_pyvis_html(nodes_df, edges_df, max_edges=10)
-
-    assert "<html" in html.lower()
-    assert displayed_edges <= total_edges
     assert "tweets_processed" in metrics
     assert "unique_mentions" in metrics
+    assert len(nodes_df.columns) == 2
+    assert len(edges_df.columns) == 3
+
+    payload = load_global_animation_artifacts(output_dir)
+    html = build_global_animation_html(
+        payload=payload,
+        include_hub=True,
+        always_label_top_nodes=True,
+        initial_week_index=0,
+        initial_speed=2.0,
+    )
+
+    assert "tg-week-slider" in html
+    assert "vis-network" in html
+    assert "global_nodes" in html
