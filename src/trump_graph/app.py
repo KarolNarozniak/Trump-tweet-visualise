@@ -110,11 +110,11 @@ def build_global_animation_html(
     include_hub: bool = False,
     always_label_top_nodes: bool = False,
     initial_week_index: int | None = None,
-    initial_speed: float = 2.0,
-    node_size_multiplier: float = 1.0,
+    initial_speed: float = 8.0,
+    node_size_multiplier: float = 2.0,
     initial_zoom_boost: float = 0.8,
-    layout_spread: float = 2.2,
-    height_px: int = 760,
+    layout_spread: float = 1.0,
+    height_px: int = 1000,
     transition_steps: int = 7,
 ) -> str:
     filtered_payload = _filtered_animation_payload(payload, include_hub=include_hub)
@@ -261,6 +261,20 @@ def build_global_animation_html(
     ? Math.floor((positiveNodeDeltas.length - 1) * 0.95)
     : 0;
   const weeklyNodeScale = Math.max(1, Number(positiveNodeDeltas[percentileIndex] || 1));
+  const positiveEdgeDeltas = [];
+  for (const weekEntries of edgeWeekDeltas) {{
+    for (const entry of weekEntries) {{
+      const delta = Number(entry[1] || 0);
+      if (delta > 0) {{
+        positiveEdgeDeltas.push(delta);
+      }}
+    }}
+  }}
+  positiveEdgeDeltas.sort((left, right) => left - right);
+  const edgePercentileIndex = positiveEdgeDeltas.length
+    ? Math.floor((positiveEdgeDeltas.length - 1) * 0.95)
+    : 0;
+  const weeklyEdgeScale = Math.max(1, Number(positiveEdgeDeltas[edgePercentileIndex] || 1));
 
   const nodeIds = nodeData.map((node) => String(node.id));
   const edgeIds = edgeData.map((edge) => String(edge.id));
@@ -306,6 +320,30 @@ def build_global_animation_html(
     return 0.9 + 7.0 * Math.sqrt(normalized);
   }}
 
+  function edgeColorStyle(cumulativeValue, weeklyValue) {{
+    const normalizedCumulative = clamp(Number(cumulativeValue || 0) / maxCumulativeEdge, 0, 1);
+    const normalizedWeekly = clamp(Number(weeklyValue || 0) / weeklyEdgeScale, 0, 1);
+    if (normalizedWeekly > 0) {{
+      const activeColor = heatColor(Math.pow(normalizedWeekly, 0.7), 0.96);
+      return {{
+        color: activeColor,
+        highlight: activeColor,
+        hover: activeColor,
+        inherit: false,
+        opacity: 1.0
+      }};
+    }}
+    const inactiveAlpha = 0.16 + (Math.pow(normalizedCumulative, 0.55) * 0.58);
+    const inactiveColor = `rgba(241, 245, 249, ${{inactiveAlpha.toFixed(3)}})`;
+    return {{
+      color: inactiveColor,
+      highlight: inactiveColor,
+      hover: inactiveColor,
+      inherit: false,
+      opacity: 1.0
+    }};
+  }}
+
   function nodeLabelForId(nodeId) {{
     if (selectedNodeId === nodeId) {{
       return `@${{nodeId}}`;
@@ -348,7 +386,13 @@ def build_global_animation_html(
         to: String(edge.target),
         hidden: true,
         width: 0,
-        color: "rgba(241, 245, 249, 0.25)",
+        color: {{
+          color: "rgba(241, 245, 249, 0.25)",
+          highlight: "rgba(241, 245, 249, 0.25)",
+          hover: "rgba(241, 245, 249, 0.25)",
+          inherit: false,
+          opacity: 1.0
+        }},
         smooth: false,
         title: `@${{edge.source}} <> @${{edge.target}}<br>Cumulative co-mentions: 0`
       }};
@@ -372,7 +416,10 @@ def build_global_animation_html(
         borderWidth: 1.1
       }},
       edges: {{
-        smooth: false
+        smooth: false,
+        color: {{
+          inherit: false
+        }}
       }}
     }}
   );
@@ -389,6 +436,7 @@ def build_global_animation_html(
   let nodeWeekly = Object.fromEntries(nodeIds.map((id) => [id, 0]));
   let nodeSeen = Object.fromEntries(nodeIds.map((id) => [id, 0]));
   let edgeCum = Object.fromEntries(edgeIds.map((id) => [id, 0]));
+  let edgeWeekly = Object.fromEntries(edgeIds.map((id) => [id, 0]));
 
   function cloneState(stateObj) {{
     return Object.assign({{}}, stateObj);
@@ -398,11 +446,15 @@ def build_global_animation_html(
     nodeWeekly = Object.fromEntries(nodeIds.map((id) => [id, 0]));
     nodeSeen = Object.fromEntries(nodeIds.map((id) => [id, 0]));
     edgeCum = Object.fromEntries(edgeIds.map((id) => [id, 0]));
+    edgeWeekly = Object.fromEntries(edgeIds.map((id) => [id, 0]));
   }}
 
   function applyDeltaForWeek(index) {{
     for (const nodeId of nodeIds) {{
       nodeWeekly[nodeId] = 0;
+    }}
+    for (const edgeId of edgeIds) {{
+      edgeWeekly[edgeId] = 0;
     }}
 
     const nodeDeltas = nodeWeekDeltas[index] || [];
@@ -422,7 +474,9 @@ def build_global_animation_html(
       if (!(edgeId in edgeCum)) {{
         continue;
       }}
-      edgeCum[edgeId] += Number(deltaRaw);
+      const delta = Number(deltaRaw);
+      edgeWeekly[edgeId] = delta;
+      edgeCum[edgeId] += delta;
     }}
   }}
 
@@ -465,11 +519,12 @@ def build_global_animation_html(
     const normalizedWeekly = clamp(Number(weeklyValue || 0) / weeklyNodeScale, 0, 1);
     const intensity = normalizedWeekly > 0 ? Math.pow(normalizedWeekly, 0.65) : 0;
     const fillColor = normalizedWeekly > 0 ? heatColor(intensity, 0.96) : baseNodeColor;
+    const autoLabelForActiveWeek = Number(weeklyValue || 0) > 0;
     const title = `@${{nodeId}}<br>Total mentions: ${{Number(info.total_mentions || 0).toLocaleString()}}<br>This week: ${{Math.round(Number(weeklyValue || 0)).toLocaleString()}}<br>Cumulative: ${{Math.round(Number(cumulativeMentions || 0)).toLocaleString()}}`;
     return {{
       id: nodeId,
       hidden: false,
-      label: nodeLabelForId(nodeId),
+      label: autoLabelForActiveWeek ? `@${{nodeId}}` : nodeLabelForId(nodeId),
       title,
       color: {{
         background: fillColor,
@@ -480,14 +535,14 @@ def build_global_animation_html(
     }};
   }}
 
-  function edgeUpdateForState(edgeId, cumulativeValue) {{
+  function edgeUpdateForState(edgeId, cumulativeValue, weeklyValue) {{
     const info = edgeInfoById.get(edgeId);
     if (!info) {{
       return {{
         id: edgeId,
         hidden: true,
         width: 0,
-        color: "rgba(241, 245, 249, 0.25)"
+        color: edgeColorStyle(0, 0)
       }};
     }}
 
@@ -496,24 +551,21 @@ def build_global_animation_html(
         id: edgeId,
         hidden: true,
         width: 0,
-        color: "rgba(241, 245, 249, 0.25)",
+        color: edgeColorStyle(0, 0),
         title: `@${{info.source}} <> @${{info.target}}<br>Cumulative co-mentions: 0`
       }};
     }}
 
-    const normalized = clamp(cumulativeValue / maxCumulativeEdge, 0, 1);
-    const edgeAlpha = 0.12 + (Math.pow(normalized, 0.55) * 0.68);
-    const color = `rgba(241, 245, 249, ${{edgeAlpha.toFixed(3)}})`;
     return {{
       id: edgeId,
       hidden: false,
       width: edgeWidth(cumulativeValue),
-      color,
-      title: `@${{info.source}} <> @${{info.target}}<br>Cumulative co-mentions: ${{Math.round(cumulativeValue).toLocaleString()}}`
+      color: edgeColorStyle(cumulativeValue, weeklyValue),
+      title: `@${{info.source}} <> @${{info.target}}<br>Cumulative co-mentions: ${{Math.round(cumulativeValue).toLocaleString()}}<br>This week: ${{Math.round(Number(weeklyValue || 0)).toLocaleString()}}`
     }};
   }}
 
-  function renderFromState(weeklyState, seenState, edgeState) {{
+  function renderFromState(weeklyState, seenState, edgeState, edgeWeeklyState) {{
     const nodeUpdates = nodeIds.map((nodeId) =>
       nodeUpdateForState(
         nodeId,
@@ -521,13 +573,29 @@ def build_global_animation_html(
         Number(seenState[nodeId] || 0)
       )
     );
-    const edgeUpdates = edgeIds.map((edgeId) => edgeUpdateForState(edgeId, Number(edgeState[edgeId] || 0)));
+    const edgeUpdates = edgeIds.map((edgeId) =>
+      edgeUpdateForState(
+        edgeId,
+        Number(edgeState[edgeId] || 0),
+        Number(edgeWeeklyState[edgeId] || 0),
+      )
+    );
     nodes.update(nodeUpdates);
     edges.update(edgeUpdates);
     updateWeekLabels();
   }}
 
-  function transitionRender(previousWeekly, previousSeen, previousEdge, nextWeekly, nextSeen, nextEdge, done) {{
+  function transitionRender(
+    previousWeekly,
+    previousSeen,
+    previousEdge,
+    previousEdgeWeekly,
+    nextWeekly,
+    nextSeen,
+    nextEdge,
+    nextEdgeWeekly,
+    done,
+  ) {{
     const totalSteps = Math.max(1, transitionSteps);
     let step = 0;
 
@@ -548,13 +616,18 @@ def build_global_animation_html(
       }}
 
       const blendedEdge = {{}};
+      const blendedEdgeWeekly = {{}};
       for (const edgeId of edgeIds) {{
         const prev = Number(previousEdge[edgeId] || 0);
         const next = Number(nextEdge[edgeId] || 0);
         blendedEdge[edgeId] = prev + (next - prev) * t;
+
+        const prevWeekly = Number(previousEdgeWeekly[edgeId] || 0);
+        const nextWeeklyValue = Number(nextEdgeWeekly[edgeId] || 0);
+        blendedEdgeWeekly[edgeId] = prevWeekly + (nextWeeklyValue - prevWeekly) * t;
       }}
 
-      renderFromState(blendedWeekly, blendedSeen, blendedEdge);
+      renderFromState(blendedWeekly, blendedSeen, blendedEdge, blendedEdgeWeekly);
       if (step < totalSteps) {{
         window.requestAnimationFrame(tick);
       }} else {{
@@ -574,6 +647,7 @@ def build_global_animation_html(
     const previousWeekly = cloneState(nodeWeekly);
     const previousSeen = cloneState(nodeSeen);
     const previousEdge = cloneState(edgeCum);
+    const previousEdgeWeekly = cloneState(edgeWeekly);
 
     if (boundedTarget === currentWeekIndex + 1) {{
       applyDeltaForWeek(boundedTarget);
@@ -584,18 +658,28 @@ def build_global_animation_html(
     const nextWeekly = cloneState(nodeWeekly);
     const nextSeen = cloneState(nodeSeen);
     const nextEdge = cloneState(edgeCum);
+    const nextEdgeWeekly = cloneState(edgeWeekly);
     currentWeekIndex = boundedTarget;
     weekSlider.value = String(currentWeekIndex);
 
     if (!animate) {{
-      renderFromState(nextWeekly, nextSeen, nextEdge);
+      renderFromState(nextWeekly, nextSeen, nextEdge, nextEdgeWeekly);
       return;
     }}
 
     animating = true;
-    transitionRender(previousWeekly, previousSeen, previousEdge, nextWeekly, nextSeen, nextEdge, () => {{
+    transitionRender(
+      previousWeekly,
+      previousSeen,
+      previousEdge,
+      previousEdgeWeekly,
+      nextWeekly,
+      nextSeen,
+      nextEdge,
+      nextEdgeWeekly,
+      () => {{
       animating = false;
-      renderFromState(nodeWeekly, nodeSeen, edgeCum);
+      renderFromState(nodeWeekly, nodeSeen, edgeCum, edgeWeekly);
     }});
   }}
 
@@ -653,17 +737,17 @@ def build_global_animation_html(
 
   network.on("selectNode", (params) => {{
     selectedNodeId = params.nodes && params.nodes.length ? String(params.nodes[0]) : null;
-    renderFromState(nodeWeekly, nodeSeen, edgeCum);
+    renderFromState(nodeWeekly, nodeSeen, edgeCum, edgeWeekly);
   }});
 
   network.on("deselectNode", () => {{
     selectedNodeId = null;
-    renderFromState(nodeWeekly, nodeSeen, edgeCum);
+    renderFromState(nodeWeekly, nodeSeen, edgeCum, edgeWeekly);
   }});
 
   recomputeTo(currentWeekIndex);
   updateSpeedLabel();
-  renderFromState(nodeWeekly, nodeSeen, edgeCum);
+  renderFromState(nodeWeekly, nodeSeen, edgeCum, edgeWeekly);
 }})();
 </script>
 """
