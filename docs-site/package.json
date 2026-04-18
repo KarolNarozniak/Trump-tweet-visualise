@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "docusaurus start --host 0.0.0.0 --port 3002 --no-open",
+    "start": "docusaurus start",
     "build": "docusaurus build",
-    "serve": "docusaurus serve --host 0.0.0.0 --port 3002 --no-open",
+    "serve": "docusaurus serve",
     "clear": "docusaurus clear"
   },
   "dependencies": {

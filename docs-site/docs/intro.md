@@ -1,4 +1,4 @@
-# Trump Tweet Visualize Documentation
+# Trump Graph Documentation
 
 This project builds and explores a time-dependent mention network from the Trump tweet archive CSV.
 

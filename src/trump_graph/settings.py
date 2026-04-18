@@ -137,6 +137,16 @@ class RuntimeSettings:
 
 
 @dataclass(frozen=True)
+class MetaSettings:
+    app_name: str
+    logo_path: Path
+    data_source_url: str
+    repository_url: str
+    disclaimer_text: str
+    about_text: str
+
+
+@dataclass(frozen=True)
 class ProjectSettings:
     project_root: Path
     config_path: Path
@@ -144,6 +154,7 @@ class ProjectSettings:
     build: BuildSettings
     app: AppSettings
     runtime: RuntimeSettings
+    meta: MetaSettings
 
 
 @lru_cache(maxsize=4)
@@ -351,6 +362,65 @@ def load_settings(config_path: Path | None = None, env_path: Path | None = None)
         docs_site_dir=docs_site_dir,
     )
 
+    meta = MetaSettings(
+        app_name=_resolve_value(
+            env_name="TG_META_APP_NAME",
+            config_keys=("meta", "app_name"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value="Trump Graph",
+            parser=_to_str,
+        ),
+        logo_path=_resolve_value(
+            env_name="TG_META_LOGO_PATH",
+            config_keys=("meta", "logo_path"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value="logo.png",
+            parser=_path_parser,
+        ),
+        data_source_url=_resolve_value(
+            env_name="TG_META_DATA_SOURCE_URL",
+            config_keys=("meta", "data_source_url"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value="https://www.thetrumparchive.com/",
+            parser=_to_str,
+        ),
+        repository_url=_resolve_value(
+            env_name="TG_META_REPOSITORY_URL",
+            config_keys=("meta", "repository_url"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value="https://github.com/KarolNarozniak/Trump-tweet-visualise",
+            parser=_to_str,
+        ),
+        disclaimer_text=_resolve_value(
+            env_name="TG_META_DISCLAIMER_TEXT",
+            config_keys=("meta", "disclaimer_text"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value=(
+                "Disclaimer: This visualization is a student educational project for studying "
+                "time-dependent graph behavior. It is not intended as political endorsement, "
+                "defamation, or factual/legal judgment about any person."
+            ),
+            parser=_to_str,
+        ),
+        about_text=_resolve_value(
+            env_name="TG_META_ABOUT_TEXT",
+            config_keys=("meta", "about_text"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value=(
+                "Trump Graph is a student project focused on temporal network analysis. "
+                "Its purpose is to explore how mentions and co-mentions evolve over time "
+                "in archived tweet data. The project is purely educational."
+            ),
+            parser=_to_str,
+        ),
+    )
+
     return ProjectSettings(
         project_root=project_root,
         config_path=chosen_config_path,
@@ -358,6 +428,7 @@ def load_settings(config_path: Path | None = None, env_path: Path | None = None)
         build=build,
         app=app,
         runtime=runtime,
+        meta=meta,
     )
 
 

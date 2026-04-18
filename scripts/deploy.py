@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import os
 from pathlib import Path
 import subprocess
 import sys
@@ -12,6 +13,15 @@ if str(SRC_DIR) not in sys.path:
     sys.path.insert(0, str(SRC_DIR))
 
 from trump_graph.settings import load_settings
+
+
+def _npm_executable() -> str:
+    return "npm.cmd" if os.name == "nt" else "npm"
+
+
+def _docs_cli_path(docs_dir: Path) -> Path:
+    cli_name = "docusaurus.cmd" if os.name == "nt" else "docusaurus"
+    return docs_dir / "node_modules" / ".bin" / cli_name
 
 
 def _run_command(command: Sequence[str], *, cwd: str | None = None) -> None:
@@ -75,7 +85,12 @@ def main(argv: list[str] | None = None) -> int:
         )
 
     if not args.skip_docs_build:
-        _run_command(["npm", "run", "build"], cwd=str(settings.runtime.docs_site_dir))
+        docs_cli = _docs_cli_path(settings.runtime.docs_site_dir)
+        if not docs_cli.exists():
+            raise RuntimeError(
+                "Docs dependencies are missing. Run scripts/setup_windows.ps1 (or npm install inside docs-site) first."
+            )
+        _run_command([_npm_executable(), "run", "build"], cwd=str(settings.runtime.docs_site_dir))
 
     print("Deployment workflow completed.")
     return 0

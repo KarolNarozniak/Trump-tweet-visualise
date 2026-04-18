@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import sys
 from pathlib import Path
@@ -17,8 +18,7 @@ from trump_graph.app import (
     load_week_artifacts,
     load_week_index,
 )
-from trump_graph.settings import load_settings
-
+from trump_graph.settings import ProjectSettings, load_settings
 
 
 @st.cache_data(show_spinner=False)
@@ -55,16 +55,95 @@ def _inject_ui_styles() -> None:
     )
 
 
+def _resolve_logo_path(settings: ProjectSettings) -> Path | None:
+    logo_path = settings.meta.logo_path
+    return logo_path if logo_path.exists() else None
+
+
+def _current_page_slug() -> str:
+    raw_page = st.query_params.get("page", "graph")
+    if isinstance(raw_page, list):
+        raw_page = raw_page[0] if raw_page else "graph"
+    slug = str(raw_page).strip().lower()
+    return slug if slug in {"graph", "about"} else "graph"
+
+
+def _set_page_slug(page_slug: str) -> None:
+    st.query_params["page"] = page_slug
+
+
+def _graph_iframe_path(graph_html: str) -> Path:
+    embed_dir = ROOT_DIR / ".streamlit" / "generated"
+    embed_dir.mkdir(parents=True, exist_ok=True)
+    digest = hashlib.sha256(graph_html.encode("utf-8")).hexdigest()[:18]
+    iframe_path = embed_dir / f"graph_{digest}.html"
+    if not iframe_path.exists():
+        iframe_path.write_text(graph_html, encoding="utf-8")
+    return iframe_path
+
+
+def _render_footer_links(settings: ProjectSettings) -> None:
+    st.markdown("---")
+    st.subheader("Data Source, Repository, And Documentation")
+    st.markdown(
+        f"- Data source: [The Trump Archive]({settings.meta.data_source_url})\n"
+        f"- Code repository: [KarolNarozniak/Trump-tweet-visualise]({settings.meta.repository_url})\n"
+        f"- Documentation: [Project Docs]({settings.runtime.docs_url})"
+    )
+
+
+def _render_about_page(settings: ProjectSettings, logo_path: Path | None) -> None:
+    st.header("About")
+    if logo_path is not None:
+        st.image(str(logo_path), width=140)
+
+    st.write(settings.meta.about_text)
+    st.markdown(
+        "- This is a student project for time-dependent graph study.\n"
+        "- The app analyzes mention/co-mention structure over weekly time steps.\n"
+        "- It is purely educational and intended for learning and research practice."
+    )
+    st.info("About endpoint: add `?page=about` to the app URL.")
+    _render_footer_links(settings)
+
+
 def main() -> None:
     settings = load_settings()
+    logo_path = _resolve_logo_path(settings)
 
-    st.set_page_config(page_title="Trump Mention Network", layout="wide")
+    page_config: dict[str, object] = {"page_title": settings.meta.app_name, "layout": "wide"}
+    if logo_path is not None:
+        page_config["page_icon"] = str(logo_path)
+    st.set_page_config(**page_config)
+
     _inject_ui_styles()
 
-    title_col, docs_col = st.columns([0.8, 0.2])
-    title_col.title("Trump Mention Network")
-    title_col.caption("One stable graph over time: nodes flare with weekly heat and edges thicken cumulatively.")
-    docs_col.link_button("Open Docs", settings.runtime.docs_url, use_container_width=True)
+    current_page = _current_page_slug()
+    st.sidebar.header("Navigation")
+    selected_page_label = st.sidebar.radio(
+        "Page",
+        options=["Graph", "About"],
+        index=0 if current_page == "graph" else 1,
+    )
+    selected_page_slug = selected_page_label.lower()
+    if selected_page_slug != current_page:
+        _set_page_slug(selected_page_slug)
+        st.rerun()
+
+    logo_col, title_col, nav_col = st.columns([0.12, 0.56, 0.32])
+    if logo_path is not None:
+        logo_col.image(str(logo_path), width=86)
+    title_col.title(settings.meta.app_name)
+    title_col.caption("Stable time-dependent mention network exploration.")
+
+    nav_col.link_button("Open Docs", settings.runtime.docs_url, width="stretch")
+    nav_col.markdown("[Graph](?page=graph) | [About](?page=about)")
+
+    st.warning(settings.meta.disclaimer_text)
+
+    if current_page == "about":
+        _render_about_page(settings, logo_path)
+        return
 
     st.sidebar.header("Graph Controls")
     st.sidebar.caption(f"Docs endpoint: {settings.runtime.docs_url}")
@@ -143,20 +222,29 @@ def main() -> None:
         layout_spread=layout_spread,
         height_px=graph_height,
     )
-    st.components.v1.html(graph_html, height=graph_height + 170, scrolling=False)
+    graph_iframe = _graph_iframe_path(graph_html)
+    st.iframe(graph_iframe, width="stretch", height=graph_height + 180)
+
+    st.caption(
+        "Legend: node size = global mention frequency; non-white node color = active mentions in current week; "
+        "visible edges are historical co-mentions, with thickness showing cumulative strength and warm color marking current-week activity."
+    )
+    st.info(
+        "What to expect: node positions stay stable over time, active weeks highlight where attention shifts, "
+        "and cumulative edges expose persistent relationship patterns.",
+    )
 
     st.markdown("---")
     week_options = week_index["week_id"].tolist()
-    default_week_index = len(week_options) - 1
-    detail_week = st.selectbox("Week For Tables And Export", options=week_options, index=default_week_index)
+    detail_week = st.selectbox("Week For Tables And Export", options=week_options, index=len(week_options) - 1)
 
     nodes_df, edges_df, metrics = _cached_week_artifacts(str(processed_dir), detail_week)
 
     st.subheader("Top Mentioned Accounts")
-    st.dataframe(nodes_df.head(30), use_container_width=True, hide_index=True)
+    st.dataframe(nodes_df.head(30), width="stretch", hide_index=True)
 
     with st.expander("Top Co-mention Edges"):
-        st.dataframe(edges_df.head(30), use_container_width=True, hide_index=True)
+        st.dataframe(edges_df.head(30), width="stretch", hide_index=True)
 
     st.subheader("Export This Week")
     export_col_1, export_col_2, export_col_3 = st.columns(3)
@@ -178,6 +266,8 @@ def main() -> None:
         file_name=f"{detail_week}_metrics.json",
         mime="application/json",
     )
+
+    _render_footer_links(settings)
 
 
 if __name__ == "__main__":

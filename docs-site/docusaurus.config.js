@@ -1,7 +1,7 @@
 // @ts-check
 
 const config = {
-  title: "Trump Tweet Visualize",
+  title: "Trump Graph",
   tagline: "Stable, time-dependent mention-network analytics",
 
   url: "http://localhost:3002",
@@ -9,9 +9,13 @@ const config = {
   trailingSlash: false,
 
   organizationName: "local",
-  projectName: "trump-tweet-visualise",
+  projectName: "trump-graph",
   onBrokenLinks: "throw",
-  onBrokenMarkdownLinks: "warn",
+  markdown: {
+    hooks: {
+      onBrokenMarkdownLinks: "warn"
+    }
+  },
 
   i18n: {
     defaultLocale: "en",
@@ -34,10 +38,30 @@ const config = {
       }
     ]
   ],
+  plugins: [
+    function disableBrokenWebpackBar() {
+      return {
+        name: "disable-broken-webpackbar",
+        configureWebpack(config, _isServer, utils) {
+          if (!config.plugins || utils.currentBundler.name !== "webpack") {
+            return {};
+          }
+
+          const filteredPlugins = config.plugins.filter(
+            (plugin) => plugin?.constructor?.name !== "WebpackBarPlugin"
+          );
+          return {
+            mergeStrategy: { plugins: "replace" },
+            plugins: filteredPlugins
+          };
+        }
+      };
+    }
+  ],
 
   themeConfig: {
     navbar: {
-      title: "Trump Tweet Visualize Docs",
+      title: "Trump Graph Docs",
       items: [
         {
           type: "docSidebar",
@@ -60,7 +84,7 @@ const config = {
           ]
         }
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} Trump Tweet Visualize`
+      copyright: `Copyright (c) ${new Date().getFullYear()} Trump Graph`
     }
   }
 };

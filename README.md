@@ -1,6 +1,8 @@
-# Trump Tweet Visualize
+# Trump Graph
 
 Time-dependent mention-network analytics for Trump tweet archive data, with a deterministic Python build pipeline and an interactive Streamlit visualization.
+
+Application display name: **Trump Graph**.
 
 ## What This Project Includes
 
@@ -52,7 +54,7 @@ tests/
 ## Prerequisites
 
 - Python `>=3.11`
-- Node.js `>=20`
+- Node.js `>=20` (LTS recommended)
 - npm
 
 ## Setup
@@ -130,6 +132,7 @@ Examples:
 ```
 
 The Streamlit header includes an **Open Docs** button that links directly to the configured docs endpoint.
+The app also includes an About route at `?page=about`.
 
 ## Deployment Workflow
 

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import os
 from pathlib import Path
 import subprocess
 import sys
@@ -12,6 +13,15 @@ if str(SRC_DIR) not in sys.path:
     sys.path.insert(0, str(SRC_DIR))
 
 from trump_graph.settings import load_settings
+
+
+def _npm_executable() -> str:
+    return "npm.cmd" if os.name == "nt" else "npm"
+
+
+def _docs_cli_path(docs_dir: Path) -> Path:
+    cli_name = "docusaurus.cmd" if os.name == "nt" else "docusaurus"
+    return docs_dir / "node_modules" / ".bin" / cli_name
 
 
 def _terminate_process(process: subprocess.Popen[bytes], timeout_seconds: float = 6.0) -> None:
@@ -31,9 +41,13 @@ def _spawn_docs_process() -> subprocess.Popen[bytes]:
     docs_dir = settings.runtime.docs_site_dir
     if not docs_dir.exists():
         raise FileNotFoundError(f"Docs directory not found: {docs_dir}")
+    if not _docs_cli_path(docs_dir).exists():
+        raise RuntimeError(
+            "Docs dependencies are missing. Run scripts/setup_windows.ps1 (or npm install inside docs-site) first."
+        )
 
     docs_command = [
-        "npm",
+        _npm_executable(),
         "run",
         "start",
         "--",
@@ -46,7 +60,9 @@ def _spawn_docs_process() -> subprocess.Popen[bytes]:
     try:
         return subprocess.Popen(docs_command, cwd=docs_dir)
     except FileNotFoundError as error:
-        raise RuntimeError("Unable to start docs service: npm executable was not found.") from error
+        raise RuntimeError(
+            f"Unable to start docs service: {_npm_executable()} executable was not found in PATH."
+        ) from error
 
 
 def _spawn_app_process() -> subprocess.Popen[bytes]:

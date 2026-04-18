@@ -24,3 +24,11 @@ docs_host = "0.0.0.0"
 docs_port = 3002
 docs_url = "http://localhost:3002"
 docs_site_dir = "docs-site"
+
+[meta]
+app_name = "Trump Graph"
+logo_path = "logo.png"
+data_source_url = "https://www.thetrumparchive.com/"
+repository_url = "https://github.com/KarolNarozniak/Trump-tweet-visualise"
+disclaimer_text = "Disclaimer: This visualization is a student educational project for studying time-dependent graph behavior. It is not intended as political endorsement, defamation, or factual/legal judgment about any person."
+about_text = "Trump Graph is a student project focused on temporal network analysis. Its purpose is to explore how mentions and co-mentions evolve over time in archived tweet data. The project is purely educational."
