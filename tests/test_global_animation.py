@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+import statistics
 
 import pandas as pd
 
@@ -81,6 +82,29 @@ def test_global_payload_layout_is_deterministic(sample_tweets_csv_path: Path) ->
     assert pos_a == pos_b
 
 
+def test_global_payload_places_more_popular_nodes_near_center(sample_tweets_csv_path: Path) -> None:
+    tweets_df, week_index_df = _prepared_fixture(sample_tweets_csv_path)
+    payload = build_global_animation_payload(
+        tweets_df=tweets_df,
+        week_index_df=week_index_df,
+        global_min_mentions=1,
+        heat_decay=0.85,
+        layout_seed=42,
+    )
+
+    sorted_nodes = sorted(payload["global_nodes"], key=lambda node: (-int(node["total_mentions"]), str(node["id"])))
+    split_size = max(1, len(sorted_nodes) // 3)
+    top_nodes = sorted_nodes[:split_size]
+    bottom_nodes = sorted_nodes[-split_size:]
+
+    def radius(node: dict[str, object]) -> float:
+        return (float(node["x"]) ** 2 + float(node["y"]) ** 2) ** 0.5
+
+    top_avg_radius = statistics.fmean(radius(node) for node in top_nodes)
+    bottom_avg_radius = statistics.fmean(radius(node) for node in bottom_nodes)
+    assert top_avg_radius < bottom_avg_radius
+
+
 def test_replay_state_from_deltas(sample_tweets_csv_path: Path) -> None:
     tweets_df, week_index_df = _prepared_fixture(sample_tweets_csv_path)
     payload = build_global_animation_payload(
@@ -115,6 +139,6 @@ def test_replay_state_from_deltas(sample_tweets_csv_path: Path) -> None:
 
 
 def test_size_and_edge_width_mappings() -> None:
-    assert round(node_size_from_total_mentions(25, p99_total_mentions=100), 3) == 22.000
-    assert round(edge_width_from_cumulative(25, max_cumulative_edge=100), 3) == 3.250
+    assert round(node_size_from_total_mentions(25, p99_total_mentions=100), 3) == 10.500
+    assert round(edge_width_from_cumulative(25, max_cumulative_edge=100), 3) == 4.400
     assert edge_width_from_cumulative(0, max_cumulative_edge=100) == 0.0

@@ -3,9 +3,8 @@ from __future__ import annotations
 from collections import Counter
 from itertools import combinations
 import math
-from typing import Any, Iterable, Sequence
+from typing import Any, Iterable, Mapping, Sequence
 
-import networkx as nx
 import numpy as np
 import pandas as pd
 
@@ -89,7 +88,7 @@ def _normalize_layout_positions(positions: dict[str, Any]) -> dict[str, tuple[fl
     if not positions:
         return {}
 
-    target_extent = 1000.0
+    target_extent = 1300.0
     max_abs = max(
         max(abs(float(coord[0])), abs(float(coord[1])))
         for coord in positions.values()
@@ -107,101 +106,105 @@ def _normalize_layout_positions(positions: dict[str, Any]) -> dict[str, tuple[fl
     return normalized
 
 
-def _dense_force_layout(subgraph: nx.Graph, seed: int, iterations: int = 90) -> dict[str, tuple[float, float]]:
-    node_ids = sorted(str(node_id) for node_id in subgraph.nodes())
-    node_count = len(node_ids)
-    if node_count == 0:
+def _ranked_polar_layout(
+    node_ids: Sequence[str],
+    node_total_counts: Mapping[str, int],
+    node_sizes: Mapping[str, float],
+    layout_seed: int,
+) -> dict[str, tuple[float, float]]:
+    if not node_ids:
         return {}
-    if node_count == 1:
-        return {node_ids[0]: (0.0, 0.0)}
 
-    adjacency = nx.to_numpy_array(subgraph, nodelist=node_ids, weight="weight", dtype="float64")
-    random_state = np.random.RandomState(seed)
-    positions = random_state.rand(node_count, 2).astype(adjacency.dtype)
+    ordered_nodes = sorted(node_ids, key=lambda node_id: (-int(node_total_counts[node_id]), str(node_id)))
+    if len(ordered_nodes) == 1:
+        return {str(ordered_nodes[0]): (0.0, 0.0)}
 
-    optimal_distance = math.sqrt(1.0 / node_count)
-    temperature = max(
-        float(positions[:, 0].max() - positions[:, 0].min()),
-        float(positions[:, 1].max() - positions[:, 1].min()),
-    ) * 0.1
-    if temperature <= 0 or not math.isfinite(temperature):
-        temperature = 0.1
-    delta_temperature = temperature / float(iterations + 1)
+    max_node_size = float(max(node_sizes.values(), default=8.0))
+    base_radius = max(52.0, max_node_size * 4.0)
+    radial_step = max(58.0, max_node_size * 3.2)
+    min_arc_spacing = max(28.0, max_node_size * 2.9)
+    clockwise_factor = -1.0
 
-    for _ in range(iterations):
-        delta = positions[:, np.newaxis, :] - positions[np.newaxis, :, :]
-        distance = np.linalg.norm(delta, axis=-1)
-        np.clip(distance, 0.01, None, out=distance)
+    # Deterministic phase so the same data/seed produces the same orientation.
+    phase = (int(layout_seed) % 360) * (math.pi / 180.0)
 
-        displacement = np.einsum(
-            "ijk,ij->ik",
-            delta,
-            (optimal_distance * optimal_distance / (distance * distance)) - (adjacency * distance / optimal_distance),
-        )
-        displacement_length = np.linalg.norm(displacement, axis=-1)
-        displacement_length = np.clip(displacement_length, 0.01, None)
-        delta_pos = np.einsum("ij,i->ij", displacement, temperature / displacement_length)
-        positions += delta_pos
-
-        temperature -= delta_temperature
-        if (np.linalg.norm(delta_pos) / node_count) < 1e-4:
+    positions: dict[str, tuple[float, float]] = {str(ordered_nodes[0]): (0.0, 0.0)}
+    cursor = 1
+    ring_index = 1
+    while cursor < len(ordered_nodes):
+        radius = base_radius + (ring_index - 1) * radial_step
+        circumference = 2.0 * math.pi * radius
+        ring_capacity = max(8, int(circumference / min_arc_spacing))
+        ring_nodes = ordered_nodes[cursor : cursor + ring_capacity]
+        if not ring_nodes:
             break
 
-    scaled_positions = nx.rescale_layout(positions, scale=1.0)
-    return {
-        str(node_id): (float(scaled_positions[index, 0]), float(scaled_positions[index, 1]))
-        for index, node_id in enumerate(node_ids)
-    }
+        angle_step = (2.0 * math.pi) / float(len(ring_nodes))
+        ring_phase = phase + (ring_index * 0.41)
+        for local_index, node_id in enumerate(ring_nodes):
+            angle = ring_phase + clockwise_factor * (local_index * angle_step)
+            positions[str(node_id)] = (radius * math.cos(angle), radius * math.sin(angle))
 
-
-def _component_ring_layout(graph: nx.Graph, layout_seed: int) -> dict[str, tuple[float, float]]:
-    if graph.number_of_nodes() == 0:
-        return {}
-
-    components = [sorted(component) for component in nx.connected_components(graph)]
-    components.sort(key=lambda component: (-len(component), component[0]))
-
-    positions: dict[str, tuple[float, float]] = {}
-    golden_angle = 2.399963229728653
-    component_scales = [max(90.0, 42.0 * math.sqrt(len(component))) for component in components]
-    base_radius = (component_scales[0] + 280.0) if component_scales else 300.0
-
-    for component_index, component_nodes in enumerate(components):
-        if component_index == 0:
-            center_x = 0.0
-            center_y = 0.0
-        else:
-            angle = component_index * golden_angle
-            radius = base_radius + 220.0 * math.sqrt(component_index)
-            center_x = radius * math.cos(angle)
-            center_y = radius * math.sin(angle)
-
-        component_size = len(component_nodes)
-        if component_size == 1:
-            node_id = str(component_nodes[0])
-            positions[node_id] = (center_x, center_y)
-            continue
-
-        subgraph = graph.subgraph(component_nodes)
-        local_scale = component_scales[component_index]
-        try:
-            local_positions = _dense_force_layout(subgraph, seed=layout_seed + component_index)
-        except Exception:
-            local_positions = {
-                str(node_id): (float(coord[0]), float(coord[1]))
-                for node_id, coord in nx.circular_layout(subgraph, scale=1.0).items()
-            }
-        local_positions = {
-            str(node_id): (float(coord[0]) * local_scale, float(coord[1]) * local_scale)
-            for node_id, coord in local_positions.items()
-        }
-
-        for node_id, coord in local_positions.items():
-            x = float(coord[0]) + center_x
-            y = float(coord[1]) + center_y
-            positions[str(node_id)] = (x, y)
+        cursor += len(ring_nodes)
+        ring_index += 1
 
     return positions
+
+
+def _resolve_node_overlaps(
+    positions: Mapping[str, tuple[float, float]],
+    node_sizes: Mapping[str, float],
+    iterations: int = 22,
+) -> dict[str, tuple[float, float]]:
+    if not positions:
+        return {}
+
+    node_ids = sorted(str(node_id) for node_id in positions.keys())
+    coordinates = np.array([positions[node_id] for node_id in node_ids], dtype="float64")
+    preferred = coordinates.copy()
+    sizes = np.array([float(node_sizes.get(node_id, 6.0)) for node_id in node_ids], dtype="float64")
+
+    def _minimum_distance(size_a: float, size_b: float) -> float:
+        return 10.0 + ((size_a + size_b) * 2.4)
+
+    for _ in range(max(1, iterations)):
+        moved = False
+        for left_index in range(len(node_ids) - 1):
+            for right_index in range(left_index + 1, len(node_ids)):
+                dx = float(coordinates[right_index, 0] - coordinates[left_index, 0])
+                dy = float(coordinates[right_index, 1] - coordinates[left_index, 1])
+                distance_sq = (dx * dx) + (dy * dy)
+                minimum_distance = _minimum_distance(sizes[left_index], sizes[right_index])
+                if distance_sq >= (minimum_distance * minimum_distance):
+                    continue
+
+                distance = math.sqrt(distance_sq) if distance_sq > 1e-12 else 0.0
+                if distance <= 1e-6:
+                    angle = ((left_index * 92821 + right_index * 68917) % 3600) * (2.0 * math.pi / 3600.0)
+                    ux = math.cos(angle)
+                    uy = math.sin(angle)
+                    distance = 0.0
+                else:
+                    ux = dx / distance
+                    uy = dy / distance
+
+                overlap = minimum_distance - distance
+                shift = overlap * 0.5
+                coordinates[left_index, 0] -= ux * shift
+                coordinates[left_index, 1] -= uy * shift
+                coordinates[right_index, 0] += ux * shift
+                coordinates[right_index, 1] += uy * shift
+                moved = True
+
+        # Keep the ranking structure stable while relieving collisions.
+        coordinates = (coordinates * 0.985) + (preferred * 0.015)
+        if not moved:
+            break
+
+    return {
+        node_id: (round(float(coordinates[index, 0]), 4), round(float(coordinates[index, 1]), 4))
+        for index, node_id in enumerate(node_ids)
+    }
 
 
 def build_global_animation_payload(
@@ -228,23 +231,22 @@ def build_global_animation_payload(
         }
     )
 
-    global_graph = nx.Graph()
-    for node_id in kept_nodes:
-        global_graph.add_node(node_id, total_mentions=int(node_total_counts[node_id]))
-    for (source, target), count in filtered_edge_counts.items():
-        global_graph.add_edge(source, target, weight=int(count))
-
-    component_positions = _component_ring_layout(global_graph, layout_seed=layout_seed)
-    if any(
-        not math.isfinite(float(coord[0])) or not math.isfinite(float(coord[1]))
-        for coord in component_positions.values()
-    ):
-        component_positions = {str(node_id): tuple(coord) for node_id, coord in nx.circular_layout(global_graph).items()}
-    layout_positions = _normalize_layout_positions(component_positions)
-
     p99_mentions = float(pd.Series([node_total_counts[node] for node in kept_nodes], dtype="float64").quantile(0.99))
     if not math.isfinite(p99_mentions) or p99_mentions <= 0:
         p99_mentions = 1.0
+
+    node_sizes = {
+        str(node_id): node_size_from_total_mentions(node_total_counts[node_id], p99_mentions)
+        for node_id in kept_nodes
+    }
+    ranked_positions = _ranked_polar_layout(
+        node_ids=kept_nodes,
+        node_total_counts=node_total_counts,
+        node_sizes=node_sizes,
+        layout_seed=layout_seed,
+    )
+    layout_positions = _normalize_layout_positions(ranked_positions)
+    layout_positions = _resolve_node_overlaps(layout_positions, node_sizes=node_sizes)
 
     top_label_nodes = [
         node_id
@@ -258,7 +260,7 @@ def build_global_animation_payload(
         {
             "id": node_id,
             "total_mentions": int(node_total_counts[node_id]),
-            "size": round(node_size_from_total_mentions(node_total_counts[node_id], p99_mentions), 4),
+            "size": round(node_sizes[node_id], 4),
             "x": layout_positions.get(node_id, (0.0, 0.0))[0],
             "y": layout_positions.get(node_id, (0.0, 0.0))[1],
             "is_hub": node_id == GLOBAL_HUB_NODE_ID,

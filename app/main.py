@@ -67,6 +67,9 @@ def main() -> None:
     include_hub = st.sidebar.checkbox("Include @realdonaldtrump", value=False)
     always_label_top = st.sidebar.checkbox("Always label top 40 nodes", value=False)
     playback_speed = st.sidebar.slider("Initial playback speed (weeks/sec)", min_value=0.5, max_value=8.0, value=2.0, step=0.5)
+    node_size_multiplier = st.sidebar.slider("Node size multiplier", min_value=0.5, max_value=2.0, value=1.0, step=0.05)
+    layout_spread = st.sidebar.slider("Layout spread", min_value=1.0, max_value=4.0, value=2.2, step=0.1)
+    initial_zoom_boost = st.sidebar.slider("Initial graph zoom", min_value=0.6, max_value=1.8, value=0.8, step=0.05)
     graph_height = st.sidebar.slider("Graph height (px)", min_value=560, max_value=980, value=760, step=20)
 
     processed_dir = Path(processed_dir_input)
@@ -98,6 +101,9 @@ def main() -> None:
         always_label_top_nodes=always_label_top,
         initial_week_index=None,
         initial_speed=playback_speed,
+        node_size_multiplier=node_size_multiplier,
+        initial_zoom_boost=initial_zoom_boost,
+        layout_spread=layout_spread,
         height_px=graph_height,
     )
     st.components.v1.html(graph_html, height=graph_height + 170, scrolling=False)

@@ -111,6 +111,9 @@ def build_global_animation_html(
     always_label_top_nodes: bool = False,
     initial_week_index: int | None = None,
     initial_speed: float = 2.0,
+    node_size_multiplier: float = 1.0,
+    initial_zoom_boost: float = 0.8,
+    layout_spread: float = 2.2,
     height_px: int = 760,
     transition_steps: int = 7,
 ) -> str:
@@ -127,6 +130,9 @@ def build_global_animation_html(
         )
     initial_week_index = max(0, min(max_week_index, int(initial_week_index)))
     speed_value = max(0.5, min(8.0, float(initial_speed)))
+    size_multiplier = max(0.4, min(3.0, float(node_size_multiplier)))
+    zoom_boost = max(0.55, min(2.5, float(initial_zoom_boost)))
+    spread_value = max(0.8, min(4.0, float(layout_spread)))
 
     json_payload = json.dumps(filtered_payload, separators=(",", ":"), ensure_ascii=True)
     label_flag = "true" if always_label_top_nodes else "false"
@@ -151,19 +157,19 @@ def build_global_animation_html(
 <style>
   .tg-root {{
     width: 100%;
-    border: 1px solid #0f172a;
+    border: 1px solid #1f2937;
     border-radius: 8px;
     overflow: hidden;
-    background: #050a14;
+    background: #000000;
   }}
   #tg-graph {{
     width: 100%;
-    background: #050a14;
+    background: #000000;
   }}
   .tg-timeline {{
-    border-top: 1px solid #0f172a;
+    border-top: 1px solid #1f2937;
     padding: 10px 12px 12px 12px;
-    background: #02050b;
+    background: #030303;
     color: #e2e8f0;
   }}
   .tg-control-row {{
@@ -177,7 +183,7 @@ def build_global_animation_html(
     border: 1px solid #334155;
     border-radius: 6px;
     padding: 4px 10px;
-    background: #0f172a;
+    background: #111827;
     color: #e2e8f0;
     cursor: pointer;
     font-size: 13px;
@@ -216,6 +222,9 @@ def build_global_animation_html(
   const payload = {json_payload};
   const alwaysLabelTopNodes = {label_flag};
   const transitionSteps = {int(max(1, transition_steps))};
+  const nodeSizeMultiplier = {size_multiplier:.3f};
+  const initialZoomBoost = {zoom_boost:.3f};
+  const layoutSpread = {spread_value:.3f};
 
   const graphElement = document.getElementById("tg-graph");
   const playButton = document.getElementById("tg-play");
@@ -258,22 +267,21 @@ def build_global_animation_html(
   const nodeInfoById = new Map(nodeData.map((node) => [String(node.id), node]));
   const edgeInfoById = new Map(edgeData.map((edge) => [String(edge.id), edge]));
 
-  const coolNodeColor = "rgba(15, 23, 42, 0.92)";
-  const baseNodeBorderColor = "#334155";
+  const baseNodeColor = "rgba(248, 250, 252, 0.92)";
+  const baseNodeBorderColor = "#cbd5e1";
   let selectedNodeId = null;
 
   function clamp(value, min, max) {{
     return Math.max(min, Math.min(max, value));
   }}
 
-  function fireColor(intensity, alpha = 1.0) {{
+  function heatColor(intensity, alpha = 1.0) {{
     const stops = [
-      [0.00, [8, 8, 24]],
-      [0.18, [33, 12, 74]],
-      [0.42, [118, 23, 101]],
-      [0.64, [204, 60, 71]],
-      [0.83, [249, 146, 6]],
-      [1.00, [253, 255, 182]]
+      [0.00, [255, 224, 170]],
+      [0.35, [255, 170, 74]],
+      [0.65, [255, 96, 45]],
+      [0.85, [255, 54, 39]],
+      [1.00, [255, 245, 170]]
     ];
     const t = clamp(intensity, 0, 1);
     for (let i = 1; i < stops.length; i += 1) {{
@@ -295,7 +303,7 @@ def build_global_animation_html(
       return 0;
     }}
     const normalized = clamp(cumulative / maxCumulativeEdge, 0, 1);
-    return 0.5 + 5.5 * Math.sqrt(normalized);
+    return 0.9 + 7.0 * Math.sqrt(normalized);
   }}
 
   function nodeLabelForId(nodeId) {{
@@ -315,18 +323,18 @@ def build_global_animation_html(
         id: nodeId,
         label: nodeLabelForId(nodeId),
         title: `@${{nodeId}}<br>Total mentions: ${{Number(node.total_mentions || 0).toLocaleString()}}`,
-        size: Number(node.size || 8),
-        x: Number(node.x || 0),
-        y: Number(node.y || 0),
+        size: Math.max(2.0, Number(node.size || 8) * nodeSizeMultiplier),
+        x: Number(node.x || 0) * layoutSpread,
+        y: Number(node.y || 0) * layoutSpread,
         fixed: {{ x: true, y: true }},
         physics: false,
         color: {{
-          background: coolNodeColor,
+          background: baseNodeColor,
           border: baseNodeBorderColor,
-          highlight: {{ background: coolNodeColor, border: "#e2e8f0" }},
-          hover: {{ background: coolNodeColor, border: "#e2e8f0" }}
+          highlight: {{ background: baseNodeColor, border: "#ffffff" }},
+          hover: {{ background: baseNodeColor, border: "#ffffff" }}
         }},
-        font: {{ color: "#f8fafc", size: 12 }}
+        font: {{ color: "#f8fafc", size: 12, strokeColor: "#000000", strokeWidth: 4 }}
       }};
     }})
   );
@@ -340,7 +348,7 @@ def build_global_animation_html(
         to: String(edge.target),
         hidden: true,
         width: 0,
-        color: "rgba(100, 116, 139, 0.30)",
+        color: "rgba(241, 245, 249, 0.25)",
         smooth: false,
         title: `@${{edge.source}} <> @${{edge.target}}<br>Cumulative co-mentions: 0`
       }};
@@ -369,6 +377,8 @@ def build_global_animation_html(
     }}
   );
   network.fit({{ nodes: nodeIds, animation: false }});
+  const baseScale = network.getScale();
+  network.moveTo({{ scale: baseScale * initialZoomBoost, animation: false }});
 
   let currentWeekIndex = Number(weekSlider.value || 0);
   let playing = false;
@@ -454,7 +464,7 @@ def build_global_animation_html(
 
     const normalizedWeekly = clamp(Number(weeklyValue || 0) / weeklyNodeScale, 0, 1);
     const intensity = normalizedWeekly > 0 ? Math.pow(normalizedWeekly, 0.65) : 0;
-    const fillColor = normalizedWeekly > 0 ? fireColor(intensity, 0.95) : coolNodeColor;
+    const fillColor = normalizedWeekly > 0 ? heatColor(intensity, 0.96) : baseNodeColor;
     const title = `@${{nodeId}}<br>Total mentions: ${{Number(info.total_mentions || 0).toLocaleString()}}<br>This week: ${{Math.round(Number(weeklyValue || 0)).toLocaleString()}}<br>Cumulative: ${{Math.round(Number(cumulativeMentions || 0)).toLocaleString()}}`;
     return {{
       id: nodeId,
@@ -463,9 +473,9 @@ def build_global_animation_html(
       title,
       color: {{
         background: fillColor,
-        border: "#111827",
-        highlight: {{ background: fillColor, border: "#f8fafc" }},
-        hover: {{ background: fillColor, border: "#f8fafc" }}
+        border: "#111111",
+        highlight: {{ background: fillColor, border: "#ffffff" }},
+        hover: {{ background: fillColor, border: "#ffffff" }}
       }}
     }};
   }}
@@ -477,7 +487,7 @@ def build_global_animation_html(
         id: edgeId,
         hidden: true,
         width: 0,
-        color: "rgba(100, 116, 139, 0.30)"
+        color: "rgba(241, 245, 249, 0.25)"
       }};
     }}
 
@@ -486,13 +496,14 @@ def build_global_animation_html(
         id: edgeId,
         hidden: true,
         width: 0,
-        color: "rgba(100, 116, 139, 0.25)",
+        color: "rgba(241, 245, 249, 0.25)",
         title: `@${{info.source}} <> @${{info.target}}<br>Cumulative co-mentions: 0`
       }};
     }}
 
     const normalized = clamp(cumulativeValue / maxCumulativeEdge, 0, 1);
-    const color = fireColor(normalized, 0.30 + normalized * 0.48);
+    const edgeAlpha = 0.12 + (Math.pow(normalized, 0.55) * 0.68);
+    const color = `rgba(241, 245, 249, ${{edgeAlpha.toFixed(3)}})`;
     return {{
       id: edgeId,
       hidden: false,
