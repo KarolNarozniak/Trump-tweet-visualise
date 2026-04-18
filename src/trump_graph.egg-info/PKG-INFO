@@ -1,0 +1,40 @@
+Metadata-Version: 2.4
+Name: trump-graph
+Version: 0.1.0
+Summary: Weekly mention network builder and viewer for Trump tweet data.
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+Requires-Dist: networkx>=3.3
+Requires-Dist: pandas>=2.2
+Requires-Dist: pyvis>=0.3.2
+Requires-Dist: streamlit>=1.30
+Provides-Extra: dev
+Requires-Dist: pytest>=8.0; extra == "dev"
+
+# Trump Tweet Visualize - Layer 1
+
+Weekly mention-network pipeline and web app for `tweets_01-08-2021.csv`.
+
+## Setup
+
+```bash
+pip install -e .
+```
+
+## Build Artifacts
+
+```bash
+python -m trump_graph build --input tweets_01-08-2021.csv --out data/processed --min-mention-count 1 --include-retweets
+```
+
+## Run App
+
+```bash
+streamlit run app/main.py
+```
+
+## Run Tests
+
+```bash
+pytest -q
+```

@@ -1,0 +1,7 @@
+id,text,isRetweet,isDeleted,device,favorites,retweets,date,isFlagged
+1,"Hello @Alice and @Bob and @alice!",f,f,Twitter Web App,10,1,2020-12-28 10:00:00,f
+2,"Update from @Bob with @Carol.",f,f,Twitter Web App,11,2,2020-12-30 11:00:00,f
+3,"Weekend recap with @Alice and @Carol.",f,f,Twitter Web App,12,3,2021-01-03 12:00:00,f
+4,"New week mention @Dave.",f,f,Twitter Web App,13,4,2021-01-04 13:00:00,f
+5,"No mentions here.",f,f,Twitter Web App,14,5,2021-01-05 14:00:00,f
+6,"RT @Alice and @Eve",t,f,Twitter for iPhone,0,7,2021-01-06 15:00:00,f

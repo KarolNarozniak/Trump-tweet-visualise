@@ -1,0 +1,11 @@
+__pycache__/
+.pytest_cache/
+.venv/
+venv/
+.pytest_tmp/
+pytest-cache-files-*/
+*.pyc
+streamlit.out.log
+streamlit.err.log
+
+data/processed/
