@@ -2,8 +2,16 @@
 id: home
 slug: /
 title: Home
+unlisted: true
 ---
 
+import Head from "@docusaurus/Head";
 import {Redirect} from "@docusaurus/router";
 
+<Head>
+  <meta httpEquiv="refresh" content="0; url=/intro" />
+</Head>
+
 <Redirect to="/intro" />
+
+If the redirect does not start automatically, open [Introduction](/intro).
