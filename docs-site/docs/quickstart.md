@@ -26,6 +26,18 @@
 python -m trump_graph build
 ```
 
+Build the Truth Social semantic artifacts:
+
+```bash
+python -m trump_graph build-truth
+```
+
+For a no-model smoke test:
+
+```bash
+python -m trump_graph build-truth --semantic-backend deterministic --min-node-count 1
+```
+
 The command uses defaults from `config/defaults.toml` and optional overrides from `.env`.
 
 ## 3) Run App + Docs
@@ -46,3 +58,9 @@ The wrapper runs:
 
 - Streamlit app on `3001`
 - Docusaurus docs on `3002`
+
+Open the Truth Social view with:
+
+```text
+http://localhost:3001/?page=truth
+```

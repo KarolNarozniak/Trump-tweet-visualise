@@ -7,6 +7,7 @@ Layer 1 delivers:
 - deterministic preprocessing
 - weekly mention and co-mention artifacts
 - a stable global animation model for time progression
+- a separate Truth Social semantic temporal graph path
 - an interactive Streamlit interface for exploration and export
 
 Use this documentation when you need to:

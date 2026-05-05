@@ -1,5 +1,6 @@
 param(
     [switch]$SkipDocs,
+    [switch]$InstallMl,
     [switch]$InstallEditable,
     [switch]$UpgradePip
 )
@@ -57,6 +58,11 @@ if ($UpgradePip) {
     Write-Host "==> Skipping pip upgrade (use -UpgradePip to enable)"
 }
 Invoke-Step -Command "`"$PythonExe`" -m pip --disable-pip-version-check install -r requirements.txt" -Description "Installing Python requirements"
+if ($InstallMl) {
+    Invoke-Step -Command "`"$PythonExe`" -m pip --disable-pip-version-check install -r requirements-ml.txt" -Description "Installing optional ML requirements"
+} else {
+    Write-Host "==> Skipping optional ML requirements (use -InstallMl to enable)"
+}
 if ($InstallEditable) {
     Invoke-Step -Command "`"$PythonExe`" -m pip --disable-pip-version-check install --no-build-isolation --no-deps -e ." -Description "Installing project in editable mode"
 } else {

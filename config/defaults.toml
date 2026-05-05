@@ -7,6 +7,25 @@ include_retweets = true
 heat_decay = 0.85
 layout_seed = 42
 
+[truth_build]
+input_path = "truthsocial.posts[Trump-FROM-10-8-25].txt"
+output_dir = "data/processed_truth"
+semantic_backend = "hf"
+topic_model_id = "facebook/bart-large-mnli"
+ner_model_id = "dslim/bert-base-NER"
+sentiment_model_id = "cardiffnlp/twitter-roberta-base-sentiment-latest"
+embedding_model_id = "sentence-transformers/all-MiniLM-L6-v2"
+device = "auto"
+batch_size = 16
+topic_threshold = 0.35
+max_topic_labels = 3
+entity_score_threshold = 0.65
+max_chunk_chars = 900
+min_node_count = 8
+included_node_types = ["topic", "per", "org", "loc", "hashtag", "mention"]
+heat_decay = 0.85
+layout_seed = 99
+
 [app]
 processed_dir = "data/processed"
 include_hub = true
@@ -16,6 +35,18 @@ node_size_multiplier = 2.0
 layout_spread = 1.0
 initial_zoom_boost = 0.8
 graph_height_px = 1000
+
+[truth_app]
+processed_dir = "data/processed_truth"
+include_retruths = true
+node_types = ["topic", "per", "org", "loc"]
+sentiment_filter = "all"
+min_node_count = 8
+playback_speed = 6.0
+node_size_multiplier = 1.8
+layout_spread = 1.15
+initial_zoom_boost = 0.85
+graph_height_px = 920
 
 [runtime]
 streamlit_host = "0.0.0.0"

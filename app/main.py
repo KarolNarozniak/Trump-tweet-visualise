@@ -1,10 +1,12 @@
 from __future__ import annotations
 
+from collections import Counter
 import hashlib
 import json
 import sys
 from pathlib import Path
 
+import pandas as pd
 import streamlit as st
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
@@ -14,7 +16,13 @@ if str(SRC_DIR) not in sys.path:
 
 from trump_graph.app import (
     build_global_animation_html,
+    build_truth_semantic_animation_html,
     load_global_animation_artifacts,
+    load_truth_animation_artifacts,
+    load_truth_enriched_posts,
+    load_truth_node_catalog,
+    load_truth_week_index,
+    load_truth_weekly_summary,
     load_week_artifacts,
     load_week_index,
 )
@@ -34,6 +42,31 @@ def _cached_week_artifacts(processed_dir: str, week_id: str):
 @st.cache_data(show_spinner=False)
 def _cached_global_animation_payload(processed_dir: str):
     return load_global_animation_artifacts(Path(processed_dir))
+
+
+@st.cache_data(show_spinner=False)
+def _cached_truth_week_index(processed_dir: str):
+    return load_truth_week_index(Path(processed_dir))
+
+
+@st.cache_data(show_spinner=False)
+def _cached_truth_weekly_summary(processed_dir: str):
+    return load_truth_weekly_summary(Path(processed_dir))
+
+
+@st.cache_data(show_spinner=False)
+def _cached_truth_animation_payload(processed_dir: str):
+    return load_truth_animation_artifacts(Path(processed_dir))
+
+
+@st.cache_data(show_spinner=False)
+def _cached_truth_enriched_posts(processed_dir: str):
+    return load_truth_enriched_posts(Path(processed_dir))
+
+
+@st.cache_data(show_spinner=False)
+def _cached_truth_node_catalog(processed_dir: str):
+    return load_truth_node_catalog(Path(processed_dir))
 
 
 def _inject_ui_styles() -> None:
@@ -65,7 +98,7 @@ def _current_page_slug() -> str:
     if isinstance(raw_page, list):
         raw_page = raw_page[0] if raw_page else "graph"
     slug = str(raw_page).strip().lower()
-    return slug if slug in {"graph", "about"} else "graph"
+    return slug if slug in {"graph", "truth", "about"} else "graph"
 
 
 def _set_page_slug(page_slug: str) -> None:
@@ -107,6 +140,257 @@ def _render_about_page(settings: ProjectSettings, logo_path: Path | None) -> Non
     _render_footer_links(settings)
 
 
+def _parse_json_list(value: object) -> list[object]:
+    if isinstance(value, list):
+        return value
+    if pd.isna(value):
+        return []
+    parsed = json.loads(str(value))
+    return parsed if isinstance(parsed, list) else []
+
+
+def _truth_delta_set(include_retruths: bool, sentiment_filter: str) -> str:
+    normalized_sentiment = sentiment_filter.strip().lower()
+    base = "all" if include_retruths else "original"
+    if normalized_sentiment == "all":
+        return base
+    return normalized_sentiment if include_retruths else f"original_{normalized_sentiment}"
+
+
+def _truth_week_posts(
+    posts_df: pd.DataFrame,
+    *,
+    week_id: str,
+    include_retruths: bool,
+    sentiment_filter: str,
+) -> pd.DataFrame:
+    filtered = posts_df.loc[posts_df["week_id"].astype(str) == str(week_id)].copy()
+    if not include_retruths:
+        filtered = filtered.loc[~filtered["is_retruth"].astype(bool)].copy()
+    if sentiment_filter != "all":
+        filtered = filtered.loc[filtered["sentiment_label"].astype(str).str.lower() == sentiment_filter].copy()
+    return filtered
+
+
+def _truth_top_nodes(
+    posts_df: pd.DataFrame,
+    *,
+    included_node_types: set[str],
+    min_count: int,
+    limit: int = 30,
+) -> pd.DataFrame:
+    counts: Counter[str] = Counter()
+    for value in posts_df.get("semantic_nodes", pd.Series(dtype="string")).tolist():
+        for node_id in _parse_json_list(value):
+            node_id_str = str(node_id)
+            node_type = node_id_str.split("::", 1)[0]
+            if node_type in included_node_types:
+                counts[node_id_str] += 1
+
+    rows = []
+    for node_id, count in counts.most_common(limit * 2):
+        if count < min_count:
+            continue
+        node_type, _, label = node_id.partition("::")
+        if node_type == "topic":
+            display_label = label.replace("_", " ").title()
+        elif node_type == "hashtag":
+            display_label = f"#{label}"
+        elif node_type == "mention":
+            display_label = f"@{label}"
+        else:
+            display_label = label.title()
+        rows.append({"node": node_id, "label": display_label, "node_type": node_type, "count": int(count)})
+        if len(rows) >= limit:
+            break
+    return pd.DataFrame(rows, columns=["node", "label", "node_type", "count"])
+
+
+def _render_truth_page(settings: ProjectSettings) -> None:
+    st.sidebar.header("Truth Controls")
+    processed_dir_input = st.sidebar.text_input(
+        "Truth processed data directory",
+        value=str(settings.truth_app.processed_dir),
+    )
+    include_retruths = st.sidebar.checkbox(
+        "Include ReTruths",
+        value=settings.truth_app.include_retruths,
+    )
+    sentiment_filter = st.sidebar.selectbox(
+        "Sentiment",
+        options=["all", "negative", "neutral", "positive"],
+        index=["all", "negative", "neutral", "positive"].index(settings.truth_app.sentiment_filter)
+        if settings.truth_app.sentiment_filter in {"all", "negative", "neutral", "positive"}
+        else 0,
+    )
+    processed_dir = Path(processed_dir_input)
+    if not processed_dir.exists():
+        st.warning("Truth artifacts not found. Run the Truth build command first.")
+        st.code(
+            f'python -m trump_graph build-truth --input "{settings.truth_build.input_path}" --out "{settings.truth_build.output_dir}"'
+        )
+        return
+
+    try:
+        week_index = _cached_truth_week_index(str(processed_dir))
+        weekly_summary = _cached_truth_weekly_summary(str(processed_dir))
+        animation_payload = _cached_truth_animation_payload(str(processed_dir))
+        enriched_posts = _cached_truth_enriched_posts(str(processed_dir))
+        node_catalog = _cached_truth_node_catalog(str(processed_dir))
+    except FileNotFoundError:
+        st.warning("Truth artifacts are incomplete. Run the Truth build command first.")
+        st.code(
+            f'python -m trump_graph build-truth --input "{settings.truth_build.input_path}" --out "{settings.truth_build.output_dir}"'
+        )
+        return
+    except ValueError as error:
+        st.error(f"Failed to read Truth artifacts: {error}")
+        return
+
+    available_node_types = animation_payload.get("available_node_types", ["topic", "per", "org", "loc"])
+    default_node_types = [node_type for node_type in settings.truth_app.node_types if node_type in available_node_types]
+    selected_node_types = st.sidebar.multiselect(
+        "Semantic node types",
+        options=available_node_types,
+        default=default_node_types or ["topic", "per", "org", "loc"],
+    )
+    if not selected_node_types:
+        st.warning("Choose at least one semantic node type.")
+        return
+
+    max_node_count = int(node_catalog["total_count"].max()) if not node_catalog.empty else 1
+    min_node_count = st.sidebar.slider(
+        "Minimum semantic label count",
+        min_value=1,
+        max_value=max(1, min(max_node_count, 250)),
+        value=int(max(1, min(settings.truth_app.min_node_count, max(1, min(max_node_count, 250))))),
+        step=1,
+    )
+    playback_speed = st.sidebar.slider(
+        "Initial playback speed (weeks/sec)",
+        min_value=0.5,
+        max_value=8.0,
+        value=float(max(0.5, min(8.0, settings.truth_app.playback_speed))),
+        step=0.5,
+    )
+    node_size_multiplier = st.sidebar.slider(
+        "Node size multiplier",
+        min_value=0.5,
+        max_value=2.5,
+        value=float(max(0.5, min(2.5, settings.truth_app.node_size_multiplier))),
+        step=0.05,
+    )
+    layout_spread = st.sidebar.slider(
+        "Layout spread",
+        min_value=0.7,
+        max_value=4.0,
+        value=float(max(0.7, min(4.0, settings.truth_app.layout_spread))),
+        step=0.1,
+    )
+    initial_zoom_boost = st.sidebar.slider(
+        "Initial graph zoom",
+        min_value=0.55,
+        max_value=2.5,
+        value=float(max(0.55, min(2.5, settings.truth_app.initial_zoom_boost))),
+        step=0.05,
+    )
+    graph_height = st.sidebar.slider(
+        "Graph height (px)",
+        min_value=560,
+        max_value=1200,
+        value=int(max(560, min(1200, settings.truth_app.graph_height_px))),
+        step=20,
+    )
+
+    if week_index.empty:
+        st.warning("No Truth weeks are available in this artifact directory.")
+        return
+
+    st.subheader("Truth Social Semantic Temporal Graph")
+    delta_set_name = _truth_delta_set(include_retruths, sentiment_filter)
+    graph_html = build_truth_semantic_animation_html(
+        payload=animation_payload,
+        included_node_types=set(selected_node_types),
+        min_total_count=min_node_count,
+        delta_set_name=delta_set_name,
+        initial_speed=playback_speed,
+        node_size_multiplier=node_size_multiplier,
+        initial_zoom_boost=initial_zoom_boost,
+        layout_spread=layout_spread,
+        height_px=graph_height,
+    )
+    graph_iframe = _graph_iframe_path(graph_html)
+    st.iframe(graph_iframe, width="stretch", height=graph_height + 180)
+    st.caption(
+        "Legend: white nodes have appeared before; warm nodes are active in the current week; "
+        "edge thickness is cumulative co-occurrence and warm edges are active this week."
+    )
+
+    week_options = week_index["week_id"].astype(str).tolist()
+    detail_week = st.selectbox("Week For Tables And Export", options=week_options, index=len(week_options) - 1)
+    week_posts = _truth_week_posts(
+        enriched_posts,
+        week_id=detail_week,
+        include_retruths=include_retruths,
+        sentiment_filter=sentiment_filter,
+    )
+    top_nodes_df = _truth_top_nodes(
+        week_posts,
+        included_node_types=set(selected_node_types),
+        min_count=1,
+    )
+
+    metric_col_1, metric_col_2, metric_col_3, metric_col_4 = st.columns(4)
+    metric_col_1.metric("Posts", len(week_posts))
+    metric_col_2.metric("ReTruths", int(week_posts["is_retruth"].sum()) if not week_posts.empty else 0)
+    metric_col_3.metric("Active Nodes", len(top_nodes_df))
+    metric_col_4.metric("Sentiment", sentiment_filter.title())
+
+    st.subheader("Top Active Topics And Entities")
+    st.dataframe(top_nodes_df, width="stretch", hide_index=True)
+
+    with st.expander("Enriched Posts This Week"):
+        visible_columns = [
+            column
+            for column in [
+                "post_id",
+                "created_at_utc",
+                "is_retruth",
+                "top_topic",
+                "top_topic_score",
+                "sentiment_label",
+                "sentiment_score",
+                "text",
+            ]
+            if column in week_posts.columns
+        ]
+        st.dataframe(week_posts[visible_columns].head(100), width="stretch", hide_index=True)
+
+    st.subheader("Export Truth Week")
+    export_col_1, export_col_2, export_col_3 = st.columns(3)
+    export_col_1.download_button(
+        label="Download enriched posts",
+        data=week_posts.to_csv(index=False).encode("utf-8"),
+        file_name=f"{detail_week}_truth_posts.csv",
+        mime="text/csv",
+    )
+    export_col_2.download_button(
+        label="Download top nodes",
+        data=top_nodes_df.to_csv(index=False).encode("utf-8"),
+        file_name=f"{detail_week}_truth_top_nodes.csv",
+        mime="text/csv",
+    )
+    summary_row = weekly_summary.loc[weekly_summary["week_id"].astype(str) == str(detail_week)]
+    export_col_3.download_button(
+        label="Download summary.json",
+        data=json.dumps(summary_row.to_dict(orient="records"), indent=2).encode("utf-8"),
+        file_name=f"{detail_week}_truth_summary.json",
+        mime="application/json",
+    )
+
+    _render_footer_links(settings)
+
+
 def main() -> None:
     settings = load_settings()
     logo_path = _resolve_logo_path(settings)
@@ -120,10 +404,11 @@ def main() -> None:
 
     current_page = _current_page_slug()
     st.sidebar.header("Navigation")
+    page_options = ["Graph", "Truth", "About"]
     selected_page_label = st.sidebar.radio(
         "Page",
-        options=["Graph", "About"],
-        index=0 if current_page == "graph" else 1,
+        options=page_options,
+        index=page_options.index(current_page.title()),
     )
     selected_page_slug = selected_page_label.lower()
     if selected_page_slug != current_page:
@@ -137,12 +422,15 @@ def main() -> None:
     title_col.caption("Stable time-dependent mention network exploration.")
 
     nav_col.link_button("Open Docs", settings.runtime.docs_url, width="stretch")
-    nav_col.markdown("[Graph](?page=graph) | [About](?page=about)")
+    nav_col.markdown("[Graph](?page=graph) | [Truth](?page=truth) | [About](?page=about)")
 
     st.warning(settings.meta.disclaimer_text)
 
     if current_page == "about":
         _render_about_page(settings, logo_path)
+        return
+    if current_page == "truth":
+        _render_truth_page(settings)
         return
 
     st.sidebar.header("Graph Controls")

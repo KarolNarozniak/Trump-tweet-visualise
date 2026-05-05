@@ -28,6 +28,18 @@ The deployment script performs:
 3. build of processed artifacts
 4. Docusaurus static build
 
+Truth Social semantic artifacts are optional because they may run local ML inference:
+
+```bash
+python scripts/deploy.py --build-truth
+```
+
+For a fast deployment smoke test:
+
+```bash
+python scripts/deploy.py --build-truth --truth-semantic-backend deterministic
+```
+
 ## Serving Outputs
 
 - Streamlit serves the app directly.

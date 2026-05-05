@@ -6,6 +6,7 @@ const sidebars = {
     "architecture",
     "data-pipeline",
     "global-animation",
+    "truth-social",
     "streamlit-app",
     "configuration",
     "artifact-schema",

@@ -61,6 +61,61 @@ def load_global_animation_artifacts(processed_dir: Path) -> dict[str, Any]:
     return payload
 
 
+def load_truth_week_index(processed_dir: Path) -> pd.DataFrame:
+    week_index_path = processed_dir / "truth_week_index.csv"
+    if not week_index_path.exists():
+        raise FileNotFoundError(f"Missing Truth week index: {week_index_path}")
+    week_index = pd.read_csv(week_index_path)
+    if week_index.empty:
+        return week_index
+    return week_index.sort_values(["week_start", "week_id"], kind="mergesort").reset_index(drop=True)
+
+
+def load_truth_weekly_summary(processed_dir: Path) -> pd.DataFrame:
+    summary_path = processed_dir / "truth_weekly_summary.csv"
+    if not summary_path.exists():
+        raise FileNotFoundError(f"Missing Truth weekly summary: {summary_path}")
+    summary = pd.read_csv(summary_path)
+    if summary.empty:
+        return summary
+    return summary.sort_values(["week_start", "week_id"], kind="mergesort").reset_index(drop=True)
+
+
+def load_truth_enriched_posts(processed_dir: Path) -> pd.DataFrame:
+    enriched_path = processed_dir / "truth_posts_enriched.parquet"
+    if not enriched_path.exists():
+        raise FileNotFoundError(f"Missing Truth enriched posts: {enriched_path}")
+    return pd.read_parquet(enriched_path)
+
+
+def load_truth_node_catalog(processed_dir: Path) -> pd.DataFrame:
+    catalog_path = processed_dir / "truth_semantic_graph" / "node_catalog.csv"
+    if not catalog_path.exists():
+        raise FileNotFoundError(f"Missing Truth node catalog: {catalog_path}")
+    return pd.read_csv(catalog_path)
+
+
+def load_truth_animation_artifacts(processed_dir: Path) -> dict[str, Any]:
+    animation_path = processed_dir / "truth_semantic_graph" / "animation_state.json"
+    if not animation_path.exists():
+        raise FileNotFoundError(f"Missing Truth semantic animation file: {animation_path}")
+    payload = json.loads(animation_path.read_text(encoding="utf-8"))
+    required_keys = {
+        "weeks",
+        "global_nodes",
+        "global_edges",
+        "delta_sets",
+        "heat_decay",
+        "heat_scale",
+        "max_cumulative_edge",
+        "available_node_types",
+    }
+    missing_keys = sorted(required_keys - set(payload.keys()))
+    if missing_keys:
+        raise ValueError(f"Truth animation payload is missing keys: {', '.join(missing_keys)}")
+    return payload
+
+
 def _filtered_animation_payload(payload: dict[str, Any], include_hub: bool) -> dict[str, Any]:
     hub_node_id = str(payload.get("hub_node_id", "realdonaldtrump"))
 
@@ -747,6 +802,465 @@ def build_global_animation_html(
 
   recomputeTo(currentWeekIndex);
   updateSpeedLabel();
+  renderFromState(nodeWeekly, nodeSeen, edgeCum, edgeWeekly);
+}})();
+</script>
+"""
+
+
+def _filtered_truth_animation_payload(
+    payload: dict[str, Any],
+    *,
+    included_node_types: set[str],
+    min_total_count: int,
+    delta_set_name: str,
+) -> dict[str, Any]:
+    visible_nodes = [
+        dict(node)
+        for node in payload.get("global_nodes", [])
+        if str(node.get("node_type", "")).lower() in included_node_types
+        and int(node.get("total_count", node.get("total_mentions", 0))) >= min_total_count
+    ]
+    visible_node_ids = {str(node.get("id")) for node in visible_nodes}
+    visible_edges = [
+        dict(edge)
+        for edge in payload.get("global_edges", [])
+        if str(edge.get("source")) in visible_node_ids and str(edge.get("target")) in visible_node_ids
+    ]
+    visible_edge_ids = {str(edge.get("id")) for edge in visible_edges}
+
+    delta_sets = payload.get("delta_sets", {})
+    delta_set = delta_sets.get(delta_set_name) or delta_sets.get("all") or {}
+    node_week_deltas = [
+        [[str(node_id), int(delta)] for node_id, delta in week_entries if str(node_id) in visible_node_ids]
+        for week_entries in delta_set.get("node_week_deltas", [])
+    ]
+    edge_week_deltas = [
+        [[str(edge_id), int(delta)] for edge_id, delta in week_entries if str(edge_id) in visible_edge_ids]
+        for week_entries in delta_set.get("edge_week_deltas", [])
+    ]
+    return {
+        "version": int(payload.get("version", 1)),
+        "graph_kind": "truth_semantic",
+        "heat_decay": float(payload.get("heat_decay", 0.85)),
+        "heat_scale": float(payload.get("heat_scale", 1.0)),
+        "max_cumulative_edge": int(payload.get("max_cumulative_edge", 0)),
+        "top_label_nodes": [node_id for node_id in payload.get("top_label_nodes", []) if str(node_id) in visible_node_ids],
+        "weeks": payload.get("weeks", []),
+        "global_nodes": visible_nodes,
+        "global_edges": visible_edges,
+        "node_week_deltas": node_week_deltas,
+        "edge_week_deltas": edge_week_deltas,
+    }
+
+
+def build_truth_semantic_animation_html(
+    payload: dict[str, Any],
+    *,
+    included_node_types: set[str],
+    min_total_count: int,
+    delta_set_name: str,
+    initial_speed: float = 6.0,
+    node_size_multiplier: float = 1.8,
+    initial_zoom_boost: float = 0.85,
+    layout_spread: float = 1.15,
+    height_px: int = 920,
+    transition_steps: int = 7,
+) -> str:
+    filtered_payload = _filtered_truth_animation_payload(
+        payload,
+        included_node_types=included_node_types,
+        min_total_count=max(1, int(min_total_count)),
+        delta_set_name=delta_set_name,
+    )
+    weeks = filtered_payload.get("weeks", [])
+    if not weeks:
+        raise ValueError("Truth animation payload has no weeks.")
+
+    max_week_index = len(weeks) - 1
+    initial_week_index = next(
+        (index for index, entries in enumerate(filtered_payload.get("node_week_deltas", [])) if entries),
+        0,
+    )
+    speed_value = max(0.5, min(8.0, float(initial_speed)))
+    size_multiplier = max(0.4, min(3.0, float(node_size_multiplier)))
+    zoom_boost = max(0.55, min(2.5, float(initial_zoom_boost)))
+    spread_value = max(0.6, min(4.0, float(layout_spread)))
+    json_payload = json.dumps(filtered_payload, separators=(",", ":"), ensure_ascii=True)
+
+    return f"""
+<div class="tg-root truth-root">
+  <div id="truth-graph" style="height:{int(height_px)}px;"></div>
+  <div class="tg-timeline">
+    <div class="tg-control-row">
+      <button id="truth-play" type="button">Play</button>
+      <button id="truth-stop" type="button">Stop</button>
+      <label class="tg-speed-label" for="truth-speed">Speed</label>
+      <input id="truth-speed" type="range" min="0.5" max="8" step="0.5" value="{speed_value:.1f}" />
+      <span id="truth-speed-value">{speed_value:.1f} w/s</span>
+      <span id="truth-week-text"></span>
+    </div>
+    <input id="truth-week-slider" type="range" min="0" max="{max_week_index}" step="1" value="{initial_week_index}" />
+    <div id="truth-week-meta"></div>
+  </div>
+</div>
+
+<style>
+  .truth-root {{
+    width: 100%;
+    border: 1px solid #1f2937;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #000000;
+  }}
+  #truth-graph {{
+    width: 100%;
+    background: #000000;
+  }}
+  .tg-timeline {{
+    border-top: 1px solid #1f2937;
+    padding: 10px 12px 12px 12px;
+    background: #030303;
+    color: #e2e8f0;
+  }}
+  .tg-control-row {{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+  }}
+  .tg-control-row button {{
+    border: 1px solid #334155;
+    border-radius: 6px;
+    padding: 4px 10px;
+    background: #111827;
+    color: #e2e8f0;
+    cursor: pointer;
+    font-size: 13px;
+  }}
+  .tg-speed-label, #truth-speed-value, #truth-week-text, #truth-week-meta {{
+    font-size: 12px;
+  }}
+  #truth-speed {{
+    width: 140px;
+  }}
+  #truth-week-slider {{
+    width: 100%;
+  }}
+  #truth-week-meta {{
+    margin-top: 7px;
+    color: #94a3b8;
+  }}
+</style>
+
+<script src="https://unpkg.com/vis-network@9.1.2/standalone/umd/vis-network.min.js"></script>
+<script>
+(() => {{
+  const payload = {json_payload};
+  const transitionSteps = {int(max(1, transition_steps))};
+  const nodeSizeMultiplier = {size_multiplier:.3f};
+  const initialZoomBoost = {zoom_boost:.3f};
+  const layoutSpread = {spread_value:.3f};
+
+  const graphElement = document.getElementById("truth-graph");
+  const playButton = document.getElementById("truth-play");
+  const stopButton = document.getElementById("truth-stop");
+  const speedInput = document.getElementById("truth-speed");
+  const speedValueElement = document.getElementById("truth-speed-value");
+  const weekSlider = document.getElementById("truth-week-slider");
+  const weekTextElement = document.getElementById("truth-week-text");
+  const weekMetaElement = document.getElementById("truth-week-meta");
+
+  if (typeof vis === "undefined") {{
+    graphElement.innerHTML = "<div style='padding:20px;color:#f8fafc'>Unable to load vis-network library.</div>";
+    return;
+  }}
+
+  const nodeData = payload.global_nodes || [];
+  const edgeData = payload.global_edges || [];
+  const weekData = payload.weeks || [];
+  const nodeWeekDeltas = payload.node_week_deltas || [];
+  const edgeWeekDeltas = payload.edge_week_deltas || [];
+  const maxCumulativeEdge = Math.max(1, Number(payload.max_cumulative_edge || 1));
+  const topLabelSet = new Set(payload.top_label_nodes || []);
+  const nodeIds = nodeData.map((node) => String(node.id));
+  const edgeIds = edgeData.map((edge) => String(edge.id));
+  const nodeInfoById = new Map(nodeData.map((node) => [String(node.id), node]));
+  const edgeInfoById = new Map(edgeData.map((edge) => [String(edge.id), edge]));
+
+  const typeBorders = {{
+    topic: "#facc15",
+    per: "#38bdf8",
+    org: "#a78bfa",
+    loc: "#34d399",
+    hashtag: "#f472b6",
+    mention: "#cbd5e1"
+  }};
+  const baseNodeColor = "rgba(248, 250, 252, 0.94)";
+
+  function clamp(value, min, max) {{
+    return Math.max(min, Math.min(max, value));
+  }}
+
+  function heatColor(intensity, alpha = 1.0) {{
+    const stops = [
+      [0.00, [255, 224, 170]],
+      [0.35, [255, 170, 74]],
+      [0.65, [255, 96, 45]],
+      [0.85, [255, 54, 39]],
+      [1.00, [255, 245, 170]]
+    ];
+    const t = clamp(intensity, 0, 1);
+    for (let i = 1; i < stops.length; i += 1) {{
+      const left = stops[i - 1];
+      const right = stops[i];
+      if (t <= right[0]) {{
+        const localT = (t - left[0]) / (right[0] - left[0]);
+        const r = Math.round(left[1][0] + (right[1][0] - left[1][0]) * localT);
+        const g = Math.round(left[1][1] + (right[1][1] - left[1][1]) * localT);
+        const b = Math.round(left[1][2] + (right[1][2] - left[1][2]) * localT);
+        return `rgba(${{r}}, ${{g}}, ${{b}}, ${{alpha.toFixed(3)}})`;
+      }}
+    }}
+    return `rgba(253, 255, 182, ${{alpha.toFixed(3)}})`;
+  }}
+
+  const positiveNodeDeltas = nodeWeekDeltas.flatMap((entries) => entries.map((entry) => Number(entry[1] || 0))).filter((value) => value > 0).sort((a, b) => a - b);
+  const positiveEdgeDeltas = edgeWeekDeltas.flatMap((entries) => entries.map((entry) => Number(entry[1] || 0))).filter((value) => value > 0).sort((a, b) => a - b);
+  const nodeScale = Math.max(1, positiveNodeDeltas[Math.floor((positiveNodeDeltas.length - 1) * 0.95)] || 1);
+  const edgeScale = Math.max(1, positiveEdgeDeltas[Math.floor((positiveEdgeDeltas.length - 1) * 0.95)] || 1);
+
+  function edgeWidth(cumulative) {{
+    if (cumulative <= 0) return 0;
+    return 0.8 + 7.2 * Math.sqrt(clamp(cumulative / maxCumulativeEdge, 0, 1));
+  }}
+
+  function edgeColor(cumulative, weekly) {{
+    if (weekly > 0) {{
+      return heatColor(Math.sqrt(clamp(weekly / edgeScale, 0, 1)), 0.96);
+    }}
+    const alpha = 0.14 + (0.56 * Math.sqrt(clamp(cumulative / maxCumulativeEdge, 0, 1)));
+    return `rgba(241, 245, 249, ${{alpha.toFixed(3)}})`;
+  }}
+
+  function nodeLabel(nodeId, weekly, seen) {{
+    if (weekly > 0 || topLabelSet.has(nodeId)) {{
+      return String(nodeInfoById.get(nodeId).label || nodeId);
+    }}
+    return "";
+  }}
+
+  const nodes = new vis.DataSet(nodeData.map((node) => {{
+    const nodeId = String(node.id);
+    const nodeType = String(node.node_type || "topic");
+    return {{
+      id: nodeId,
+      label: "",
+      title: `${{node.label || nodeId}}<br>Type: ${{nodeType}}<br>Total: ${{Number(node.total_count || 0).toLocaleString()}}`,
+      size: Math.max(2.0, Number(node.size || 8) * nodeSizeMultiplier),
+      x: Number(node.x || 0) * layoutSpread,
+      y: Number(node.y || 0) * layoutSpread,
+      fixed: {{ x: true, y: true }},
+      physics: false,
+      color: {{
+        background: baseNodeColor,
+        border: typeBorders[nodeType] || "#cbd5e1",
+        highlight: {{ background: baseNodeColor, border: "#ffffff" }},
+        hover: {{ background: baseNodeColor, border: "#ffffff" }}
+      }},
+      font: {{ color: "#f8fafc", size: 12, strokeColor: "#000000", strokeWidth: 4 }}
+    }};
+  }}));
+
+  const edges = new vis.DataSet(edgeData.map((edge) => ({{
+    id: String(edge.id),
+    from: String(edge.source),
+    to: String(edge.target),
+    hidden: true,
+    width: 0,
+    color: {{ color: "rgba(241, 245, 249, 0.25)", inherit: false, opacity: 1.0 }},
+    smooth: false,
+    title: `${{edge.source}} <> ${{edge.target}}`
+  }})));
+
+  const network = new vis.Network(graphElement, {{ nodes, edges }}, {{
+    autoResize: true,
+    physics: false,
+    interaction: {{ hover: true, navigationButtons: true, keyboard: true, tooltipDelay: 70 }},
+    nodes: {{ shape: "dot", borderWidth: 1.5 }},
+    edges: {{ smooth: false, color: {{ inherit: false }} }}
+  }});
+  network.fit({{ nodes: nodeIds, animation: false }});
+  network.moveTo({{ scale: network.getScale() * initialZoomBoost, animation: false }});
+
+  let currentWeekIndex = Number(weekSlider.value || 0);
+  let playing = false;
+  let playTimer = null;
+  let animating = false;
+  let playbackSpeed = Number(speedInput.value || 2.0);
+  let nodeWeekly = Object.fromEntries(nodeIds.map((id) => [id, 0]));
+  let nodeSeen = Object.fromEntries(nodeIds.map((id) => [id, 0]));
+  let edgeCum = Object.fromEntries(edgeIds.map((id) => [id, 0]));
+  let edgeWeekly = Object.fromEntries(edgeIds.map((id) => [id, 0]));
+
+  function resetState() {{
+    nodeWeekly = Object.fromEntries(nodeIds.map((id) => [id, 0]));
+    nodeSeen = Object.fromEntries(nodeIds.map((id) => [id, 0]));
+    edgeCum = Object.fromEntries(edgeIds.map((id) => [id, 0]));
+    edgeWeekly = Object.fromEntries(edgeIds.map((id) => [id, 0]));
+  }}
+
+  function applyDeltaForWeek(index) {{
+    for (const nodeId of nodeIds) nodeWeekly[nodeId] = 0;
+    for (const edgeId of edgeIds) edgeWeekly[edgeId] = 0;
+    for (const [nodeIdRaw, deltaRaw] of nodeWeekDeltas[index] || []) {{
+      const nodeId = String(nodeIdRaw);
+      const delta = Number(deltaRaw);
+      if (nodeId in nodeWeekly) {{
+        nodeWeekly[nodeId] = delta;
+        nodeSeen[nodeId] += delta;
+      }}
+    }}
+    for (const [edgeIdRaw, deltaRaw] of edgeWeekDeltas[index] || []) {{
+      const edgeId = String(edgeIdRaw);
+      const delta = Number(deltaRaw);
+      if (edgeId in edgeCum) {{
+        edgeWeekly[edgeId] = delta;
+        edgeCum[edgeId] += delta;
+      }}
+    }}
+  }}
+
+  function recomputeTo(targetWeekIndex) {{
+    resetState();
+    for (let i = 0; i <= targetWeekIndex; i += 1) applyDeltaForWeek(i);
+  }}
+
+  function updateWeekLabels() {{
+    const record = weekData[currentWeekIndex] || {{}};
+    weekTextElement.textContent = `${{record.week_id || ""}}  (${{record.week_start || ""}} to ${{record.week_end || ""}})`;
+    weekMetaElement.textContent = `Posts: ${{Number(record.posts_processed || 0).toLocaleString()}} | ReTruths: ${{Number(record.retruths || 0).toLocaleString()}} | Nodes: ${{Number(record.unique_nodes || 0).toLocaleString()}} | Edges: ${{Number(record.edge_count || 0).toLocaleString()}}`;
+  }}
+
+  function renderFromState(weeklyState, seenState, edgeState, edgeWeeklyState) {{
+    nodes.update(nodeIds.map((nodeId) => {{
+      const info = nodeInfoById.get(nodeId);
+      const weekly = Number(weeklyState[nodeId] || 0);
+      const seen = Number(seenState[nodeId] || 0);
+      if (seen <= 0) return {{ id: nodeId, hidden: true, label: "" }};
+      const nodeType = String(info.node_type || "topic");
+      const active = weekly > 0;
+      const fill = active ? heatColor(Math.sqrt(clamp(weekly / nodeScale, 0, 1)), 0.96) : baseNodeColor;
+      return {{
+        id: nodeId,
+        hidden: false,
+        label: nodeLabel(nodeId, weekly, seen),
+        title: `${{info.label || nodeId}}<br>Type: ${{nodeType}}<br>This week: ${{weekly.toLocaleString()}}<br>Cumulative: ${{seen.toLocaleString()}}`,
+        color: {{
+          background: fill,
+          border: active ? "#111111" : (typeBorders[nodeType] || "#cbd5e1"),
+          highlight: {{ background: fill, border: "#ffffff" }},
+          hover: {{ background: fill, border: "#ffffff" }}
+        }}
+      }};
+    }}));
+    edges.update(edgeIds.map((edgeId) => {{
+      const info = edgeInfoById.get(edgeId);
+      const cumulative = Number(edgeState[edgeId] || 0);
+      const weekly = Number(edgeWeeklyState[edgeId] || 0);
+      const colorValue = edgeColor(cumulative, weekly);
+      if (cumulative <= 0) return {{ id: edgeId, hidden: true, width: 0 }};
+      return {{
+        id: edgeId,
+        hidden: false,
+        width: edgeWidth(cumulative),
+        color: {{ color: colorValue, highlight: colorValue, hover: colorValue, inherit: false, opacity: 1.0 }},
+        title: `${{info.source}} <> ${{info.target}}<br>This week: ${{weekly.toLocaleString()}}<br>Cumulative: ${{cumulative.toLocaleString()}}`
+      }};
+    }}));
+    updateWeekLabels();
+  }}
+
+  function transitionRender(previousWeekly, previousSeen, previousEdge, previousEdgeWeekly, nextWeekly, nextSeen, nextEdge, nextEdgeWeekly, done) {{
+    let step = 0;
+    function tick() {{
+      step += 1;
+      const t = step / Math.max(1, transitionSteps);
+      const blendedWeekly = {{}};
+      const blendedSeen = {{}};
+      const blendedEdge = {{}};
+      const blendedEdgeWeekly = {{}};
+      for (const nodeId of nodeIds) {{
+        blendedWeekly[nodeId] = Number(previousWeekly[nodeId] || 0) + (Number(nextWeekly[nodeId] || 0) - Number(previousWeekly[nodeId] || 0)) * t;
+        blendedSeen[nodeId] = Number(previousSeen[nodeId] || 0) + (Number(nextSeen[nodeId] || 0) - Number(previousSeen[nodeId] || 0)) * t;
+      }}
+      for (const edgeId of edgeIds) {{
+        blendedEdge[edgeId] = Number(previousEdge[edgeId] || 0) + (Number(nextEdge[edgeId] || 0) - Number(previousEdge[edgeId] || 0)) * t;
+        blendedEdgeWeekly[edgeId] = Number(previousEdgeWeekly[edgeId] || 0) + (Number(nextEdgeWeekly[edgeId] || 0) - Number(previousEdgeWeekly[edgeId] || 0)) * t;
+      }}
+      renderFromState(blendedWeekly, blendedSeen, blendedEdge, blendedEdgeWeekly);
+      if (step < transitionSteps) window.requestAnimationFrame(tick);
+      else done();
+    }}
+    window.requestAnimationFrame(tick);
+  }}
+
+  function setWeek(targetIndex, animate = true) {{
+    const boundedTarget = clamp(Number(targetIndex), 0, weekData.length - 1);
+    if (animating || boundedTarget === currentWeekIndex) return;
+    const previousWeekly = Object.assign({{}}, nodeWeekly);
+    const previousSeen = Object.assign({{}}, nodeSeen);
+    const previousEdge = Object.assign({{}}, edgeCum);
+    const previousEdgeWeekly = Object.assign({{}}, edgeWeekly);
+    if (boundedTarget === currentWeekIndex + 1) applyDeltaForWeek(boundedTarget);
+    else recomputeTo(boundedTarget);
+    const nextWeekly = Object.assign({{}}, nodeWeekly);
+    const nextSeen = Object.assign({{}}, nodeSeen);
+    const nextEdge = Object.assign({{}}, edgeCum);
+    const nextEdgeWeekly = Object.assign({{}}, edgeWeekly);
+    currentWeekIndex = boundedTarget;
+    weekSlider.value = String(currentWeekIndex);
+    if (!animate) {{
+      renderFromState(nextWeekly, nextSeen, nextEdge, nextEdgeWeekly);
+      return;
+    }}
+    animating = true;
+    transitionRender(previousWeekly, previousSeen, previousEdge, previousEdgeWeekly, nextWeekly, nextSeen, nextEdge, nextEdgeWeekly, () => {{
+      animating = false;
+      renderFromState(nodeWeekly, nodeSeen, edgeCum, edgeWeekly);
+    }});
+  }}
+
+  function stopPlayback() {{
+    if (playTimer) window.clearInterval(playTimer);
+    playTimer = null;
+    playing = false;
+    playButton.textContent = "Play";
+  }}
+
+  function startPlayback() {{
+    stopPlayback();
+    playing = true;
+    playButton.textContent = "Pause";
+    playTimer = window.setInterval(() => {{
+      if (!animating) setWeek((currentWeekIndex + 1) % weekData.length, true);
+    }}, Math.max(80, Math.round(1000 / playbackSpeed)));
+  }}
+
+  speedInput.addEventListener("input", () => {{
+    playbackSpeed = clamp(Number(speedInput.value || 2.0), 0.5, 8.0);
+    speedValueElement.textContent = `${{playbackSpeed.toFixed(1)}} w/s`;
+    if (playing) startPlayback();
+  }});
+  playButton.addEventListener("click", () => playing ? stopPlayback() : startPlayback());
+  stopButton.addEventListener("click", stopPlayback);
+  weekSlider.addEventListener("input", () => {{
+    stopPlayback();
+    setWeek(Number(weekSlider.value || currentWeekIndex), true);
+  }});
+
+  recomputeTo(currentWeekIndex);
   renderFromState(nodeWeekly, nodeSeen, edgeCum, edgeWeekly);
 }})();
 </script>

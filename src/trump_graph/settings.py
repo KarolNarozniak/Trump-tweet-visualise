@@ -77,6 +77,14 @@ def _to_str(value: Any) -> str:
     return str(value).strip()
 
 
+def _to_str_tuple(value: Any) -> tuple[str, ...]:
+    if isinstance(value, str):
+        return tuple(item.strip() for item in value.split(",") if item.strip())
+    if isinstance(value, (list, tuple)):
+        return tuple(str(item).strip() for item in value if str(item).strip())
+    return (str(value).strip(),)
+
+
 def _to_path(value: Any, *, project_root: Path) -> Path:
     raw_path = Path(str(value).strip())
     if raw_path.is_absolute():
@@ -115,10 +123,45 @@ class BuildSettings:
 
 
 @dataclass(frozen=True)
+class TruthBuildSettings:
+    input_path: Path
+    output_dir: Path
+    semantic_backend: str
+    topic_model_id: str
+    ner_model_id: str
+    sentiment_model_id: str
+    embedding_model_id: str
+    device: str
+    batch_size: int
+    topic_threshold: float
+    max_topic_labels: int
+    entity_score_threshold: float
+    max_chunk_chars: int
+    min_node_count: int
+    included_node_types: tuple[str, ...]
+    heat_decay: float
+    layout_seed: int
+
+
+@dataclass(frozen=True)
 class AppSettings:
     processed_dir: Path
     include_hub: bool
     always_label_top_nodes: bool
+    playback_speed: float
+    node_size_multiplier: float
+    layout_spread: float
+    initial_zoom_boost: float
+    graph_height_px: int
+
+
+@dataclass(frozen=True)
+class TruthAppSettings:
+    processed_dir: Path
+    include_retruths: bool
+    node_types: tuple[str, ...]
+    sentiment_filter: str
+    min_node_count: int
     playback_speed: float
     node_size_multiplier: float
     layout_spread: float
@@ -152,7 +195,9 @@ class ProjectSettings:
     config_path: Path
     env_path: Path
     build: BuildSettings
+    truth_build: TruthBuildSettings
     app: AppSettings
+    truth_app: TruthAppSettings
     runtime: RuntimeSettings
     meta: MetaSettings
 
@@ -237,6 +282,145 @@ def load_settings(config_path: Path | None = None, env_path: Path | None = None)
         ),
     )
 
+    truth_build = TruthBuildSettings(
+        input_path=_resolve_value(
+            env_name="TG_TRUTH_BUILD_INPUT_PATH",
+            config_keys=("truth_build", "input_path"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value="truthsocial.posts[Trump-FROM-10-8-25].txt",
+            parser=_path_parser,
+        ),
+        output_dir=_resolve_value(
+            env_name="TG_TRUTH_BUILD_OUTPUT_DIR",
+            config_keys=("truth_build", "output_dir"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value="data/processed_truth",
+            parser=_path_parser,
+        ),
+        semantic_backend=_resolve_value(
+            env_name="TG_TRUTH_BUILD_SEMANTIC_BACKEND",
+            config_keys=("truth_build", "semantic_backend"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value="hf",
+            parser=_to_str,
+        ),
+        topic_model_id=_resolve_value(
+            env_name="TG_TRUTH_BUILD_TOPIC_MODEL_ID",
+            config_keys=("truth_build", "topic_model_id"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value="facebook/bart-large-mnli",
+            parser=_to_str,
+        ),
+        ner_model_id=_resolve_value(
+            env_name="TG_TRUTH_BUILD_NER_MODEL_ID",
+            config_keys=("truth_build", "ner_model_id"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value="dslim/bert-base-NER",
+            parser=_to_str,
+        ),
+        sentiment_model_id=_resolve_value(
+            env_name="TG_TRUTH_BUILD_SENTIMENT_MODEL_ID",
+            config_keys=("truth_build", "sentiment_model_id"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value="cardiffnlp/twitter-roberta-base-sentiment-latest",
+            parser=_to_str,
+        ),
+        embedding_model_id=_resolve_value(
+            env_name="TG_TRUTH_BUILD_EMBEDDING_MODEL_ID",
+            config_keys=("truth_build", "embedding_model_id"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value="sentence-transformers/all-MiniLM-L6-v2",
+            parser=_to_str,
+        ),
+        device=_resolve_value(
+            env_name="TG_TRUTH_BUILD_DEVICE",
+            config_keys=("truth_build", "device"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value="auto",
+            parser=_to_str,
+        ),
+        batch_size=_resolve_value(
+            env_name="TG_TRUTH_BUILD_BATCH_SIZE",
+            config_keys=("truth_build", "batch_size"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value=16,
+            parser=_to_int,
+        ),
+        topic_threshold=_resolve_value(
+            env_name="TG_TRUTH_BUILD_TOPIC_THRESHOLD",
+            config_keys=("truth_build", "topic_threshold"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value=0.35,
+            parser=_to_float,
+        ),
+        max_topic_labels=_resolve_value(
+            env_name="TG_TRUTH_BUILD_MAX_TOPIC_LABELS",
+            config_keys=("truth_build", "max_topic_labels"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value=3,
+            parser=_to_int,
+        ),
+        entity_score_threshold=_resolve_value(
+            env_name="TG_TRUTH_BUILD_ENTITY_SCORE_THRESHOLD",
+            config_keys=("truth_build", "entity_score_threshold"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value=0.65,
+            parser=_to_float,
+        ),
+        max_chunk_chars=_resolve_value(
+            env_name="TG_TRUTH_BUILD_MAX_CHUNK_CHARS",
+            config_keys=("truth_build", "max_chunk_chars"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value=900,
+            parser=_to_int,
+        ),
+        min_node_count=_resolve_value(
+            env_name="TG_TRUTH_BUILD_MIN_NODE_COUNT",
+            config_keys=("truth_build", "min_node_count"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value=8,
+            parser=_to_int,
+        ),
+        included_node_types=_resolve_value(
+            env_name="TG_TRUTH_BUILD_INCLUDED_NODE_TYPES",
+            config_keys=("truth_build", "included_node_types"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value=("topic", "per", "org", "loc", "hashtag", "mention"),
+            parser=_to_str_tuple,
+        ),
+        heat_decay=_resolve_value(
+            env_name="TG_TRUTH_BUILD_HEAT_DECAY",
+            config_keys=("truth_build", "heat_decay"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value=0.85,
+            parser=_to_float,
+        ),
+        layout_seed=_resolve_value(
+            env_name="TG_TRUTH_BUILD_LAYOUT_SEED",
+            config_keys=("truth_build", "layout_seed"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value=99,
+            parser=_to_int,
+        ),
+    )
+
     app = AppSettings(
         processed_dir=_resolve_value(
             env_name="TG_APP_PROCESSED_DIR",
@@ -300,6 +484,89 @@ def load_settings(config_path: Path | None = None, env_path: Path | None = None)
             config_data=config_data,
             dotenv_data=dotenv_data,
             default_value=1000,
+            parser=_to_int,
+        ),
+    )
+
+    truth_app = TruthAppSettings(
+        processed_dir=_resolve_value(
+            env_name="TG_TRUTH_APP_PROCESSED_DIR",
+            config_keys=("truth_app", "processed_dir"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value="data/processed_truth",
+            parser=_path_parser,
+        ),
+        include_retruths=_resolve_value(
+            env_name="TG_TRUTH_APP_INCLUDE_RETRUTHS",
+            config_keys=("truth_app", "include_retruths"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value=True,
+            parser=_to_bool,
+        ),
+        node_types=_resolve_value(
+            env_name="TG_TRUTH_APP_NODE_TYPES",
+            config_keys=("truth_app", "node_types"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value=("topic", "per", "org", "loc"),
+            parser=_to_str_tuple,
+        ),
+        sentiment_filter=_resolve_value(
+            env_name="TG_TRUTH_APP_SENTIMENT_FILTER",
+            config_keys=("truth_app", "sentiment_filter"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value="all",
+            parser=_to_str,
+        ),
+        min_node_count=_resolve_value(
+            env_name="TG_TRUTH_APP_MIN_NODE_COUNT",
+            config_keys=("truth_app", "min_node_count"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value=8,
+            parser=_to_int,
+        ),
+        playback_speed=_resolve_value(
+            env_name="TG_TRUTH_APP_PLAYBACK_SPEED",
+            config_keys=("truth_app", "playback_speed"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value=6.0,
+            parser=_to_float,
+        ),
+        node_size_multiplier=_resolve_value(
+            env_name="TG_TRUTH_APP_NODE_SIZE_MULTIPLIER",
+            config_keys=("truth_app", "node_size_multiplier"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value=1.8,
+            parser=_to_float,
+        ),
+        layout_spread=_resolve_value(
+            env_name="TG_TRUTH_APP_LAYOUT_SPREAD",
+            config_keys=("truth_app", "layout_spread"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value=1.15,
+            parser=_to_float,
+        ),
+        initial_zoom_boost=_resolve_value(
+            env_name="TG_TRUTH_APP_INITIAL_ZOOM_BOOST",
+            config_keys=("truth_app", "initial_zoom_boost"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value=0.85,
+            parser=_to_float,
+        ),
+        graph_height_px=_resolve_value(
+            env_name="TG_TRUTH_APP_GRAPH_HEIGHT_PX",
+            config_keys=("truth_app", "graph_height_px"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value=920,
             parser=_to_int,
         ),
     )
@@ -426,7 +693,9 @@ def load_settings(config_path: Path | None = None, env_path: Path | None = None)
         config_path=chosen_config_path,
         env_path=chosen_env_path,
         build=build,
+        truth_build=truth_build,
         app=app,
+        truth_app=truth_app,
         runtime=runtime,
         meta=meta,
     )

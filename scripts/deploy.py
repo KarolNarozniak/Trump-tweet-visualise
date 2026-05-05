@@ -49,6 +49,17 @@ def _build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="Skip Docusaurus static build.",
     )
+    parser.add_argument(
+        "--build-truth",
+        action="store_true",
+        help="Also build Truth Social semantic artifacts. This may run local ML inference.",
+    )
+    parser.add_argument(
+        "--truth-semantic-backend",
+        choices=("hf", "deterministic"),
+        default=None,
+        help="Override Truth semantic backend when --build-truth is used.",
+    )
     return parser
 
 
@@ -83,6 +94,39 @@ def main(argv: list[str] | None = None) -> int:
             ],
             cwd=str(settings.project_root),
         )
+        if args.build_truth:
+            truth_backend = args.truth_semantic_backend or settings.truth_build.semantic_backend
+            _run_command(
+                [
+                    sys.executable,
+                    "-m",
+                    "trump_graph",
+                    "build-truth",
+                    "--input",
+                    str(settings.truth_build.input_path),
+                    "--out",
+                    str(settings.truth_build.output_dir),
+                    "--semantic-backend",
+                    truth_backend,
+                    "--device",
+                    str(settings.truth_build.device),
+                    "--topic-threshold",
+                    str(settings.truth_build.topic_threshold),
+                    "--max-topic-labels",
+                    str(settings.truth_build.max_topic_labels),
+                    "--entity-score-threshold",
+                    str(settings.truth_build.entity_score_threshold),
+                    "--min-node-count",
+                    str(settings.truth_build.min_node_count),
+                    "--node-types",
+                    ",".join(settings.truth_build.included_node_types),
+                    "--heat-decay",
+                    str(settings.truth_build.heat_decay),
+                    "--layout-seed",
+                    str(settings.truth_build.layout_seed),
+                ],
+                cwd=str(settings.project_root),
+            )
 
     if not args.skip_docs_build:
         docs_cli = _docs_cli_path(settings.runtime.docs_site_dir)

@@ -9,6 +9,7 @@ Application display name: **Trump Graph**.
 - CSV preprocessing with deterministic week bucketing and mention extraction
 - weekly co-mention graph artifacts and summary metrics
 - stable global network layout for time-dependent animation
+- Truth Social semantic temporal graph artifacts and Streamlit page
 - Streamlit app for playback, filtering, tables, and exports
 - Docusaurus documentation site
 - cross-platform setup/run/deploy scripts for Windows and Ubuntu
@@ -47,6 +48,10 @@ src/trump_graph/
   metrics.py
   global_animation.py
   pipeline.py
+  truth_preprocess.py
+  truth_semantics.py
+  truth_graph.py
+  truth_pipeline.py
   app.py
 tests/
 ```
@@ -65,11 +70,23 @@ tests/
 .\scripts\setup_windows.ps1
 ```
 
+To install the optional local Hugging Face inference stack:
+
+```powershell
+.\scripts\setup_windows.ps1 -InstallMl
+```
+
 ### Ubuntu
 
 ```bash
 chmod +x scripts/*.sh
 ./scripts/setup_ubuntu.sh
+```
+
+To install optional ML dependencies:
+
+```bash
+./scripts/setup_ubuntu.sh --install-ml
 ```
 
 Both scripts:
@@ -99,6 +116,26 @@ python -m trump_graph build \
   --heat-decay 0.85 \
   --layout-seed 42 \
   --include-retweets
+```
+
+## Build Truth Social Semantic Artifacts
+
+The Truth Social pipeline is separate from the Twitter mention graph:
+
+```bash
+python -m trump_graph build-truth \
+  --input "truthsocial.posts[Trump-FROM-10-8-25].txt" \
+  --out "data/processed_truth"
+```
+
+Default semantic backend is local Hugging Face inference. For a fast smoke test without model downloads:
+
+```bash
+python -m trump_graph build-truth \
+  --input "tests/fixtures/sample_truth_posts.csv" \
+  --out "data/processed_truth" \
+  --semantic-backend deterministic \
+  --min-node-count 1
 ```
 
 ## Run App and Docs Together
@@ -132,7 +169,7 @@ Examples:
 ```
 
 The Streamlit header includes an **Open Docs** button that links directly to the configured docs endpoint.
-The app also includes an About route at `?page=about`.
+The app includes routes for `?page=graph`, `?page=truth`, and `?page=about`.
 
 ## Deployment Workflow
 
@@ -186,6 +223,22 @@ Configuration resolution order:
 - `TG_BUILD_HEAT_DECAY`
 - `TG_BUILD_LAYOUT_SEED`
 
+### Key Truth Build Vars
+
+- `TG_TRUTH_BUILD_INPUT_PATH`
+- `TG_TRUTH_BUILD_OUTPUT_DIR`
+- `TG_TRUTH_BUILD_SEMANTIC_BACKEND`
+- `TG_TRUTH_BUILD_DEVICE`
+- `TG_TRUTH_BUILD_TOPIC_THRESHOLD`
+- `TG_TRUTH_BUILD_MIN_NODE_COUNT`
+
+### Key Truth App Vars
+
+- `TG_TRUTH_APP_PROCESSED_DIR`
+- `TG_TRUTH_APP_INCLUDE_RETRUTHS`
+- `TG_TRUTH_APP_NODE_TYPES`
+- `TG_TRUTH_APP_SENTIMENT_FILTER`
+
 See full reference in docs site:
 
 - `docs-site/docs/configuration.md`
@@ -200,6 +253,16 @@ Default output directory: `data/processed`
 - `weeks/<week_id>/edges.csv`
 - `weeks/<week_id>/metrics.json`
 - `global_animation/animation_state.json`
+
+Default Truth output directory: `data/processed_truth`
+
+- `truth_week_index.csv`
+- `truth_weekly_summary.csv`
+- `truth_posts_enriched.parquet`
+- `truth_semantic_graph/animation_state.json`
+- `truth_semantic_graph/node_catalog.csv`
+- `truth_embeddings/embeddings.npy`
+- `truth_embeddings/index.csv`
 
 ## Testing
 

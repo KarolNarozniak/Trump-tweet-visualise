@@ -76,3 +76,70 @@ Required keys:
 - `source`
 - `target`
 - `total_co_mentions`
+
+# Truth Social Semantic Artifacts
+
+Default output directory:
+
+- `data/processed_truth`
+
+## Root Files
+
+- `truth_week_index.csv`
+- `truth_weekly_summary.csv`
+- `truth_posts_enriched.parquet`
+
+## Semantic Graph Folder
+
+- `truth_semantic_graph/animation_state.json`
+- `truth_semantic_graph/node_catalog.csv`
+
+## Embeddings Folder
+
+- `truth_embeddings/embeddings.npy`
+- `truth_embeddings/index.csv`
+
+## `truth_posts_enriched.parquet`
+
+Important columns:
+
+- `post_id`
+- `created_at_utc`
+- `week_id`
+- `is_retruth`
+- `topic_labels`
+- `topic_scores`
+- `entities`
+- `sentiment_label`
+- `sentiment_score`
+- `semantic_nodes`
+- `text`
+
+List/dictionary-like fields are stored as compact JSON strings for stable export and app loading.
+
+## Truth `animation_state.json`
+
+Required keys:
+
+- `weeks`
+- `global_nodes`
+- `global_edges`
+- `delta_sets`
+- `node_week_deltas`
+- `edge_week_deltas`
+- `available_node_types`
+- `available_delta_sets`
+- `heat_decay`
+- `heat_scale`
+- `max_cumulative_edge`
+
+Delta sets include:
+
+- `all`
+- `original`
+- `negative`
+- `neutral`
+- `positive`
+- `original_negative`
+- `original_neutral`
+- `original_positive`

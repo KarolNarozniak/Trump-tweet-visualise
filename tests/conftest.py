@@ -19,6 +19,11 @@ def sample_tweets_csv_path() -> Path:
 
 
 @pytest.fixture()
+def sample_truth_posts_path() -> Path:
+    return ROOT_DIR / "tests" / "fixtures" / "sample_truth_posts.csv"
+
+
+@pytest.fixture()
 def local_temp_dir() -> Path:
     temp_root = ROOT_DIR / "tests_runtime_temp"
     temp_root.mkdir(parents=True, exist_ok=True)

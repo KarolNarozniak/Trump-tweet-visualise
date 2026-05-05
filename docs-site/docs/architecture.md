@@ -24,6 +24,7 @@ src/trump_graph/
   metrics.py                      # Weekly metrics
   global_animation.py             # Stable global graph + per-week deltas
   pipeline.py                     # End-to-end build pipeline
+  truth_*.py                      # Truth Social semantic pipeline and graph builder
   app.py                          # Artifact loaders + vis-network HTML builder
 tests/
   ...                             # Unit/integration/smoke tests
@@ -34,6 +35,12 @@ tests/
 1. CLI build (`python -m trump_graph build`) creates all processed artifacts.
 2. Streamlit reads processed artifacts and renders one stable graph with week-by-week transitions.
 3. Docusaurus serves project documentation as a separate endpoint.
+
+Layer 2 adds a separate Truth Social path:
+
+1. CLI build (`python -m trump_graph build-truth`) enriches Truth posts with topics, entities, sentiment, and embeddings.
+2. The app route `?page=truth` renders the semantic temporal graph from `data/processed_truth`.
+3. Existing Twitter graph artifacts and UI remain unchanged.
 
 ## Design Principles
 

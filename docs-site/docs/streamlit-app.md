@@ -35,3 +35,13 @@ Main page includes a direct button linking to the docs endpoint configured via:
 
 - `runtime.docs_url`
 - `TG_RUNTIME_DOCS_URL`
+
+## Truth Social Page
+
+Open:
+
+```text
+http://localhost:3001/?page=truth
+```
+
+This page reads `data/processed_truth` by default and renders the semantic temporal graph. It supports ReTruth, sentiment, node-type, and minimum-count filters while leaving the original Twitter graph page unchanged.
