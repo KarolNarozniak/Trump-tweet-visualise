@@ -364,12 +364,12 @@ class HuggingFaceTruthSemanticEnricher:
     def _topic_scores(self, chunks: list[str]) -> dict[str, float]:
         scores = {label: 0.0 for label in TRUTH_TOPIC_LABELS}
         for chunk in chunks:
+            prepared_chunk = self._prepare_chunk_for_tokenizer(chunk, self.topic_pipeline.tokenizer)
             result = self.topic_pipeline(
-                chunk,
+                prepared_chunk,
                 candidate_labels=list(TRUTH_TOPIC_LABELS),
                 multi_label=True,
                 hypothesis_template="This post is about {}.",
-                truncation=True,
             )
             for label, score in zip(result.get("labels", []), result.get("scores", []), strict=False):
                 scores[str(label)] = max(scores.get(str(label), 0.0), float(score))
@@ -378,7 +378,8 @@ class HuggingFaceTruthSemanticEnricher:
     def _entities(self, chunks: list[str]) -> list[dict[str, Any]]:
         all_entities: list[Mapping[str, Any]] = []
         for chunk in chunks:
-            all_entities.extend(self.ner_pipeline(chunk, truncation=True))
+            prepared_chunk = self._prepare_chunk_for_tokenizer(chunk, self.ner_pipeline.tokenizer)
+            all_entities.extend(self.ner_pipeline(prepared_chunk))
         return filter_entities(
             all_entities,
             score_threshold=self.config.entity_score_threshold,
@@ -388,7 +389,8 @@ class HuggingFaceTruthSemanticEnricher:
     def _sentiment(self, chunks: list[str]) -> tuple[str, float]:
         scores: dict[str, list[float]] = {"negative": [], "neutral": [], "positive": []}
         for chunk in chunks:
-            result = self.sentiment_pipeline(chunk, truncation=True)
+            prepared_chunk = self._prepare_chunk_for_tokenizer(chunk, self.sentiment_pipeline.tokenizer)
+            result = self.sentiment_pipeline(prepared_chunk)
             if result:
                 label = str(result[0].get("label", "neutral")).lower()
                 if "neg" in label:
@@ -400,6 +402,19 @@ class HuggingFaceTruthSemanticEnricher:
         averaged = {label: (sum(values) / len(values) if values else 0.0) for label, values in scores.items()}
         best_label, best_score = max(averaged.items(), key=lambda item: (item[1], item[0]))
         return best_label, round(float(best_score), 6)
+
+    @staticmethod
+    def _prepare_chunk_for_tokenizer(chunk: str, tokenizer: Any) -> str:
+        max_length = int(getattr(tokenizer, "model_max_length", 512))
+        if max_length <= 0 or max_length > 8192:
+            max_length = 512
+        input_ids = tokenizer.encode(
+            str(chunk),
+            add_special_tokens=True,
+            truncation=True,
+            max_length=max_length,
+        )
+        return tokenizer.decode(input_ids, skip_special_tokens=True)
 
 
 def semantic_nodes_from_features(
