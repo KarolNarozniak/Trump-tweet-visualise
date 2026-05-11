@@ -1,7 +1,13 @@
 networkx>=3.3
 numpy>=1.26
 pandas>=2.2
+pyarrow>=15.0
 streamlit>=1.30
 
 [dev]
 pytest>=8.0
+
+[ml]
+sentence-transformers>=3.0
+torch>=2.3
+transformers>=4.41
