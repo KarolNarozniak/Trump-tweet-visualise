@@ -38,6 +38,12 @@ For a no-model smoke test:
 python -m trump_graph build-truth --semantic-backend deterministic --min-node-count 1
 ```
 
+Build unified semantic artifacts (recommended for the new Semantic page):
+
+```bash
+python -m trump_graph build-unified
+```
+
 The command uses defaults from `config/defaults.toml` and optional overrides from `.env`.
 
 ## 3) Run App + Docs
@@ -59,8 +65,10 @@ The wrapper runs:
 - Streamlit app on `3001`
 - Docusaurus docs on `3002`
 
-Open the Truth Social view with:
+Open key views with:
 
 ```text
-http://localhost:3001/?page=truth
+http://localhost:3001/?page=graph
+http://localhost:3001/?page=semantic
+http://localhost:3001/?page=forecast
 ```

@@ -8,6 +8,8 @@ Layer 1 delivers:
 - weekly mention and co-mention artifacts
 - a stable global animation model for time progression
 - a separate Truth Social semantic temporal graph path
+- a unified semantic graph path across Twitter + Truth
+- a temporal forecast frontend prepared for trained model outputs
 - an interactive Streamlit interface for exploration and export
 
 Use this documentation when you need to:

@@ -12,6 +12,12 @@ Configured by:
 - env: `TG_BUILD_INPUT_CSV`
 - CLI: `--input`
 
+Unified pipeline also accepts:
+
+- Twitter input: `--twitter-input`
+- Truth input: `--truth-input`
+- output: `--out data/processed_unified`
+
 ## Preprocessing Rules
 
 `src/trump_graph/preprocess.py` handles deterministic preprocessing:
@@ -53,3 +59,12 @@ Global index outputs:
 - normalization metadata
 
 This supports stable placement across time while letting visual state evolve week by week.
+
+## Unified Semantic Pipeline
+
+`python -m trump_graph build-unified` produces:
+
+- cross-platform enriched posts
+- unified semantic graph animation payload
+- training-ready temporal node/edge delta tables
+- embeddings + row index mapping

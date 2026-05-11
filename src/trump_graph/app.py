@@ -116,6 +116,89 @@ def load_truth_animation_artifacts(processed_dir: Path) -> dict[str, Any]:
     return payload
 
 
+def load_unified_week_index(processed_dir: Path) -> pd.DataFrame:
+    week_index_path = processed_dir / "unified_week_index.csv"
+    if not week_index_path.exists():
+        raise FileNotFoundError(f"Missing unified week index: {week_index_path}")
+    week_index = pd.read_csv(week_index_path)
+    if week_index.empty:
+        return week_index
+    return week_index.sort_values(["week_start", "week_id"], kind="mergesort").reset_index(drop=True)
+
+
+def load_unified_weekly_summary(processed_dir: Path) -> pd.DataFrame:
+    summary_path = processed_dir / "unified_weekly_summary.csv"
+    if not summary_path.exists():
+        raise FileNotFoundError(f"Missing unified weekly summary: {summary_path}")
+    summary = pd.read_csv(summary_path)
+    if summary.empty:
+        return summary
+    return summary.sort_values(["week_start", "week_id"], kind="mergesort").reset_index(drop=True)
+
+
+def load_unified_enriched_posts(processed_dir: Path) -> pd.DataFrame:
+    enriched_path = processed_dir / "unified_posts_enriched.parquet"
+    if not enriched_path.exists():
+        raise FileNotFoundError(f"Missing unified enriched posts: {enriched_path}")
+    return pd.read_parquet(enriched_path)
+
+
+def load_unified_node_catalog(processed_dir: Path) -> pd.DataFrame:
+    catalog_path = processed_dir / "unified_semantic_graph" / "node_catalog.csv"
+    if not catalog_path.exists():
+        raise FileNotFoundError(f"Missing unified node catalog: {catalog_path}")
+    return pd.read_csv(catalog_path)
+
+
+def load_unified_edge_catalog(processed_dir: Path) -> pd.DataFrame:
+    catalog_path = processed_dir / "unified_semantic_graph" / "edge_catalog.csv"
+    if not catalog_path.exists():
+        raise FileNotFoundError(f"Missing unified edge catalog: {catalog_path}")
+    return pd.read_csv(catalog_path)
+
+
+def load_unified_animation_artifacts(processed_dir: Path) -> dict[str, Any]:
+    animation_path = processed_dir / "unified_semantic_graph" / "animation_state.json"
+    if not animation_path.exists():
+        raise FileNotFoundError(f"Missing unified semantic animation file: {animation_path}")
+    payload = json.loads(animation_path.read_text(encoding="utf-8"))
+    required_keys = {
+        "weeks",
+        "global_nodes",
+        "global_edges",
+        "delta_sets",
+        "heat_decay",
+        "heat_scale",
+        "max_cumulative_edge",
+        "available_node_types",
+    }
+    missing_keys = sorted(required_keys - set(payload.keys()))
+    if missing_keys:
+        raise ValueError(f"Unified animation payload is missing keys: {', '.join(missing_keys)}")
+    return payload
+
+
+def load_forecast_animation_artifacts(processed_dir: Path) -> dict[str, Any]:
+    animation_path = processed_dir / "forecast_graph" / "animation_state.json"
+    if not animation_path.exists():
+        raise FileNotFoundError(f"Missing forecast animation file: {animation_path}")
+    payload = json.loads(animation_path.read_text(encoding="utf-8"))
+    required_keys = {
+        "weeks",
+        "global_nodes",
+        "global_edges",
+        "node_week_deltas",
+        "edge_week_deltas",
+        "heat_decay",
+        "heat_scale",
+        "max_cumulative_edge",
+    }
+    missing_keys = sorted(required_keys - set(payload.keys()))
+    if missing_keys:
+        raise ValueError(f"Forecast animation payload is missing keys: {', '.join(missing_keys)}")
+    return payload
+
+
 def _filtered_animation_payload(payload: dict[str, Any], include_hub: bool) -> dict[str, Any]:
     hub_node_id = str(payload.get("hub_node_id", "realdonaldtrump"))
 

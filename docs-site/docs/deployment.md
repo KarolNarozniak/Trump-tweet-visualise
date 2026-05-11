@@ -40,6 +40,18 @@ For a fast deployment smoke test:
 python scripts/deploy.py --build-truth --truth-semantic-backend deterministic
 ```
 
+Unified semantic artifacts are also optional and can be built in the same flow:
+
+```bash
+python scripts/deploy.py --build-unified
+```
+
+Deterministic unified smoke build:
+
+```bash
+python scripts/deploy.py --build-unified --unified-semantic-backend deterministic
+```
+
 ## Serving Outputs
 
 - Streamlit serves the app directly.

@@ -72,6 +72,28 @@ def _clean_overrides(monkeypatch) -> None:
         "TG_TRUTH_APP_LAYOUT_SPREAD",
         "TG_TRUTH_APP_INITIAL_ZOOM_BOOST",
         "TG_TRUTH_APP_GRAPH_HEIGHT_PX",
+        "TG_SEMANTIC_APP_PROCESSED_DIR",
+        "TG_SEMANTIC_APP_INCLUDE_REPOSTS",
+        "TG_SEMANTIC_APP_NODE_TYPES",
+        "TG_SEMANTIC_APP_SENTIMENT_FILTER",
+        "TG_SEMANTIC_APP_MIN_NODE_COUNT",
+        "TG_SEMANTIC_APP_PLAYBACK_SPEED",
+        "TG_SEMANTIC_APP_NODE_SIZE_MULTIPLIER",
+        "TG_SEMANTIC_APP_LAYOUT_SPREAD",
+        "TG_SEMANTIC_APP_INITIAL_ZOOM_BOOST",
+        "TG_SEMANTIC_APP_GRAPH_HEIGHT_PX",
+        "TG_FORECAST_APP_SEMANTIC_PROCESSED_DIR",
+        "TG_FORECAST_APP_PROCESSED_DIR",
+        "TG_FORECAST_APP_DEFAULT_MODE",
+        "TG_FORECAST_APP_HORIZON_WEEKS",
+        "TG_FORECAST_APP_LOOKBACK_WEEKS",
+        "TG_FORECAST_APP_NODE_TYPES",
+        "TG_FORECAST_APP_MIN_NODE_COUNT",
+        "TG_FORECAST_APP_PLAYBACK_SPEED",
+        "TG_FORECAST_APP_NODE_SIZE_MULTIPLIER",
+        "TG_FORECAST_APP_LAYOUT_SPREAD",
+        "TG_FORECAST_APP_INITIAL_ZOOM_BOOST",
+        "TG_FORECAST_APP_GRAPH_HEIGHT_PX",
         "TG_RUNTIME_STREAMLIT_HOST",
         "TG_RUNTIME_STREAMLIT_PORT",
         "TG_RUNTIME_DOCS_HOST",
@@ -149,6 +171,8 @@ TG_APP_PLAYBACK_SPEED=6.0
         assert settings.runtime.docs_port == 4102
         assert settings.unified_build.output_dir.name == "processed_unified"
         assert settings.unified_build.semantic_backend == "hf"
+        assert settings.semantic_app.processed_dir.name == "processed_unified"
+        assert settings.forecast_app.default_mode == "baseline"
     finally:
         shutil.rmtree(temp_dir_path, ignore_errors=True)
 

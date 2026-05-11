@@ -69,6 +69,32 @@ layout_spread = 1.15
 initial_zoom_boost = 0.85
 graph_height_px = 920
 
+[semantic_app]
+processed_dir = "data/processed_unified"
+include_reposts = true
+node_types = ["topic", "per", "org", "loc"]
+sentiment_filter = "all"
+min_node_count = 8
+playback_speed = 6.0
+node_size_multiplier = 1.8
+layout_spread = 1.15
+initial_zoom_boost = 0.9
+graph_height_px = 920
+
+[forecast_app]
+semantic_processed_dir = "data/processed_unified"
+processed_dir = "data/processed_forecast"
+default_mode = "baseline"
+horizon_weeks = 16
+lookback_weeks = 12
+node_types = ["topic", "per", "org", "loc"]
+min_node_count = 8
+playback_speed = 6.0
+node_size_multiplier = 1.9
+layout_spread = 1.15
+initial_zoom_boost = 0.92
+graph_height_px = 920
+
 [runtime]
 streamlit_host = "0.0.0.0"
 streamlit_port = 3001

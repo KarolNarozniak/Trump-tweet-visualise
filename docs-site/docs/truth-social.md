@@ -62,4 +62,4 @@ Semantic nodes are typed:
 - `hashtag::<tag>`
 - `mention::<handle>`
 
-The Streamlit Truth page supports node-type, sentiment, ReTruth, and minimum-count filters.
+The Streamlit Semantic page can be switched to Truth-only mode and supports node-type, sentiment, repost/ReTruth, and minimum-count filters.

@@ -167,6 +167,36 @@ class UnifiedBuildSettings:
 
 
 @dataclass(frozen=True)
+class SemanticAppSettings:
+    processed_dir: Path
+    include_reposts: bool
+    node_types: tuple[str, ...]
+    sentiment_filter: str
+    min_node_count: int
+    playback_speed: float
+    node_size_multiplier: float
+    layout_spread: float
+    initial_zoom_boost: float
+    graph_height_px: int
+
+
+@dataclass(frozen=True)
+class ForecastAppSettings:
+    semantic_processed_dir: Path
+    forecast_processed_dir: Path
+    default_mode: str
+    horizon_weeks: int
+    lookback_weeks: int
+    node_types: tuple[str, ...]
+    min_node_count: int
+    playback_speed: float
+    node_size_multiplier: float
+    layout_spread: float
+    initial_zoom_boost: float
+    graph_height_px: int
+
+
+@dataclass(frozen=True)
 class AppSettings:
     processed_dir: Path
     include_hub: bool
@@ -222,6 +252,8 @@ class ProjectSettings:
     unified_build: UnifiedBuildSettings
     app: AppSettings
     truth_app: TruthAppSettings
+    semantic_app: SemanticAppSettings
+    forecast_app: ForecastAppSettings
     runtime: RuntimeSettings
     meta: MetaSettings
 
@@ -750,6 +782,188 @@ def load_settings(config_path: Path | None = None, env_path: Path | None = None)
         ),
     )
 
+    semantic_app = SemanticAppSettings(
+        processed_dir=_resolve_value(
+            env_name="TG_SEMANTIC_APP_PROCESSED_DIR",
+            config_keys=("semantic_app", "processed_dir"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value="data/processed_unified",
+            parser=_path_parser,
+        ),
+        include_reposts=_resolve_value(
+            env_name="TG_SEMANTIC_APP_INCLUDE_REPOSTS",
+            config_keys=("semantic_app", "include_reposts"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value=True,
+            parser=_to_bool,
+        ),
+        node_types=_resolve_value(
+            env_name="TG_SEMANTIC_APP_NODE_TYPES",
+            config_keys=("semantic_app", "node_types"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value=("topic", "per", "org", "loc"),
+            parser=_to_str_tuple,
+        ),
+        sentiment_filter=_resolve_value(
+            env_name="TG_SEMANTIC_APP_SENTIMENT_FILTER",
+            config_keys=("semantic_app", "sentiment_filter"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value="all",
+            parser=_to_str,
+        ),
+        min_node_count=_resolve_value(
+            env_name="TG_SEMANTIC_APP_MIN_NODE_COUNT",
+            config_keys=("semantic_app", "min_node_count"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value=8,
+            parser=_to_int,
+        ),
+        playback_speed=_resolve_value(
+            env_name="TG_SEMANTIC_APP_PLAYBACK_SPEED",
+            config_keys=("semantic_app", "playback_speed"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value=6.0,
+            parser=_to_float,
+        ),
+        node_size_multiplier=_resolve_value(
+            env_name="TG_SEMANTIC_APP_NODE_SIZE_MULTIPLIER",
+            config_keys=("semantic_app", "node_size_multiplier"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value=1.8,
+            parser=_to_float,
+        ),
+        layout_spread=_resolve_value(
+            env_name="TG_SEMANTIC_APP_LAYOUT_SPREAD",
+            config_keys=("semantic_app", "layout_spread"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value=1.15,
+            parser=_to_float,
+        ),
+        initial_zoom_boost=_resolve_value(
+            env_name="TG_SEMANTIC_APP_INITIAL_ZOOM_BOOST",
+            config_keys=("semantic_app", "initial_zoom_boost"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value=0.9,
+            parser=_to_float,
+        ),
+        graph_height_px=_resolve_value(
+            env_name="TG_SEMANTIC_APP_GRAPH_HEIGHT_PX",
+            config_keys=("semantic_app", "graph_height_px"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value=920,
+            parser=_to_int,
+        ),
+    )
+
+    forecast_app = ForecastAppSettings(
+        semantic_processed_dir=_resolve_value(
+            env_name="TG_FORECAST_APP_SEMANTIC_PROCESSED_DIR",
+            config_keys=("forecast_app", "semantic_processed_dir"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value="data/processed_unified",
+            parser=_path_parser,
+        ),
+        forecast_processed_dir=_resolve_value(
+            env_name="TG_FORECAST_APP_PROCESSED_DIR",
+            config_keys=("forecast_app", "processed_dir"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value="data/processed_forecast",
+            parser=_path_parser,
+        ),
+        default_mode=_resolve_value(
+            env_name="TG_FORECAST_APP_DEFAULT_MODE",
+            config_keys=("forecast_app", "default_mode"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value="baseline",
+            parser=_to_str,
+        ),
+        horizon_weeks=_resolve_value(
+            env_name="TG_FORECAST_APP_HORIZON_WEEKS",
+            config_keys=("forecast_app", "horizon_weeks"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value=16,
+            parser=_to_int,
+        ),
+        lookback_weeks=_resolve_value(
+            env_name="TG_FORECAST_APP_LOOKBACK_WEEKS",
+            config_keys=("forecast_app", "lookback_weeks"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value=12,
+            parser=_to_int,
+        ),
+        node_types=_resolve_value(
+            env_name="TG_FORECAST_APP_NODE_TYPES",
+            config_keys=("forecast_app", "node_types"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value=("topic", "per", "org", "loc"),
+            parser=_to_str_tuple,
+        ),
+        min_node_count=_resolve_value(
+            env_name="TG_FORECAST_APP_MIN_NODE_COUNT",
+            config_keys=("forecast_app", "min_node_count"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value=8,
+            parser=_to_int,
+        ),
+        playback_speed=_resolve_value(
+            env_name="TG_FORECAST_APP_PLAYBACK_SPEED",
+            config_keys=("forecast_app", "playback_speed"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value=6.0,
+            parser=_to_float,
+        ),
+        node_size_multiplier=_resolve_value(
+            env_name="TG_FORECAST_APP_NODE_SIZE_MULTIPLIER",
+            config_keys=("forecast_app", "node_size_multiplier"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value=1.9,
+            parser=_to_float,
+        ),
+        layout_spread=_resolve_value(
+            env_name="TG_FORECAST_APP_LAYOUT_SPREAD",
+            config_keys=("forecast_app", "layout_spread"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value=1.15,
+            parser=_to_float,
+        ),
+        initial_zoom_boost=_resolve_value(
+            env_name="TG_FORECAST_APP_INITIAL_ZOOM_BOOST",
+            config_keys=("forecast_app", "initial_zoom_boost"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value=0.92,
+            parser=_to_float,
+        ),
+        graph_height_px=_resolve_value(
+            env_name="TG_FORECAST_APP_GRAPH_HEIGHT_PX",
+            config_keys=("forecast_app", "graph_height_px"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value=920,
+            parser=_to_int,
+        ),
+    )
+
     streamlit_host = _resolve_value(
         env_name="TG_RUNTIME_STREAMLIT_HOST",
         config_keys=("runtime", "streamlit_host"),
@@ -876,6 +1090,8 @@ def load_settings(config_path: Path | None = None, env_path: Path | None = None)
         unified_build=unified_build,
         app=app,
         truth_app=truth_app,
+        semantic_app=semantic_app,
+        forecast_app=forecast_app,
         runtime=runtime,
         meta=meta,
     )

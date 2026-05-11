@@ -60,6 +60,17 @@ def _build_parser() -> argparse.ArgumentParser:
         default=None,
         help="Override Truth semantic backend when --build-truth is used.",
     )
+    parser.add_argument(
+        "--build-unified",
+        action="store_true",
+        help="Also build unified semantic artifacts for combined Twitter + Truth workflows.",
+    )
+    parser.add_argument(
+        "--unified-semantic-backend",
+        choices=("hf", "deterministic"),
+        default=None,
+        help="Override unified semantic backend when --build-unified is used.",
+    )
     return parser
 
 
@@ -124,6 +135,41 @@ def main(argv: list[str] | None = None) -> int:
                     str(settings.truth_build.heat_decay),
                     "--layout-seed",
                     str(settings.truth_build.layout_seed),
+                ],
+                cwd=str(settings.project_root),
+            )
+        if args.build_unified:
+            unified_backend = args.unified_semantic_backend or settings.unified_build.semantic_backend
+            _run_command(
+                [
+                    sys.executable,
+                    "-m",
+                    "trump_graph",
+                    "build-unified",
+                    "--twitter-input",
+                    str(settings.unified_build.twitter_input_csv),
+                    "--truth-input",
+                    str(settings.unified_build.truth_input_path),
+                    "--out",
+                    str(settings.unified_build.output_dir),
+                    "--semantic-backend",
+                    unified_backend,
+                    "--device",
+                    str(settings.unified_build.device),
+                    "--topic-threshold",
+                    str(settings.unified_build.topic_threshold),
+                    "--max-topic-labels",
+                    str(settings.unified_build.max_topic_labels),
+                    "--entity-score-threshold",
+                    str(settings.unified_build.entity_score_threshold),
+                    "--min-node-count",
+                    str(settings.unified_build.min_node_count),
+                    "--node-types",
+                    ",".join(settings.unified_build.included_node_types),
+                    "--heat-decay",
+                    str(settings.unified_build.heat_decay),
+                    "--layout-seed",
+                    str(settings.unified_build.layout_seed),
                 ],
                 cwd=str(settings.project_root),
             )

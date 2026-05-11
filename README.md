@@ -197,7 +197,8 @@ Examples:
 ```
 
 The Streamlit header includes an **Open Docs** button that links directly to the configured docs endpoint.
-The app includes routes for `?page=graph`, `?page=truth`, and `?page=about`.
+The app includes routes for `?page=graph`, `?page=semantic`, `?page=forecast`, and `?page=about`.
+Legacy `?page=truth` is redirected to `?page=semantic`.
 
 ## Deployment Workflow
 
@@ -219,6 +220,11 @@ What this runs:
 2. `python -m compileall src app`
 3. artifact build (`python -m trump_graph build`)
 4. docs static build (`npm run build` in `docs-site`)
+
+Optional semantic builds:
+
+- `python scripts/deploy.py --build-truth`
+- `python scripts/deploy.py --build-unified`
 
 ## Configuration
 
@@ -314,6 +320,12 @@ Default Unified output directory: `data/processed_unified`
 - `unified_embeddings/index.csv`
 - `unified_training/temporal_node_deltas.parquet`
 - `unified_training/temporal_edge_deltas.parquet`
+
+Optional forecast model output directory: `data/processed_forecast`
+
+- `forecast_graph/animation_state.json`
+
+If `forecast_graph/animation_state.json` is not present, the Forecast page can render a baseline future preview from semantic artifacts.
 
 ## Testing
 
