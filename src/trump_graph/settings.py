@@ -144,6 +144,29 @@ class TruthBuildSettings:
 
 
 @dataclass(frozen=True)
+class UnifiedBuildSettings:
+    twitter_input_csv: Path
+    truth_input_path: Path
+    output_dir: Path
+    include_retweets: bool
+    semantic_backend: str
+    topic_model_id: str
+    ner_model_id: str
+    sentiment_model_id: str
+    embedding_model_id: str
+    device: str
+    batch_size: int
+    topic_threshold: float
+    max_topic_labels: int
+    entity_score_threshold: float
+    max_chunk_chars: int
+    min_node_count: int
+    included_node_types: tuple[str, ...]
+    heat_decay: float
+    layout_seed: int
+
+
+@dataclass(frozen=True)
 class AppSettings:
     processed_dir: Path
     include_hub: bool
@@ -196,6 +219,7 @@ class ProjectSettings:
     env_path: Path
     build: BuildSettings
     truth_build: TruthBuildSettings
+    unified_build: UnifiedBuildSettings
     app: AppSettings
     truth_app: TruthAppSettings
     runtime: RuntimeSettings
@@ -417,6 +441,161 @@ def load_settings(config_path: Path | None = None, env_path: Path | None = None)
             config_data=config_data,
             dotenv_data=dotenv_data,
             default_value=99,
+            parser=_to_int,
+        ),
+    )
+
+    unified_build = UnifiedBuildSettings(
+        twitter_input_csv=_resolve_value(
+            env_name="TG_UNIFIED_BUILD_TWITTER_INPUT_CSV",
+            config_keys=("unified_build", "twitter_input_csv"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value="tweets_01-08-2021.csv",
+            parser=_path_parser,
+        ),
+        truth_input_path=_resolve_value(
+            env_name="TG_UNIFIED_BUILD_TRUTH_INPUT_PATH",
+            config_keys=("unified_build", "truth_input_path"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value="truthsocial.posts[Trump-FROM-10-8-25].txt",
+            parser=_path_parser,
+        ),
+        output_dir=_resolve_value(
+            env_name="TG_UNIFIED_BUILD_OUTPUT_DIR",
+            config_keys=("unified_build", "output_dir"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value="data/processed_unified",
+            parser=_path_parser,
+        ),
+        include_retweets=_resolve_value(
+            env_name="TG_UNIFIED_BUILD_INCLUDE_RETWEETS",
+            config_keys=("unified_build", "include_retweets"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value=True,
+            parser=_to_bool,
+        ),
+        semantic_backend=_resolve_value(
+            env_name="TG_UNIFIED_BUILD_SEMANTIC_BACKEND",
+            config_keys=("unified_build", "semantic_backend"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value="hf",
+            parser=_to_str,
+        ),
+        topic_model_id=_resolve_value(
+            env_name="TG_UNIFIED_BUILD_TOPIC_MODEL_ID",
+            config_keys=("unified_build", "topic_model_id"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value="facebook/bart-large-mnli",
+            parser=_to_str,
+        ),
+        ner_model_id=_resolve_value(
+            env_name="TG_UNIFIED_BUILD_NER_MODEL_ID",
+            config_keys=("unified_build", "ner_model_id"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value="dslim/bert-base-NER",
+            parser=_to_str,
+        ),
+        sentiment_model_id=_resolve_value(
+            env_name="TG_UNIFIED_BUILD_SENTIMENT_MODEL_ID",
+            config_keys=("unified_build", "sentiment_model_id"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value="cardiffnlp/twitter-roberta-base-sentiment-latest",
+            parser=_to_str,
+        ),
+        embedding_model_id=_resolve_value(
+            env_name="TG_UNIFIED_BUILD_EMBEDDING_MODEL_ID",
+            config_keys=("unified_build", "embedding_model_id"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value="sentence-transformers/all-MiniLM-L6-v2",
+            parser=_to_str,
+        ),
+        device=_resolve_value(
+            env_name="TG_UNIFIED_BUILD_DEVICE",
+            config_keys=("unified_build", "device"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value="auto",
+            parser=_to_str,
+        ),
+        batch_size=_resolve_value(
+            env_name="TG_UNIFIED_BUILD_BATCH_SIZE",
+            config_keys=("unified_build", "batch_size"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value=16,
+            parser=_to_int,
+        ),
+        topic_threshold=_resolve_value(
+            env_name="TG_UNIFIED_BUILD_TOPIC_THRESHOLD",
+            config_keys=("unified_build", "topic_threshold"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value=0.35,
+            parser=_to_float,
+        ),
+        max_topic_labels=_resolve_value(
+            env_name="TG_UNIFIED_BUILD_MAX_TOPIC_LABELS",
+            config_keys=("unified_build", "max_topic_labels"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value=3,
+            parser=_to_int,
+        ),
+        entity_score_threshold=_resolve_value(
+            env_name="TG_UNIFIED_BUILD_ENTITY_SCORE_THRESHOLD",
+            config_keys=("unified_build", "entity_score_threshold"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value=0.65,
+            parser=_to_float,
+        ),
+        max_chunk_chars=_resolve_value(
+            env_name="TG_UNIFIED_BUILD_MAX_CHUNK_CHARS",
+            config_keys=("unified_build", "max_chunk_chars"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value=900,
+            parser=_to_int,
+        ),
+        min_node_count=_resolve_value(
+            env_name="TG_UNIFIED_BUILD_MIN_NODE_COUNT",
+            config_keys=("unified_build", "min_node_count"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value=8,
+            parser=_to_int,
+        ),
+        included_node_types=_resolve_value(
+            env_name="TG_UNIFIED_BUILD_INCLUDED_NODE_TYPES",
+            config_keys=("unified_build", "included_node_types"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value=("topic", "per", "org", "loc", "hashtag", "mention"),
+            parser=_to_str_tuple,
+        ),
+        heat_decay=_resolve_value(
+            env_name="TG_UNIFIED_BUILD_HEAT_DECAY",
+            config_keys=("unified_build", "heat_decay"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value=0.85,
+            parser=_to_float,
+        ),
+        layout_seed=_resolve_value(
+            env_name="TG_UNIFIED_BUILD_LAYOUT_SEED",
+            config_keys=("unified_build", "layout_seed"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value=211,
             parser=_to_int,
         ),
     )
@@ -694,6 +873,7 @@ def load_settings(config_path: Path | None = None, env_path: Path | None = None)
         env_path=chosen_env_path,
         build=build,
         truth_build=truth_build,
+        unified_build=unified_build,
         app=app,
         truth_app=truth_app,
         runtime=runtime,

@@ -35,6 +35,25 @@ def _clean_overrides(monkeypatch) -> None:
         "TG_TRUTH_BUILD_INCLUDED_NODE_TYPES",
         "TG_TRUTH_BUILD_HEAT_DECAY",
         "TG_TRUTH_BUILD_LAYOUT_SEED",
+        "TG_UNIFIED_BUILD_TWITTER_INPUT_CSV",
+        "TG_UNIFIED_BUILD_TRUTH_INPUT_PATH",
+        "TG_UNIFIED_BUILD_OUTPUT_DIR",
+        "TG_UNIFIED_BUILD_INCLUDE_RETWEETS",
+        "TG_UNIFIED_BUILD_SEMANTIC_BACKEND",
+        "TG_UNIFIED_BUILD_TOPIC_MODEL_ID",
+        "TG_UNIFIED_BUILD_NER_MODEL_ID",
+        "TG_UNIFIED_BUILD_SENTIMENT_MODEL_ID",
+        "TG_UNIFIED_BUILD_EMBEDDING_MODEL_ID",
+        "TG_UNIFIED_BUILD_DEVICE",
+        "TG_UNIFIED_BUILD_BATCH_SIZE",
+        "TG_UNIFIED_BUILD_TOPIC_THRESHOLD",
+        "TG_UNIFIED_BUILD_MAX_TOPIC_LABELS",
+        "TG_UNIFIED_BUILD_ENTITY_SCORE_THRESHOLD",
+        "TG_UNIFIED_BUILD_MAX_CHUNK_CHARS",
+        "TG_UNIFIED_BUILD_MIN_NODE_COUNT",
+        "TG_UNIFIED_BUILD_INCLUDED_NODE_TYPES",
+        "TG_UNIFIED_BUILD_HEAT_DECAY",
+        "TG_UNIFIED_BUILD_LAYOUT_SEED",
         "TG_APP_PROCESSED_DIR",
         "TG_APP_INCLUDE_HUB",
         "TG_APP_ALWAYS_LABEL_TOP_NODES",
@@ -128,6 +147,8 @@ TG_APP_PLAYBACK_SPEED=6.0
         assert settings.app.playback_speed == 6.0
         assert settings.runtime.streamlit_port == 4101
         assert settings.runtime.docs_port == 4102
+        assert settings.unified_build.output_dir.name == "processed_unified"
+        assert settings.unified_build.semantic_backend == "hf"
     finally:
         shutil.rmtree(temp_dir_path, ignore_errors=True)
 

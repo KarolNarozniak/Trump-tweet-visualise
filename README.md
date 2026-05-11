@@ -52,6 +52,10 @@ src/trump_graph/
   truth_semantics.py
   truth_graph.py
   truth_pipeline.py
+  unified_preprocess.py
+  unified_graph.py
+  unified_io.py
+  unified_pipeline.py
   app.py
 tests/
 ```
@@ -134,6 +138,30 @@ Default semantic backend is local Hugging Face inference. For a fast smoke test 
 python -m trump_graph build-truth \
   --input "tests/fixtures/sample_truth_posts.csv" \
   --out "data/processed_truth" \
+  --semantic-backend deterministic \
+  --min-node-count 1
+```
+
+## Build Unified Twitter + Truth Semantic Artifacts
+
+This command builds one combined labeled temporal graph and training-ready delta tables:
+
+```bash
+python -m trump_graph build-unified \
+  --twitter-input "tweets_01-08-2021.csv" \
+  --truth-input "truthsocial.posts[Trump-FROM-10-8-25].txt" \
+  --out "data/processed_unified" \
+  --semantic-backend hf \
+  --device cuda
+```
+
+Smoke test mode (no model downloads):
+
+```bash
+python -m trump_graph build-unified \
+  --twitter-input "tests/fixtures/sample_tweets.csv" \
+  --truth-input "tests/fixtures/sample_truth_posts.csv" \
+  --out "data/processed_unified" \
   --semantic-backend deterministic \
   --min-node-count 1
 ```
@@ -232,6 +260,16 @@ Configuration resolution order:
 - `TG_TRUTH_BUILD_TOPIC_THRESHOLD`
 - `TG_TRUTH_BUILD_MIN_NODE_COUNT`
 
+### Key Unified Build Vars
+
+- `TG_UNIFIED_BUILD_TWITTER_INPUT_CSV`
+- `TG_UNIFIED_BUILD_TRUTH_INPUT_PATH`
+- `TG_UNIFIED_BUILD_OUTPUT_DIR`
+- `TG_UNIFIED_BUILD_SEMANTIC_BACKEND`
+- `TG_UNIFIED_BUILD_DEVICE`
+- `TG_UNIFIED_BUILD_TOPIC_THRESHOLD`
+- `TG_UNIFIED_BUILD_MIN_NODE_COUNT`
+
 ### Key Truth App Vars
 
 - `TG_TRUTH_APP_PROCESSED_DIR`
@@ -263,6 +301,19 @@ Default Truth output directory: `data/processed_truth`
 - `truth_semantic_graph/node_catalog.csv`
 - `truth_embeddings/embeddings.npy`
 - `truth_embeddings/index.csv`
+
+Default Unified output directory: `data/processed_unified`
+
+- `unified_week_index.csv`
+- `unified_weekly_summary.csv`
+- `unified_posts_enriched.parquet`
+- `unified_semantic_graph/animation_state.json`
+- `unified_semantic_graph/node_catalog.csv`
+- `unified_semantic_graph/edge_catalog.csv`
+- `unified_embeddings/embeddings.npy`
+- `unified_embeddings/index.csv`
+- `unified_training/temporal_node_deltas.parquet`
+- `unified_training/temporal_edge_deltas.parquet`
 
 ## Testing
 

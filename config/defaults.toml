@@ -26,6 +26,27 @@ included_node_types = ["topic", "per", "org", "loc", "hashtag", "mention"]
 heat_decay = 0.85
 layout_seed = 99
 
+[unified_build]
+twitter_input_csv = "tweets_01-08-2021.csv"
+truth_input_path = "truthsocial.posts[Trump-FROM-10-8-25].txt"
+output_dir = "data/processed_unified"
+include_retweets = true
+semantic_backend = "hf"
+topic_model_id = "facebook/bart-large-mnli"
+ner_model_id = "dslim/bert-base-NER"
+sentiment_model_id = "cardiffnlp/twitter-roberta-base-sentiment-latest"
+embedding_model_id = "sentence-transformers/all-MiniLM-L6-v2"
+device = "auto"
+batch_size = 16
+topic_threshold = 0.35
+max_topic_labels = 3
+entity_score_threshold = 0.65
+max_chunk_chars = 900
+min_node_count = 8
+included_node_types = ["topic", "per", "org", "loc", "hashtag", "mention"]
+heat_decay = 0.85
+layout_seed = 211
+
 [app]
 processed_dir = "data/processed"
 include_hub = true
