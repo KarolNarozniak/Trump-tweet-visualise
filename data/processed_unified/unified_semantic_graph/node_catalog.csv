@@ -1,0 +1,3010 @@
+node_id,label,node_type,total_count
+topic::media_communications,Media Communications,topic,46761
+topic::health_public_health,Health Public Health,topic,14306
+mention::realdonaldtrump,@realdonaldtrump,mention,12077
+topic::law_justice_crime,Law Justice Crime,topic,11709
+topic::elections_campaigns,Elections Campaigns,topic,9984
+topic::endorsements_appointments,Endorsements Appointments,topic,6189
+per::trump,Trump,per,5638
+topic::energy_environment,Energy Environment,topic,5241
+topic::foreign_policy_diplomacy,Foreign Policy Diplomacy,topic,5073
+topic::congress_governance,Congress Governance,topic,5056
+topic::immigration_border,Immigration Border,topic,2818
+topic::defense_military_veterans,Defense Military Veterans,topic,2649
+loc::america,America,loc,2316
+per::obama,Obama,per,1723
+per::b,B,per,1590
+per::donald trump,Donald Trump,per,1491
+loc::u. s,U. S,loc,1490
+per::joe biden,Joe Biden,per,1397
+topic::social_culture_education,Social Culture Education,topic,1295
+loc::china,China,loc,1184
+loc::united states,United States,loc,1176
+per::c,C,per,1096
+per::iden,Iden,per,1013
+org::foxnews,Foxnews,org,1009
+mention::foxnews,@foxnews,mention,958
+org::congress,Congress,org,918
+mention::whitehouse,@whitehouse,mention,851
+hashtag::trump2016,#trump2016,hashtag,825
+org::fbi,Fbi,org,816
+loc::white house,White House,loc,784
+loc::usa,Usa,loc,753
+org::f,F,org,732
+mention::barackobama,@barackobama,mention,729
+org::cnn,Cnn,org,712
+mention::foxandfriends,@foxandfriends,mention,709
+org::senate,Senate,org,709
+loc::russia,Russia,loc,702
+loc::florida,Florida,loc,669
+hashtag::maga,#maga,hashtag,612
+loc::new york,New York,loc,579
+hashtag::makeamericagreatagain,#makeamericagreatagain,hashtag,544
+org::b,B,org,525
+loc::iowa,Iowa,loc,514
+loc::pennsylvania,Pennsylvania,loc,491
+loc::iran,Iran,loc,471
+topic::economy_trade_taxes,Economy Trade Taxes,topic,471
+org::house,House,org,458
+per::donald,Donald,per,447
+loc::texas,Texas,loc,439
+per::hillary,Hillary,per,422
+per::hillary clinton,Hillary Clinton,per,413
+org::a,A,org,408
+mention::apprenticenbc,@apprenticenbc,mention,405
+loc::georgia,Georgia,loc,404
+mention::cnn,@cnn,mention,403
+org::r,R,org,398
+org::d,D,org,395
+per::kamal,Kamal,per,380
+per::joe,Joe,per,376
+org::fake news,Fake News,org,373
+org::republican party,Republican Party,org,371
+mention::teamtrump,@teamtrump,mention,362
+loc::us,Us,loc,361
+org::nbc,Nbc,org,361
+loc::mexico,Mexico,loc,356
+loc::country,Country,loc,353
+loc::ukraine,Ukraine,loc,347
+loc::washington,Washington,loc,346
+mention::seanhannity,@seanhannity,mention,338
+mention::ivankatrump,@ivankatrump,mention,333
+per::mi,Mi,per,327
+loc::michigan,Michigan,loc,326
+org::g,G,org,318
+mention::mittromney,@mittromney,mention,315
+loc::north carolina,North Carolina,loc,312
+per::god,God,per,312
+per::p,P,per,310
+hashtag::celebapprentice,#celebapprentice,hashtag,297
+org::supreme court,Supreme Court,org,297
+loc::new hampshire,New Hampshire,loc,292
+loc::israel,Israel,loc,289
+org::h,H,org,288
+loc::ohio,Ohio,loc,287
+org::n,N,org,281
+per::nancy pelosi,Nancy Pelosi,per,275
+mention::danscavino,@danscavino,mention,274
+per::clinton,Clinton,per,272
+loc::wisconsin,Wisconsin,loc,268
+loc::california,California,loc,262
+mention::realamericasvoice,@realamericasvoice,mention,259
+loc::arizona,Arizona,loc,257
+org::p,P,org,255
+org::t,T,org,251
+per::j,J,per,251
+per::donald j,Donald J,per,250
+org::administration,Administration,org,248
+loc::south carolina,South Carolina,loc,246
+mention::rsbn,@rsbn,mention,246
+per::donald j. trump,Donald J. Trump,per,244
+per::“,“,per,244
+org::america first,America First,org,242
+mention::gop,@gop,mention,241
+mention::donaldjtrumpjr,@donaldjtrumpjr,mention,239
+org::newsmax,Newsmax,org,237
+loc::d. c,D. C,loc,236
+per::jim,Jim,per,236
+org::c,C,org,234
+per::rook,Rook,per,233
+per::mike,Mike,per,230
+per::g,G,per,225
+per::jack smith,Jack Smith,per,223
+per::baracko,Baracko,per,222
+mention::gopchairwoman,@gopchairwoman,mention,221
+per::a,A,per,220
+loc::chicago,Chicago,loc,219
+per::je,Je,per,219
+mention::erictrump,@erictrump,mention,214
+mention::nytimes,@nytimes,mention,213
+loc::north korea,North Korea,loc,210
+loc::scotland,Scotland,loc,208
+per::kamala harris,Kamala Harris,per,206
+mention::breitbartnews,@breitbartnews,mention,205
+per::d,D,per,204
+loc::nevada,Nevada,loc,203
+mention::potus,@potus,mention,203
+mention::teamtrumppresident,@teamtrumppresident,mention,199
+per::r,R,per,199
+loc::nyc,Nyc,loc,197
+mention::newsmax,@newsmax,mention,196
+org::doj,Doj,org,195
+loc::virginia,Virginia,loc,194
+per::ka,Ka,per,192
+per::sleep,Sleep,per,192
+loc::united states of america,United States Of America,loc,189
+org::makea,Makea,org,188
+org::v,V,org,188
+org::m,M,org,187
+org::military,Military,org,185
+loc::iraq,Iraq,loc,184
+org::ake news media,Ake News Media,org,184
+mention::jim_jordan,@jim_jordan,mention,178
+mention::marklevinshow,@marklevinshow,mention,175
+org::fox,Fox,org,175
+loc::mar - a - lago,Mar - A - Lago,loc,174
+loc::syria,Syria,loc,174
+per::jordan,Jordan,per,170
+per::l,L,per,167
+loc::s,S,loc,164
+org::news,News,org,164
+per::adam schiff,Adam Schiff,per,164
+loc::canada,Canada,loc,159
+mention::megynkelly,@megynkelly,mention,159
+org::whitehouse,Whitehouse,org,159
+per::bush,Bush,per,159
+mention::flotus,@flotus,mention,158
+loc::states,States,loc,157
+loc::trump tower,Trump Tower,loc,156
+org::o,O,org,156
+per::ted cruz,Ted Cruz,per,153
+hashtag::celebrityapprentice,#celebrityapprentice,hashtag,152
+org::fox news,Fox News,org,151
+loc::am,Am,loc,150
+per::co,Co,per,150
+mention::greggjarrett,@greggjarrett,mention,148
+mention::loudobbs,@loudobbs,mention,147
+mention::dbongino,@dbongino,mention,146
+org::w,W,org,145
+per::e,E,per,145
+loc::afghanistan,Afghanistan,loc,144
+loc::alabama,Alabama,loc,144
+per::ron,Ron,per,144
+per::putin,Putin,per,143
+per::t,T,per,143
+loc::middle east,Middle East,loc,140
+mention::rumble,@rumble,mention,140
+mention::tomfitton,@tomfitton,mention,139
+per::o,O,per,139
+hashtag::trump,#trump,hashtag,138
+mention::oreillyfactor,@oreillyfactor,mention,138
+org::u,U,org,137
+mention::oann,@oann,mention,136
+org::s,S,org,136
+per::mu,Mu,per,135
+mention::lindseygrahamsc,@lindseygrahamsc,mention,133
+loc::border,Border,loc,132
+loc::dc,Dc,loc,131
+mention::macys,@macys,mention,131
+per::barackobama,Barackobama,per,131
+mention::celebapprentice,@celebapprentice,mention,130
+mention::oan,@oan,mention,130
+org::democrat party,Democrat Party,org,129
+loc::a,A,loc,128
+mention::mike_pence,@mike_pence,mention,128
+per::a harris,A Harris,per,128
+per::m,M,per,128
+loc::minnesota,Minnesota,loc,127
+mention::trumpdoral,@trumpdoral,mention,127
+per::come,Come,per,127
+per::mel,Mel,per,127
+org::america,America,org,126
+per::ed hillary,Ed Hillary,per,126
+loc::colorado,Colorado,loc,125
+loc::europe,Europe,loc,125
+loc::japan,Japan,loc,125
+org::abc,Abc,org,125
+mention::nbc,@nbc,mention,124
+per::schi,Schi,per,124
+loc::louisiana,Louisiana,loc,123
+hashtag::americafirst,#americafirst,hashtag,122
+org::fake news media,Fake News Media,org,122
+loc::miami,Miami,loc,121
+loc::new york state,New York State,loc,121
+loc::southern border,Southern Border,loc,119
+per::donaldtrump,Donaldtrump,per,119
+per::ron des,Ron Des,per,118
+per::s,S,per,118
+loc::new york city,New York City,loc,117
+loc::americ,Americ,loc,116
+per::let,Let,per,116
+loc::las vegas,Las Vegas,loc,115
+mention::realdonaldtrumphttps,@realdonaldtrumphttps,mention,115
+mention::scavino45,@scavino45,mention,115
+org::maga,Maga,org,115
+org::radical left,Radical Left,org,115
+mention::mariabartiromo,@mariabartiromo,mention,114
+org::fed,Fed,org,114
+org::ce,Ce,org,113
+org::j,J,org,113
+org::nato,Nato,org,113
+per::mark levin,Mark Levin,per,112
+per::john,John,per,111
+loc::france,France,loc,109
+mention::senatemajldr,@senatemajldr,mention,109
+mention::vp,@vp,mention,109
+per::cruz,Cruz,per,109
+per::steve,Steve,per,109
+org::isis,Isis,org,107
+org::rsb,Rsb,org,106
+org::trump administration,Trump Administration,org,105
+loc::indiana,Indiana,loc,104
+mention::judicialwatch,@judicialwatch,mention,104
+org::federal government,Federal Government,org,104
+loc::oval office,Oval Office,loc,102
+"loc::washington, d. c","Washington, D. C",loc,102
+mention::trumpchicago,@trumpchicago,mention,102
+per::mitch mcconnell,Mitch Mcconnell,per,102
+hashtag::timetogettough,#timetogettough,hashtag,100
+mention::repmarkmeadows,@repmarkmeadows,mention,100
+org::usmca,Usmca,org,100
+per::k,K,per,100
+org::ake news,Ake News,org,99
+per::bernie sanders,Bernie Sanders,per,99
+per::hunter biden,Hunter Biden,per,99
+org::l,L,org,98
+per::david,David,per,98
+per::harris,Harris,per,97
+per::pen,Pen,per,96
+org::lamestream media,Lamestream Media,org,94
+loc::manhattan,Manhattan,loc,93
+loc::ny,Ny,loc,93
+mention::alexsalmond,@alexsalmond,mention,93
+mention::paulsperry_,@paulsperry_,mention,93
+per::flynn,Flynn,per,93
+per::b bush,B Bush,per,92
+loc::tennessee,Tennessee,loc,91
+mention::ingrahamangle,@ingrahamangle,mention,91
+per::alvin bragg,Alvin Bragg,per,91
+loc::district,District,loc,90
+loc::m,M,loc,90
+org::american energy,American Energy,org,90
+org::foxn,Foxn,org,90
+per::des,Des,per,90
+per::romney,Romney,per,90
+loc::kentucky,Kentucky,loc,89
+mention::gopleader,@gopleader,mention,89
+per::bernie,Bernie,per,89
+loc::germany,Germany,loc,88
+loc::new jersey,New Jersey,loc,88
+mention::billmaher,@billmaher,mention,88
+mention::greta,@greta,mention,88
+mention::gretawire,@gretawire,mention,88
+org::msnbc,Msnbc,org,88
+loc::palm beach,Palm Beach,loc,87
+org::new york times,New York Times,org,87
+org::trump,Trump,org,87
+loc::missouri,Missouri,loc,86
+loc::u. s. a,U. S. A,loc,86
+per::james,James,per,86
+per::jean carroll,Jean Carroll,per,86
+mention::rsbnpresident,@rsbnpresident,mention,85
+org::barackobama,Barackobama,org,85
+loc::great state of,Great State Of,loc,84
+org::cbs,Cbs,org,84
+per::ttr,Ttr,per,84
+hashtag::trumpvlog,#trumpvlog,hashtag,83
+org::law enforcement,Law Enforcement,org,83
+org::ma,Ma,org,83
+per::barack obama,Barack Obama,per,83
+per::joe b,Joe B,per,83
+mention::piersmorgan,@piersmorgan,mention,82
+org::unselect committee,Unselect Committee,org,82
+per::elosi,Elosi,per,82
+per::xi,Xi,per,82
+mention::melaniatrump,@melaniatrump,mention,81
+org::ice,Ice,org,81
+per::bill,Bill,per,81
+per::marco rubio,Marco Rubio,per,81
+per::chris,Chris,per,80
+per::eric,Eric,per,80
+per::mark,Mark,per,80
+per::z,Z,per,80
+hashtag::draintheswamp,#draintheswamp,hashtag,79
+hashtag::trump2024,#trump2024,hashtag,79
+loc::portland,Portland,loc,79
+loc::r,R,loc,79
+loc::state of,State Of,loc,79
+mention::hillaryclinton,@hillaryclinton,mention,79
+mention::newsmax_media,@newsmax_media,mention,79
+mention::senategop,@senategop,mention,79
+org::celeba,Celeba,org,79
+per::nancy,Nancy,per,79
+mention::charliekirk11,@charliekirk11,mention,77
+mention::trumpwarroom,@trumpwarroom,mention,77
+org::i,I,org,77
+org::itbar,Itbar,org,77
+org::justice department,Justice Department,org,77
+org::macys,Macys,org,77
+per::don,Don,per,77
+per::ra,Ra,per,77
+per::scott,Scott,per,77
+per::tt romney,Tt Romney,per,77
+hashtag::trumpforpresident,#trumpforpresident,hashtag,76
+loc::india,India,loc,76
+mention::washingtonpost,@washingtonpost,mention,76
+org::navy,Navy,org,76
+per::paul ryan,Paul Ryan,per,76
+mention::geraldorivera,@geraldorivera,mention,75
+mention::karlrove,@karlrove,mention,75
+org::cnbc,Cnbc,org,75
+org::washington post,Washington Post,org,75
+per::mike pence,Mike Pence,per,75
+per::v,V,per,75
+hashtag::kag2020,#kag2020,hashtag,74
+org::donal,Donal,org,74
+org::macy ' s,Macy ' S,org,74
+org::national guard,National Guard,org,74
+org::dnc,Dnc,org,73
+per::mo,Mo,per,73
+per::w,W,per,73
+loc::turkey,Turkey,loc,72
+mention::jebbush,@jebbush,mention,72
+org::department of justice,Department Of Justice,org,72
+mention::dannyzuker,@dannyzuker,mention,71
+mention::realamericasvoicepresident,@realamericasvoicepresident,mention,71
+org::trumpchicago,Trumpchicago,org,71
+per::a james,A James,per,71
+mention::foxbusiness,@foxbusiness,mention,70
+per::gregg jarrett,Gregg Jarrett,per,70
+loc::atlanta,Atlanta,loc,69
+loc::sc,Sc,loc,69
+mention::wsj,@wsj,mention,69
+org::daca,Daca,org,69
+org::media,Media,org,69
+per::alexsalmond,Alexsalmond,per,69
+per::haley,Haley,per,69
+per::hunter,Hunter,per,69
+loc::venezuela,Venezuela,loc,68
+loc::west virginia,West Virginia,loc,68
+org::cia,Cia,org,68
+org::k,K,org,68
+org::twitter,Twitter,org,68
+per::michael,Michael,per,68
+per::ronald reagan,Ronald Reagan,per,68
+hashtag::covid19,#covid19,hashtag,67
+hashtag::votetrump,#votetrump,hashtag,67
+mention::realdonaldtrumpthe,@realdonaldtrumpthe,mention,67
+mention::yankees,@yankees,mention,67
+per::dan,Dan,per,67
+per::elo,Elo,per,67
+per::james comey,James Comey,per,67
+per::me,Me,per,67
+hashtag::trump2016https,#trump2016https,hashtag,66
+mention::dailycaller,@dailycaller,mention,66
+mention::randpaul,@randpaul,mention,66
+org::border patrol,Border Patrol,org,66
+per::fan,Fan,per,66
+loc::wall,Wall,loc,65
+mention::devinnunes,@devinnunes,mention,65
+mention::stevescalise,@stevescalise,mention,65
+org::opec,Opec,org,65
+per::chuck schum,Chuck Schum,per,65
+per::mueller,Mueller,per,65
+mention::judgejeanine,@judgejeanine,mention,64
+mention::kimstrassel,@kimstrassel,mention,64
+mention::mzhemingway,@mzhemingway,mention,64
+mention::tedcruz,@tedcruz,mention,64
+org::itbartnews,Itbartnews,org,64
+org::zero,Zero,org,64
+per::bragg,Bragg,per,64
+hashtag::usa,#usa,hashtag,63
+loc::mississippi,Mississippi,loc,63
+loc::philadelphia,Philadelphia,loc,63
+loc::puerto rico,Puerto Rico,loc,63
+mention::joebiden,@joebiden,mention,63
+org::yankees,Yankees,org,63
+per::desanti,Desanti,per,63
+per::kamala,Kamala,per,63
+per::reagan,Reagan,per,63
+loc::oklahoma,Oklahoma,loc,62
+mention::tuckercarlson,@tuckercarlson,mention,62
+org::nfl,Nfl,org,62
+org::oan,Oan,org,62
+per::jonathan turley,Jonathan Turley,per,62
+loc::ireland,Ireland,loc,61
+loc::state,State,loc,61
+mention::abc,@abc,mention,61
+mention::jessebwatters,@jessebwatters,mention,61
+mention::trumptowerny,@trumptowerny,mention,61
+org::icenbc,Icenbc,org,61
+org::newsmax _ media,Newsmax _ Media,org,61
+per::ma,Ma,per,61
+per::matt,Matt,per,61
+per::pre,Pre,per,61
+per::sc,Sc,per,61
+per::tt,Tt,per,61
+loc::benghazi,Benghazi,loc,60
+mention::fema,@fema,mention,60
+org::hamas,Hamas,org,60
+per::nikki haley,Nikki Haley,per,60
+loc::dallas,Dallas,loc,59
+mention::repandybiggsaz,@repandybiggsaz,mention,59
+org::rnc,Rnc,org,59
+per::kelly,Kelly,per,59
+loc::saudi arabia,Saudi Arabia,loc,58
+mention::brandiglanville,@brandiglanville,mention,58
+mention::bretbaier,@bretbaier,mention,58
+per::chris wallace,Chris Wallace,per,58
+loc::egypt,Egypt,loc,57
+loc::south korea,South Korea,loc,57
+mention::marcorubio,@marcorubio,mention,57
+org::mi,Mi,org,57
+org::randpaul,Randpaul,org,57
+org::stock market,Stock Market,org,57
+per::kevin,Kevin,per,57
+loc::alaska,Alaska,loc,56
+loc::detroit,Detroit,loc,56
+loc::illinois,Illinois,loc,56
+mention::nbcnews,@nbcnews,mention,56
+mention::repmattgaetz,@repmattgaetz,mention,56
+org::federal reserve,Federal Reserve,org,56
+org::icagrea,Icagrea,org,56
+hashtag::bigleaguetruth,#bigleaguetruth,hashtag,55
+mention::morning_joe,@morning_joe,mention,55
+mention::repdougcollins,@repdougcollins,mention,55
+mention::repleezeldin,@repleezeldin,mention,55
+mention::thehill,@thehill,mention,55
+org::facebook,Facebook,org,55
+org::msdnc,Msdnc,org,55
+per::chuck,Chuck,per,55
+per::fox,Fox,per,55
+per::ivan,Ivan,per,55
+per::melania,Melania,per,55
+per::schum,Schum,per,55
+per::tom,Tom,per,55
+loc::pa,Pa,loc,54
+mention::usdot,@usdot,mention,54
+org::me,Me,org,54
+org::social security,Social Security,org,54
+org::wall street journal,Wall Street Journal,org,54
+per::kim jong un,Kim Jong Un,per,54
+loc::los angeles,Los Angeles,loc,53
+mention::jsolomonreports,@jsolomonreports,mention,53
+org::army,Army,org,53
+per::chris christie,Chris Christie,per,53
+per::dansca,Dansca,per,53
+per::lee,Lee,per,53
+per::michael cohen,Michael Cohen,per,53
+per::rosie,Rosie,per,53
+per::y,Y,per,53
+loc::world,World,loc,52
+mention::agschneiderman,@agschneiderman,mention,52
+mention::drudge_report,@drudge_report,mention,52
+mention::mcuban,@mcuban,mention,52
+mention::sentedcruz,@sentedcruz,mention,52
+org::apple,Apple,org,52
+org::cpac,Cpac,org,52
+mention::clewandowski_,@clewandowski_,mention,51
+mention::nypost,@nypost,mention,51
+mention::presssec,@presssec,mention,51
+org::energy,Energy,org,51
+org::loudobbs,Loudobbs,org,51
+org::treasury,Treasury,org,51
+per::liz cheney,Liz Cheney,per,51
+per::shi,Shi,per,51
+hashtag::debate,#debate,hashtag,50
+loc::u,U,loc,50
+loc::uk,Uk,loc,50
+org::cdc,Cdc,org,50
+org::e,E,org,50
+org::google,Google,org,50
+per::dannyz,Dannyz,per,50
+per::karl rove,Karl Rove,per,50
+hashtag::truth,#truth,hashtag,49
+loc::bedminster,Bedminster,loc,49
+loc::c,C,loc,49
+loc::trump,Trump,loc,49
+mention::bucksexton,@bucksexton,mention,49
+mention::ericbolling,@ericbolling,mention,49
+mention::todayshow,@todayshow,mention,49
+org::ap,Ap,org,49
+org::national security,National Security,org,49
+org::the new york times,The New York Times,org,49
+per::bill barr,Bill Barr,per,49
+per::brian,Brian,per,49
+per::elizabeth warren,Elizabeth Warren,per,49
+hashtag::imwithyou,#imwithyou,hashtag,48
+loc::maryland,Maryland,loc,48
+loc::united kingdom,United Kingdom,loc,48
+loc::y,Y,loc,48
+mention::anncoulter,@anncoulter,mention,48
+mention::byronyork,@byronyork,mention,48
+mention::missuniverse,@missuniverse,mention,48
+mention::nflcommish,@nflcommish,mention,48
+mention::politico,@politico,mention,48
+org::antifa,Antifa,org,48
+org::co,Co,org,48
+org::nbcnews,Nbcnews,org,48
+per::de,De,per,48
+per::kim,Kim,per,48
+loc::minneapolis,Minneapolis,loc,47
+loc::vietnam,Vietnam,loc,47
+mention::rosie,@rosie,mention,47
+mention::vanityfair,@vanityfair,mention,47
+per::joan,Joan,per,47
+loc::maine,Maine,loc,46
+mention::newtgingrich,@newtgingrich,mention,46
+org::big tech,Big Tech,org,46
+org::border security,Border Security,org,46
+org::byronyork,Byronyork,org,46
+org::ivankatrump,Ivankatrump,org,46
+per::i willis,I Willis,per,46
+per::nikki,Nikki,per,46
+per::robert mueller,Robert Mueller,per,46
+loc::montana,Montana,loc,45
+loc::n,N,loc,45
+loc::utah,Utah,loc,45
+mention::nymag,@nymag,mention,45
+mention::omarosa,@omarosa,mention,45
+mention::trumpnewyork,@trumpnewyork,mention,45
+org::defense,Defense,org,45
+per::f,F,per,45
+per::so,So,per,45
+hashtag::icymi,#icymi,hashtag,44
+hashtag::trumptrain,#trumptrain,hashtag,44
+loc::boston,Boston,loc,44
+loc::san francisco,San Francisco,loc,44
+mention::saracarterdc,@saracarterdc,mention,44
+mention::varneyco,@varneyco,mention,44
+org::federal,Federal,org,44
+org::in,In,org,44
+org::party,Party,org,44
+org::secret service,Secret Service,org,44
+org::wwe,Wwe,org,44
+per::danscavin,Danscavin,per,44
+per::graham,Graham,per,44
+per::jeff,Jeff,per,44
+per::st,St,per,44
+per::ted,Ted,per,44
+hashtag::demdebate,#demdebate,hashtag,43
+loc::charlotte,Charlotte,loc,43
+loc::fl,Fl,loc,43
+loc::kansas,Kansas,loc,43
+mention::cnbc,@cnbc,mention,43
+mention::joan_rivers,@joan_rivers,mention,43
+mention::kayleighmcenany,@kayleighmcenany,mention,43
+mention::trumpgolfla,@trumpgolfla,mention,43
+mention::trumpscotland,@trumpscotland,mention,43
+mention::trumpsoho,@trumpsoho,mention,43
+org::left,Left,org,43
+org::patriots,Patriots,org,43
+per::barackoba,Barackoba,per,43
+hashtag::fitn,#fitn,hashtag,42
+loc::baltimore,Baltimore,loc,42
+loc::ca,Ca,loc,42
+loc::libya,Libya,loc,42
+loc::nebraska,Nebraska,loc,42
+loc::paris,Paris,loc,42
+loc::wyoming,Wyoming,loc,42
+loc::z,Z,loc,42
+mention::chucktodd,@chucktodd,mention,42
+mention::marshablackburn,@marshablackburn,mention,42
+mention::squawkcnbc,@squawkcnbc,mention,42
+org::fox & friends,Fox & Friends,org,42
+per::barr,Barr,per,42
+per::bill clinton,Bill Clinton,per,42
+per::n,N,per,42
+per::“ trump,“ Trump,per,42
+hashtag::gopdebate,#gopdebate,hashtag,41
+hashtag::trumprally,#trumprally,hashtag,41
+loc::dubai,Dubai,loc,41
+loc::hawaii,Hawaii,loc,41
+loc::london,London,loc,41
+loc::nj,Nj,loc,41
+mention::andrewcmccarthy,@andrewcmccarthy,mention,41
+mention::briankempga,@briankempga,mention,41
+mention::cdcgov,@cdcgov,mention,41
+mention::msnbc,@msnbc,mention,41
+mention::nhc_atlantic,@nhc_atlantic,mention,41
+org::enforcement,Enforcement,org,41
+org::fake news cnn,Fake News Cnn,org,41
+org::fema,Fema,org,41
+per::jack,Jack,per,41
+hashtag::crookedhillary,#crookedhillary,hashtag,40
+hashtag::usmca,#usmca,hashtag,40
+loc::b,B,loc,40
+loc::fulton county,Fulton County,loc,40
+loc::orlando,Orlando,loc,40
+loc::pittsburgh,Pittsburgh,loc,40
+mention::oksanatrump,@oksanatrump,mention,40
+mention::rudygiuliani,@rudygiuliani,mention,40
+mention::trumplasvegas,@trumplasvegas,mention,40
+mention::wwe,@wwe,mention,40
+org::do,Do,org,40
+org::harvard,Harvard,org,40
+org::trump national doral,Trump National Doral,org,40
+org::trumpnewyork,Trumpnewyork,org,40
+org::united,United,org,40
+per::adam,Adam,per,40
+mention::akapr0b0ss,@akapr0b0ss,mention,39
+mention::amspec,@amspec,mention,39
+mention::dcexaminer,@dcexaminer,mention,39
+mention::nra,@nra,mention,39
+mention::realdonaldtrumpthank,@realdonaldtrumpthank,mention,39
+org::court,Court,org,39
+org::government,Government,org,39
+org::state,State,org,39
+org::vanity fair,Vanity Fair,org,39
+per::carson,Carson,per,39
+per::meg,Meg,per,39
+per::paul,Paul,per,39
+hashtag::coronavirus,#coronavirus,hashtag,38
+mention::60minutes,@60minutes,mention,38
+mention::mikeandmike,@mikeandmike,mention,38
+mention::speakerpelosi,@speakerpelosi,mention,38
+mention::thegarybusey,@thegarybusey,mention,38
+org::al,Al,org,38
+org::am,Am,org,38
+org::mainstream media,Mainstream Media,org,38
+org::news media,News Media,org,38
+per::brand,Brand,per,38
+per::ed,Ed,per,38
+per::iti,Iti,per,38
+per::lisa page,Lisa Page,per,38
+per::po,Po,per,38
+per::tucker carlson,Tucker Carlson,per,38
+loc::aberdeen,Aberdeen,loc,37
+loc::arkansas,Arkansas,loc,37
+loc::australia,Australia,loc,37
+loc::kenya,Kenya,loc,37
+mention::fruitsnacks,@fruitsnacks,mention,37
+mention::greggutfeld,@greggutfeld,mention,37
+org::european union,European Union,org,37
+org::hillaryclinton,Hillaryclinton,org,37
+org::ig,Ig,org,37
+org::new york post,New York Post,org,37
+org::nypd,Nypd,org,37
+org::obama administration,Obama Administration,org,37
+org::office,Office,org,37
+org::trumpdoral,Trumpdoral,org,37
+org::tuckercarlson,Tuckercarlson,org,37
+per::abe,Abe,per,37
+per::danny,Danny,per,37
+per::john mccain,John Mccain,per,37
+per::new,New,per,37
+per::rand paul,Rand Paul,per,37
+per::ron desantis,Ron Desantis,per,37
+loc::mi,Mi,loc,36
+loc::moscow,Moscow,loc,36
+mention::ap,@ap,mention,36
+mention::cbsnews,@cbsnews,mention,36
+mention::leezagibbons,@leezagibbons,mention,36
+mention::rsbntrump,@rsbntrump,mention,36
+org::&,&,org,36
+org::abc news,Abc News,org,36
+org::congressional,Congressional,org,36
+org::fruitsnacks,Fruitsnacks,org,36
+org::lindseygraham,Lindseygraham,org,36
+org::state department,State Department,org,36
+org::united nations,United Nations,org,36
+org::va,Va,org,36
+per::cry,Cry,per,36
+per::ken paxton,Ken Paxton,per,36
+per::kimstrassel,Kimstrassel,per,36
+per::rick scott,Rick Scott,per,36
+per::sean,Sean,per,36
+hashtag::tbt,#tbt,hashtag,35
+loc::nh,Nh,loc,35
+loc::york,York,loc,35
+mention::johnwhuber,@johnwhuber,mention,35
+org::air force,Air Force,org,35
+org::is,Is,org,35
+org::un,Un,org,35
+org::wsj,Wsj,org,35
+per::dan patrick,Dan Patrick,per,35
+per::smith,Smith,per,35
+per::winston churchill,Winston Churchill,per,35
+loc::j,J,loc,34
+loc::wall street,Wall Street,loc,34
+mention::kenyamoore,@kenyamoore,mention,34
+mention::lord_sugar,@lord_sugar,mention,34
+mention::lrihendry,@lrihendry,mention,34
+mention::repadamschiff,@repadamschiff,mention,34
+org::biden,Biden,org,34
+org::first,First,org,34
+org::homeland security,Homeland Security,org,34
+org::house of representatives,House Of Representatives,org,34
+org::nasa,Nasa,org,34
+org::team,Team,org,34
+per::arthur engoron,Arthur Engoron,per,34
+per::dems,Dems,per,34
+per::joan rivers,Joan Rivers,per,34
+per::rivers,Rivers,per,34
+per::tim,Tim,per,34
+per::vladimir putin,Vladimir Putin,per,34
+hashtag::dorian,#dorian,hashtag,33
+loc::delaware,Delaware,loc,33
+loc::la,La,loc,33
+loc::p,P,loc,33
+loc::phoenix,Phoenix,loc,33
+loc::vegas,Vegas,loc,33
+mention::brithume,@brithume,mention,33
+mention::cnnpolitics,@cnnpolitics,mention,33
+mention::howardstern,@howardstern,mention,33
+mention::kilmeade,@kilmeade,mention,33
+mention::parscale,@parscale,mention,33
+mention::realdonaldtrumpi,@realdonaldtrumpi,mention,33
+org::judicial watch,Judicial Watch,org,33
+org::judicialwatch,Judicialwatch,org,33
+org::just the news,Just The News,org,33
+org::lindseygrah,Lindseygrah,org,33
+org::the washington post,The Washington Post,org,33
+org::vanityfair,Vanityfair,org,33
+per::john bolton,John Bolton,per,33
+per::sean hannity,Sean Hannity,per,33
+per::tom brady,Tom Brady,per,33
+loc::great country,Great Country,loc,32
+mention::chuckgrassley,@chuckgrassley,mention,32
+mention::realdonaldtrumpjoin,@realdonaldtrumpjoin,mention,32
+mention::richardgrenell,@richardgrenell,mention,32
+mention::secpompeo,@secpompeo,mention,32
+mention::tigerwoods,@tigerwoods,mention,32
+org::celeb,Celeb,org,32
+org::macy,Macy,org,32
+org::military and vets,Military And Vets,org,32
+per::abraham lincoln,Abraham Lincoln,per,32
+per::bob,Bob,per,32
+per::christie,Christie,per,32
+per::greg,Greg,per,32
+per::james come,James Come,per,32
+per::jon stewart,Jon Stewart,per,32
+per::mccain,Mccain,per,32
+per::na,Na,per,32
+per::pete,Pete,per,32
+per::si,Si,per,32
+hashtag::fakenews,#fakenews,hashtag,31
+loc::africa,Africa,loc,31
+loc::italy,Italy,loc,31
+loc::ne,Ne,loc,31
+loc::whitehouse,Whitehouse,loc,31
+mention::gatewaypundit,@gatewaypundit,mention,31
+mention::hawleymo,@hawleymo,mention,31
+mention::housegop,@housegop,mention,31
+mention::trumpwaikiki,@trumpwaikiki,mention,31
+org::campaign,Campaign,org,31
+org::gop,Gop,org,31
+org::united states supreme court,United States Supreme Court,org,31
+per::albert einstein,Albert Einstein,per,31
+per::bill maher,Bill Maher,per,31
+per::ccabe,Ccabe,per,31
+per::donaldt,Donaldt,per,31
+per::engor,Engor,per,31
+per::engoron,Engoron,per,31
+per::jeff sessions,Jeff Sessions,per,31
+per::joeb,Joeb,per,31
+per::kevin mccarthy,Kevin Mccarthy,per,31
+per::max,Max,per,31
+per::omarosa,Omarosa,per,31
+per::tu,Tu,per,31
+hashtag::obamacare,#obamacare,hashtag,30
+loc::doral,Doral,loc,30
+loc::manchester,Manchester,loc,30
+loc::nc,Nc,loc,30
+loc::new mexico,New Mexico,loc,30
+loc::t,T,loc,30
+mention::abeshinzo,@abeshinzo,mention,30
+mention::dhsgov,@dhsgov,mention,30
+mention::elisestefanik,@elisestefanik,mention,30
+mention::krauthammer,@krauthammer,mention,30
+mention::netanyahu,@netanyahu,mention,30
+mention::nro,@nro,mention,30
+mention::senjohnbarrasso,@senjohnbarrasso,mention,30
+mention::senronjohnson,@senronjohnson,mention,30
+mention::teamcavuto,@teamcavuto,mention,30
+mention::trumptoronto,@trumptoronto,mention,30
+mention::trumpturnberry,@trumpturnberry,mention,30
+mention::tvnewshq,@tvnewshq,mention,30
+org::great people of,Great People Of,org,30
+org::nra,Nra,org,30
+org::rsbn,Rsbn,org,30
+org::virus task force,Virus Task Force,org,30
+per::al,Al,per,30
+per::ania,Ania,per,30
+per::ben carson,Ben Carson,per,30
+per::chuck schumer,Chuck Schumer,per,30
+per::chuck todd,Chuck Todd,per,30
+per::il,Il,per,30
+per::jo,Jo,per,30
+per::kris,Kris,per,30
+per::michael flynn,Michael Flynn,per,30
+per::mitch,Mitch,per,30
+per::robert,Robert,per,30
+per::rod,Rod,per,30
+per::roger stone,Roger Stone,per,30
+per::steele,Steele,per,30
+per::tom homan,Tom Homan,per,30
+hashtag::donaldtrump,#donaldtrump,hashtag,29
+loc::capitol,Capitol,loc,29
+loc::chinatown,Chinatown,loc,29
+loc::me,Me,loc,29
+loc::toronto,Toronto,loc,29
+loc::w,W,loc,29
+loc::west africa,West Africa,loc,29
+mention::cadillacchamp,@cadillacchamp,mention,29
+mention::jackposobiec,@jackposobiec,mention,29
+mention::kellyannepolls,@kellyannepolls,mention,29
+mention::meetthepress,@meetthepress,mention,29
+mention::msvivicafox,@msvivicafox,mention,29
+mention::therealtrumpsupporters,@therealtrumpsupporters,mention,29
+mention::traceadkins,@traceadkins,mention,29
+mention::washtimes,@washtimes,mention,29
+org::biden administration,Biden Administration,org,29
+org::dc,Dc,org,29
+org::democratic party,Democratic Party,org,29
+org::department of injustice,Department Of Injustice,org,29
+org::kamala,Kamala,org,29
+org::trump organization,Trump Organization,org,29
+per::amy coney barrett,Amy Coney Barrett,per,29
+per::andrew,Andrew,per,29
+per::andrew mccabe,Andrew Mccabe,per,29
+per::bob mueller,Bob Mueller,per,29
+per::christopher steele,Christopher Steele,per,29
+per::dj,Dj,per,29
+per::gray,Gray,per,29
+per::h,H,per,29
+per::jesse watt,Jesse Watt,per,29
+per::jim jordan,Jim Jordan,per,29
+per::jon,Jon,per,29
+per::laura ingraham,Laura Ingraham,per,29
+per::mike bloomberg,Mike Bloomberg,per,29
+per::mike johnson,Mike Johnson,per,29
+per::powell,Powell,per,29
+per::steve job,Steve Job,per,29
+per::zag,Zag,per,29
+hashtag::gop,#gop,hashtag,28
+hashtag::oscars,#oscars,hashtag,28
+loc::atlantic city,Atlantic City,loc,28
+loc::brazil,Brazil,loc,28
+loc::ma,Ma,loc,28
+loc::o,O,loc,28
+loc::va,Va,loc,28
+loc::washington d. c,Washington D. C,loc,28
+mention::gopoversight,@gopoversight,mention,28
+mention::huffingtonpost,@huffingtonpost,mention,28
+mention::israel,@israel,mention,28
+mention::joenbc,@joenbc,mention,28
+mention::kevinjonas,@kevinjonas,mention,28
+mention::pennjillette,@pennjillette,mention,28
+mention::sentomcotton,@sentomcotton,mention,28
+mention::spiritualstreetfighter,@spiritualstreetfighter,mention,28
+org::ag,Ag,org,28
+org::committee,Committee,org,28
+org::courts,Courts,org,28
+org::iden,Iden,org,28
+org::irs,Irs,org,28
+org::johnwh,Johnwh,org,28
+org::repm,Repm,org,28
+org::the wall street journal,The Wall Street Journal,org,28
+per::di,Di,per,28
+per::el,El,per,28
+per::frank,Frank,per,28
+per::george,George,per,28
+per::hu,Hu,per,28
+per::jean,Jean,per,28
+per::li,Li,per,28
+per::lindsey graham,Lindsey Graham,per,28
+per::lord,Lord,per,28
+per::lou,Lou,per,28
+per::pete hegseth,Pete Hegseth,per,28
+per::peter strzok,Peter Strzok,per,28
+per::rick,Rick,per,28
+per::rrick garland,Rrick Garland,per,28
+per::troy,Troy,per,28
+hashtag::election2022,#election2022,hashtag,27
+hashtag::saveamericarally,#saveamericarally,hashtag,27
+loc::atlantic,Atlantic,loc,27
+loc::cuba,Cuba,loc,27
+loc::earth,Earth,loc,27
+loc::l,L,loc,27
+loc::north dakota,North Dakota,loc,27
+loc::pacific ocean,Pacific Ocean,loc,27
+loc::poland,Poland,loc,27
+loc::reno,Reno,loc,27
+loc::seattle,Seattle,loc,27
+loc::town hall,Town Hall,loc,27
+mention::katrinapierson,@katrinapierson,mention,27
+mention::nydailynews,@nydailynews,mention,27
+mention::seanmdav,@seanmdav,mention,27
+mention::sternshow,@sternshow,mention,27
+mention::thebradfordfile,@thebradfordfile,mention,27
+org::florida,Florida,org,27
+org::ford,Ford,org,27
+org::police,Police,org,27
+org::spiritualstreetfighter,Spiritualstreetfighter,org,27
+org::the failing new york times,The Failing New York Times,org,27
+org::truth social,Truth Social,org,27
+org::univision,Univision,org,27
+per::brennan,Brennan,per,27
+per::cconnell,Cconnell,per,27
+per::cohen,Cohen,per,27
+per::erictrump,Erictrump,per,27
+per::pam bondi,Pam Bondi,per,27
+per::ros,Ros,per,27
+per::rupert murdoch,Rupert Murdoch,per,27
+per::she,She,per,27
+per::”,”,per,27
+hashtag::teamtrump,#teamtrump,hashtag,26
+hashtag::trumppence16,#trumppence16,hashtag,26
+hashtag::vpdebate,#vpdebate,hashtag,26
+loc::argentina,Argentina,loc,26
+loc::ga,Ga,loc,26
+loc::jerusalem,Jerusalem,loc,26
+loc::nashville,Nashville,loc,26
+loc::tampa,Tampa,loc,26
+mention::macmiller,@macmiller,mention,26
+mention::perduesenate,@perduesenate,mention,26
+mention::stevehiltonx,@stevehiltonx,mention,26
+mention::trish_regan,@trish_regan,mention,26
+mention::trumpferrypoint,@trumpferrypoint,mention,26
+mention::usnavy,@usnavy,mention,26
+mention::vincemcmahon,@vincemcmahon,mention,26
+org::all,All,org,26
+org::as,As,org,26
+org::cbsnews,Cbsnews,org,26
+org::cnnpolitics,Cnnpolitics,org,26
+org::elon,Elon,org,26
+org::farmers,Farmers,org,26
+org::fda,Fda,org,26
+org::greggj,Greggj,org,26
+org::icag,Icag,org,26
+org::iowa,Iowa,org,26
+org::joenbc,Joenbc,org,26
+org::kcnbc,Kcnbc,org,26
+org::muslim brotherhood,Muslim Brotherhood,org,26
+org::tea party,Tea Party,org,26
+per::anthony weiner,Anthony Weiner,per,26
+per::as,As,per,26
+per::en,En,per,26
+per::franklin,Franklin,per,26
+per::gavin newscum,Gavin Newscum,per,26
+per::go,Go,per,26
+per::ha,Ha,per,26
+per::john kerry,John Kerry,per,26
+per::snowden,Snowden,per,26
+per::tim scott,Tim Scott,per,26
+loc::pakistan,Pakistan,loc,25
+mention::cspan,@cspan,mention,25
+mention::danamira,@danamira,mention,25
+mention::diamondandsilk,@diamondandsilk,mention,25
+mention::dineshdsouza,@dineshdsouza,mention,25
+mention::eddierispone,@eddierispone,mention,25
+mention::jacknicklaus,@jacknicklaus,mention,25
+mention::jasoninthehouse,@jasoninthehouse,mention,25
+mention::laraleatrump,@laraleatrump,mention,25
+mention::macy,@macy,mention,25
+mention::ricksantorum,@ricksantorum,mention,25
+mention::rnc,@rnc,mention,25
+mention::sarahpalinusa,@sarahpalinusa,mention,25
+org::60 minutes,60 Minutes,org,25
+org::cele,Cele,org,25
+org::dhs,Dhs,org,25
+org::el,El,org,25
+org::grea,Grea,org,25
+org::letterman,Letterman,org,25
+org::new,New,org,25
+org::texas elected leadership team,Texas Elected Leadership Team,org,25
+org::trumpscotland,Trumpscotland,org,25
+org::us,Us,org,25
+per::ch,Ch,per,25
+per::don carter,Don Carter,per,25
+per::fred,Fred,per,25
+per::henry ford,Henry Ford,per,25
+per::ine waters,Ine Waters,per,25
+per::jay,Jay,per,25
+per::john kelly,John Kelly,per,25
+per::laura,Laura,per,25
+per::oh,Oh,per,25
+per::sa,Sa,per,25
+per::warren,Warren,per,25
+per::wei,Wei,per,25
+hashtag::debates2016,#debates2016,hashtag,24
+hashtag::kag,#kag,hashtag,24
+hashtag::paycheckprotectionprogram,#paycheckprotectionprogram,hashtag,24
+loc::border wall,Border Wall,loc,24
+loc::connecticut,Connecticut,loc,24
+loc::florence,Florence,loc,24
+loc::gaza,Gaza,loc,24
+loc::tx,Tx,loc,24
+loc::u. k,U. K,loc,24
+mention::buffalobills,@buffalobills,mention,24
+mention::forbes,@forbes,mention,24
+mention::jimmyfallon,@jimmyfallon,mention,24
+mention::late_show,@late_show,mention,24
+mention::missusa,@missusa,mention,24
+mention::nbcsnl,@nbcsnl,mention,24
+mention::realdonaldtrumpthis,@realdonaldtrumpthis,mention,24
+mention::richlowry,@richlowry,mention,24
+mention::rncresearch,@rncresearch,mention,24
+mention::sendavidperdue,@sendavidperdue,mention,24
+org::abc fake news,Abc Fake News,org,24
+org::barackoba,Barackoba,org,24
+org::clinton foundation,Clinton Foundation,org,24
+org::hu,Hu,org,24
+org::iden administration,Iden Administration,org,24
+org::isa,Isa,org,24
+org::jobs,Jobs,org,24
+org::nafta,Nafta,org,24
+org::pentagon,Pentagon,org,24
+org::reuters,Reuters,org,24
+org::saracarterdc,Saracarterdc,org,24
+org::zer,Zer,org,24
+per::bb,Bb,per,24
+per::brian kemp,Brian Kemp,per,24
+per::do,Do,per,24
+per::elizabeth,Elizabeth,per,24
+per::hannity,Hannity,per,24
+per::joebiden,Joebiden,per,24
+per::ny,Ny,per,24
+per::rudygiulian,Rudygiulian,per,24
+per::sarah,Sarah,per,24
+per::se,Se,per,24
+per::ubi,Ubi,per,24
+hashtag::agenda47,#agenda47,hashtag,23
+hashtag::iacaucus,#iacaucus,hashtag,23
+hashtag::lesm,#lesm,hashtag,23
+hashtag::theapprentice,#theapprentice,hashtag,23
+loc::charlottesville,Charlottesville,loc,23
+loc::el paso,El Paso,loc,23
+loc::houston,Houston,loc,23
+loc::k,K,loc,23
+loc::massachusetts,Massachusetts,loc,23
+loc::trump national golf club,Trump National Golf Club,loc,23
+loc::turnberry,Turnberry,loc,23
+mention::arseniohall,@arseniohall,mention,23
+mention::cpacnews,@cpacnews,mention,23
+mention::dmregister,@dmregister,mention,23
+mention::espn,@espn,mention,23
+mention::frankluntz,@frankluntz,mention,23
+mention::genflynn,@genflynn,mention,23
+mention::gstephanopoulos,@gstephanopoulos,mention,23
+mention::hughhewitt,@hughhewitt,mention,23
+mention::ianziering,@ianziering,mention,23
+mention::iapolls20222024,@iapolls20222024,mention,23
+mention::istandwithtrump47,@istandwithtrump47,mention,23
+mention::katiepavlich,@katiepavlich,mention,23
+mention::kimguilfoyle,@kimguilfoyle,mention,23
+mention::kloeffler,@kloeffler,mention,23
+mention::petehegseth,@petehegseth,mention,23
+mention::realjameswoods,@realjameswoods,mention,23
+mention::senjoniernst,@senjoniernst,mention,23
+mention::time,@time,mention,23
+org::epa,Epa,org,23
+org::inos,Inos,org,23
+org::military & vets,Military & Vets,org,23
+org::nh,Nh,org,23
+org::ohio,Ohio,org,23
+org::pa,Pa,org,23
+org::se,Se,org,23
+org::u. s. army,U. S. Army,org,23
+org::z,Z,org,23
+org::“,“,org,23
+per::adam schi,Adam Schi,per,23
+per::brett kavanaugh,Brett Kavanaugh,per,23
+per::howard,Howard,per,23
+per::jeffrey lord,Jeffrey Lord,per,23
+per::john brennan,John Brennan,per,23
+per::juan merchan,Juan Merchan,per,23
+per::karl,Karl,per,23
+per::lisa monaco,Lisa Monaco,per,23
+per::omar,Omar,per,23
+per::rump,Rump,per,23
+loc::camp david,Camp David,loc,22
+loc::ussi,Ussi,loc,22
+loc::wilmington,Wilmington,loc,22
+mention::barbarajwalters,@barbarajwalters,mention,22
+mention::davidjharrisjr,@davidjharrisjr,mention,22
+mention::dennisrodman,@dennisrodman,mention,22
+mention::doralresort,@doralresort,mention,22
+mention::emmanuelmacron,@emmanuelmacron,mention,22
+mention::foxnewssunday,@foxnewssunday,mention,22
+mention::jaketapper,@jaketapper,mention,22
+mention::jennaellisesq,@jennaellisesq,mention,22
+mention::kyleraccio,@kyleraccio,mention,22
+mention::mitchellvii,@mitchellvii,mention,22
+mention::nfl,@nfl,mention,22
+mention::pollwatch2020,@pollwatch2020,mention,22
+mention::realbencarson,@realbencarson,mention,22
+mention::sharylattkisson,@sharylattkisson,mention,22
+mention::speedy13,@speedy13,mention,22
+mention::stevedaines,@stevedaines,mention,22
+mention::timmurtaugh,@timmurtaugh,mention,22
+org::air force one,Air Force One,org,22
+org::ala,Ala,org,22
+org::do nothing democrats,Do Nothing Democrats,org,22
+org::failing new york times,Failing New York Times,org,22
+org::foxbusiness,Foxbusiness,org,22
+per::alan dershowitz,Alan Dershowitz,per,22
+per::ben,Ben,per,22
+per::cheney,Cheney,per,22
+per::garland,Garland,per,22
+per::hillaryclinton,Hillaryclinton,per,22
+per::howard stern,Howard Stern,per,22
+per::kimstras,Kimstras,per,22
+per::mini mike,Mini Mike,per,22
+per::ricksantorum,Ricksantorum,per,22
+per::roger ailes,Roger Ailes,per,22
+per::ryan,Ryan,per,22
+hashtag::sweepstweet,#sweepstweet,hashtag,21
+hashtag::tcot,#tcot,hashtag,21
+loc::asia,Asia,loc,21
+loc::butler,Butler,loc,21
+loc::d,D,loc,21
+loc::el salvador,El Salvador,loc,21
+loc::ferry point,Ferry Point,loc,21
+loc::h,H,loc,21
+loc::milwaukee,Milwaukee,loc,21
+loc::oregon,Oregon,loc,21
+loc::singapore,Singapore,loc,21
+loc::south africa,South Africa,loc,21
+loc::yor,Yor,loc,21
+mention::ariannahuff,@ariannahuff,mention,21
+mention::donlemon,@donlemon,mention,21
+mention::flgovscott,@flgovscott,mention,21
+mention::franklin_graham,@franklin_graham,mention,21
+mention::lizrnc,@lizrnc,mention,21
+mention::marthamaccallum,@marthamaccallum,mention,21
+mention::realdonaldtrumpa,@realdonaldtrumpa,mention,21
+mention::realdonaldtrumpso,@realdonaldtrumpso,mention,21
+mention::rsbnlive,@rsbnlive,mention,21
+mention::senatortimscott,@senatortimscott,mention,21
+mention::senrickscott,@senrickscott,mention,21
+mention::thebrodyfile,@thebrodyfile,mention,21
+mention::tonyxtwo,@tonyxtwo,mention,21
+mention::trumpcollection,@trumpcollection,mention,21
+mention::usminority,@usminority,mention,21
+org::boeing,Boeing,org,21
+org::deep state,Deep State,org,21
+org::forbes,Forbes,org,21
+org::fusion gps,Fusion Gps,org,21
+org::keystone,Keystone,org,21
+org::tpp,Tpp,org,21
+org::trump international,Trump International,org,21
+per::am,Am,per,21
+per::andy,Andy,per,21
+per::ania trump,Ania Trump,per,21
+per::brandon,Brandon,per,21
+per::brian williams,Brian Williams,per,21
+per::dan bishop,Dan Bishop,per,21
+per::i,I,per,21
+per::jerry,Jerry,per,21
+per::ki,Ki,per,21
+per::mac miller,Mac Miller,per,21
+per::maria bartiromo,Maria Bartiromo,per,21
+per::on musk,On Musk,per,21
+per::randy,Randy,per,21
+per::roger,Roger,per,21
+per::seanh,Seanh,per,21
+per::sh patel,Sh Patel,per,21
+per::tucker,Tucker,per,21
+hashtag::impeachment,#impeachment,hashtag,20
+hashtag::magarally,#magarally,hashtag,20
+hashtag::potus,#potus,hashtag,20
+hashtag::wwehof,#wwehof,hashtag,20
+loc::amazon,Amazon,loc,20
+loc::dayton,Dayton,loc,20
+loc::grand rapids,Grand Rapids,loc,20
+loc::il,Il,loc,20
+loc::uae,Uae,loc,20
+mention::fundanything,@fundanything,mention,20
+mention::heytammybruce,@heytammybruce,mention,20
+mention::jiminhofe,@jiminhofe,mention,20
+mention::liljon,@liljon,mention,20
+mention::repratcliffe,@repratcliffe,mention,20
+mention::uscg,@uscg,mention,20
+org::ailing new york times,Ailing New York Times,org,20
+org::appeals court,Appeals Court,org,20
+org::commercial division,Commercial Division,org,20
+org::doral,Doral,org,20
+org::enemy of the people,Enemy Of The People,org,20
+org::foxb,Foxb,org,20
+org::general motors,General Motors,org,20
+org::hbo,Hbo,org,20
+org::movement,Movement,org,20
+org::nation,Nation,org,20
+org::social media,Social Media,org,20
+org::teamcavuto,Teamcavuto,org,20
+org::trumplasv,Trumplasv,org,20
+org::usmc,Usmc,org,20
+per::bo,Bo,per,20
+per::gary,Gary,per,20
+per::greg kelly,Greg Kelly,per,20
+per::ive,Ive,per,20
+per::jason,Jason,per,20
+per::jay powell,Jay Powell,per,20
+per::jimmy carter,Jimmy Carter,per,20
+per::joe scarborough,Joe Scarborough,per,20
+per::josh,Josh,per,20
+per::lance armstrong,Lance Armstrong,per,20
+per::lisa,Lisa,per,20
+per::luther strange,Luther Strange,per,20
+per::maria,Maria,per,20
+per::net,Net,per,20
+per::nick,Nick,per,20
+per::pier,Pier,per,20
+per::retbai,Retbai,per,20
+per::rob,Rob,per,20
+per::ron desanct,Ron Desanct,per,20
+per::victor davis hanson,Victor Davis Hanson,per,20
+per::vince,Vince,per,20
+per::vince lombard,Vince Lombard,per,20
+hashtag::america,#america,hashtag,19
+hashtag::missuniverse,#missuniverse,hashtag,19
+hashtag::toobigtorig,#toobigtorig,hashtag,19
+hashtag::unga,#unga,hashtag,19
+loc::buffalo,Buffalo,loc,19
+loc::cincinnati,Cincinnati,loc,19
+loc::hollywood,Hollywood,loc,19
+loc::south dakota,South Dakota,loc,19
+loc::trump international golf club,Trump International Golf Club,loc,19
+loc::west point,West Point,loc,19
+mention::bahia6085,@bahia6085,mention,19
+mention::cahlrstorrie,@cahlrstorrie,mention,19
+mention::fackinpeter,@fackinpeter,mention,19
+mention::foxnewsinsider,@foxnewsinsider,mention,19
+mention::gma,@gma,mention,19
+mention::jennifer75ar,@jennifer75ar,mention,19
+mention::johnlegere,@johnlegere,mention,19
+mention::lawrence,@lawrence,mention,19
+mention::mattginellagc,@mattginellagc,mention,19
+mention::morningsmaria,@morningsmaria,mention,19
+mention::nasa,@nasa,mention,19
+mention::not_that_actor,@not_that_actor,mention,19
+mention::pianobecca,@pianobecca,mention,19
+mention::realdonaldtrumpwe,@realdonaldtrumpwe,mention,19
+mention::realdonaldtrumpwow,@realdonaldtrumpwow,mention,19
+mention::secazar,@secazar,mention,19
+mention::senthomtillis,@senthomtillis,mention,19
+mention::statedept,@statedept,mention,19
+mention::theblaze,@theblaze,mention,19
+mention::thisweekabc,@thisweekabc,mention,19
+mention::trumppanama,@trumppanama,mention,19
+mention::usatoday,@usatoday,mention,19
+org::border,Border,org,19
+org::cadillacchamp,Cadillacchamp,org,19
+org::club for no growth,Club For No Growth,org,19
+org::control,Control,org,19
+org::grahama,Grahama,org,19
+org::marine corps,Marine Corps,org,19
+org::pianobecca,Pianobecca,org,19
+org::republican national committee,Republican National Committee,org,19
+org::rt,Rt,org,19
+org::sc,Sc,org,19
+org::state house,State House,org,19
+org::time magazine,Time Magazine,org,19
+org::trumpf,Trumpf,org,19
+org::u. s. military,U. S. Military,org,19
+org::u. s. supreme court,U. S. Supreme Court,org,19
+per::andrew c. mccarthy,Andrew C. Mccarthy,per,19
+per::andy mccarthy,Andy Mccarthy,per,19
+per::crazy bernie,Crazy Bernie,per,19
+per::dorian,Dorian,per,19
+per::ed henry,Ed Henry,per,19
+per::gerald,Gerald,per,19
+per::han,Han,per,19
+per::jeff van drew,Jeff Van Drew,per,19
+per::jerry nadler,Jerry Nadler,per,19
+per::jimmy,Jimmy,per,19
+per::kerry,Kerry,per,19
+per::larry,Larry,per,19
+per::lindseygrah,Lindseygrah,per,19
+per::mac,Mac,per,19
+per::mark cuban,Mark Cuban,per,19
+per::pence,Pence,per,19
+per::peter,Peter,per,19
+per::ron desan,Ron Desan,per,19
+per::sanders,Sanders,per,19
+per::smus,Smus,per,19
+per::taylor,Taylor,per,19
+hashtag::phpnews,#phpnews,hashtag,18
+hashtag::trumpwon,#trumpwon,hashtag,18
+loc::ar,Ar,loc,18
+loc::aurora,Aurora,loc,18
+loc::cleveland,Cleveland,loc,18
+loc::i,I,loc,18
+loc::idaho,Idaho,loc,18
+loc::jacksonville,Jacksonville,loc,18
+loc::our country,Our Country,loc,18
+loc::philippines,Philippines,loc,18
+mention::alandersh,@alandersh,mention,18
+mention::backontrackusa,@backontrackusa,mention,18
+mention::charleshurt,@charleshurt,mention,18
+mention::govmikehuckabee,@govmikehuckabee,mention,18
+mention::hardball_chris,@hardball_chris,mention,18
+mention::jonahnro,@jonahnro,mention,18
+mention::patriotsincontrol,@patriotsincontrol,mention,18
+mention::realdonaldtrumpcongressman,@realdonaldtrumpcongressman,mention,18
+mention::realdonaldtrumpelection,@realdonaldtrumpelection,mention,18
+mention::ronmeier123,@ronmeier123,mention,18
+mention::thejtlewis,@thejtlewis,mention,18
+mention::tmobile,@tmobile,mention,18
+mention::trump_charlotte,@trump_charlotte,mention,18
+org::americ,Americ,org,18
+org::blm,Blm,org,18
+org::board,Board,org,18
+org::china,China,org,18
+org::davidjh,Davidjh,org,18
+org::first responders,First Responders,org,18
+org::late division,Late Division,org,18
+org::law & order,Law & Order,org,18
+org::national review,National Review,org,18
+org::nsa,Nsa,org,18
+org::patriotsi,Patriotsi,org,18
+org::rino,Rino,org,18
+org::texas,Texas,org,18
+org::times,Times,org,18
+org::trump university,Trump University,org,18
+org::u. s. navy,U. S. Navy,org,18
+per::bin laden,Bin Laden,per,18
+per::ce,Ce,per,18
+per::charlie kirk,Charlie Kirk,per,18
+per::da,Da,per,18
+per::derek,Derek,per,18
+per::don jr,Don Jr,per,18
+per::fty schiff,Fty Schiff,per,18
+per::her,Her,per,18
+per::in,In,per,18
+per::john bel edwards,John Bel Edwards,per,18
+per::kate,Kate,per,18
+per::kay,Kay,per,18
+per::lake,Lake,per,18
+per::larry kudlow,Larry Kudlow,per,18
+per::marco,Marco,per,18
+per::ri lake,Ri Lake,per,18
+per::rush limbaugh,Rush Limbaugh,per,18
+per::sam,Sam,per,18
+per::sich,Sich,per,18
+per::soleimani,Soleimani,per,18
+per::stephen,Stephen,per,18
+per::stephen miller,Stephen Miller,per,18
+per::susan rice,Susan Rice,per,18
+per::t gingrich,T Gingrich,per,18
+per::vance,Vance,per,18
+hashtag::chicago,#chicago,hashtag,17
+hashtag::hannity,#hannity,hashtag,17
+hashtag::supertuesday,#supertuesday,hashtag,17
+hashtag::vote,#vote,hashtag,17
+loc::bahrain,Bahrain,loc,17
+loc::brussels,Brussels,loc,17
+loc::center,Center,loc,17
+loc::co,Co,loc,17
+loc::g,G,loc,17
+loc::kamal,Kamal,loc,17
+loc::switzerland,Switzerland,loc,17
+mention::arifleischer,@arifleischer,mention,17
+mention::bretmichaels,@bretmichaels,mention,17
+mention::cvpayne,@cvpayne,mention,17
+mention::davidaxelrod,@davidaxelrod,mention,17
+mention::ewerickson,@ewerickson,mention,17
+mention::glennbeck,@glennbeck,mention,17
+mention::golfchannel,@golfchannel,mention,17
+mention::iontv,@iontv,mention,17
+mention::mattbevin,@mattbevin,mention,17
+mention::michaelcohen212,@michaelcohen212,mention,17
+mention::newsmaxtrump,@newsmaxtrump,mention,17
+mention::realdonaldtrumppage,@realdonaldtrumppage,mention,17
+mention::scottadamssays,@scottadamssays,mention,17
+mention::sencorygardner,@sencorygardner,mention,17
+mention::stevekingia,@stevekingia,mention,17
+mention::therightmelissa,@therightmelissa,mention,17
+mention::theviewtv,@theviewtv,mention,17
+org::amazon washington post,Amazon Washington Post,org,17
+org::bar,Bar,org,17
+org::ennsylvania,Ennsylvania,org,17
+org::fec,Fec,org,17
+org::gma,Gma,org,17
+org::justice,Justice,org,17
+org::mar,Mar,org,17
+org::military and veterans,Military And Veterans,org,17
+org::oprah,Oprah,org,17
+org::post,Post,org,17
+org::radical left lunatics,Radical Left Lunatics,org,17
+org::realbencarson,Realbencarson,org,17
+org::state of the union,State Of The Union,org,17
+org::tr,Tr,org,17
+org::trump national,Trump National,org,17
+org::trumptow,Trumptow,org,17
+org::trumpturnberry,Trumpturnberry,org,17
+org::trumpw,Trumpw,org,17
+org::turnberry,Turnberry,org,17
+org::yale,Yale,org,17
+per::ba,Ba,per,17
+per::barack,Barack,per,17
+per::charles,Charles,per,17
+per::comey,Comey,per,17
+per::d vance,D Vance,per,17
+per::dana white,Dana White,per,17
+per::din,Din,per,17
+per::greg abbott,Greg Abbott,per,17
+per::josh hawley,Josh Hawley,per,17
+per::kai,Kai,per,17
+per::katie,Katie,per,17
+per::michelle,Michelle,per,17
+per::neil cavuto,Neil Cavuto,per,17
+per::phil,Phil,per,17
+per::schiff,Schiff,per,17
+per::ta,Ta,per,17
+per::ted wheeler,Ted Wheeler,per,17
+per::tom tiffany,Tom Tiffany,per,17
+per::tony,Tony,per,17
+per::trace,Trace,per,17
+hashtag::breaking,#breaking,hashtag,16
+hashtag::florence,#florence,hashtag,16
+hashtag::magahttps,#magahttps,hashtag,16
+hashtag::snl,#snl,hashtag,16
+hashtag::trump16,#trump16,hashtag,16
+loc::bronx,Bronx,loc,16
+loc::capitol hill,Capitol Hill,loc,16
+loc::greenville,Greenville,loc,16
+loc::isis,Isis,loc,16
+loc::neva,Neva,loc,16
+loc::panama,Panama,loc,16
+loc::rose garden,Rose Garden,loc,16
+loc::vancouver,Vancouver,loc,16
+loc::west palm beach,West Palm Beach,loc,16
+loc::wi,Wi,loc,16
+mention::ac360,@ac360,mention,16
+mention::belllabooo13,@belllabooo13,mention,16
+mention::bennyjohnson,@bennyjohnson,mention,16
+mention::bobvanderplaats,@bobvanderplaats,mention,16
+mention::cher,@cher,mention,16
+mention::intheelections,@intheelections,mention,16
+mention::jenniferjjacobs,@jenniferjjacobs,mention,16
+mention::joemccuiston,@joemccuiston,mention,16
+mention::nextrevfnc,@nextrevfnc,mention,16
+mention::pressjournal,@pressjournal,mention,16
+mention::realamericasvoicewe,@realamericasvoicewe,mention,16
+mention::reince,@reince,mention,16
+mention::rsbnwatch,@rsbnwatch,mention,16
+mention::scottwalker,@scottwalker,mention,16
+mention::senjohnthune,@senjohnthune,mention,16
+mention::stephenbaldwin7,@stephenbaldwin7,mention,16
+mention::sunnynguyen,@sunnynguyen,mention,16
+mention::toket,@toket,mention,16
+mention::trumpgolfdc,@trumpgolfdc,mention,16
+mention::turnberrybuzz,@turnberrybuzz,mention,16
+org::and,And,org,16
+org::bama,Bama,org,16
+org::big pharma,Big Pharma,org,16
+org::ch,Ch,org,16
+org::clinton,Clinton,org,16
+org::club for growth,Club For Growth,org,16
+org::comcast,Comcast,org,16
+"org::fox &, friends","Fox &, Friends",org,16
+org::national border patrol council,National Border Patrol Council,org,16
+org::ni,Ni,org,16
+org::ol,Ol,org,16
+org::open borders,Open Borders,org,16
+org::pga,Pga,org,16
+org::rep,Rep,org,16
+org::repa,Repa,org,16
+org::slea,Slea,org,16
+org::small business,Small Business,org,16
+org::teamtrump,Teamtrump,org,16
+org::tomf,Tomf,org,16
+org::trumpgol,Trumpgol,org,16
+per::and,And,per,16
+per::andrew mccarthy,Andrew Mccarthy,per,16
+per::birdbra,Birdbra,per,16
+per::bruce ohr,Bruce Ohr,per,16
+per::byron york,Byron York,per,16
+per::carroll,Carroll,per,16
+per::carter,Carter,per,16
+per::charlie,Charlie,per,16
+per::christopher wray,Christopher Wray,per,16
+per::ctus,Ctus,per,16
+per::dave,Dave,per,16
+per::derek jet,Derek Jet,per,16
+per::don lemon,Don Lemon,per,16
+per::eric trump,Eric Trump,per,16
+per::george floyd,George Floyd,per,16
+per::george will,George Will,per,16
+per::han omar,Han Omar,per,16
+per::imscott,Imscott,per,16
+per::ine pirro,Ine Pirro,per,16
+per::jack nicklaus,Jack Nicklaus,per,16
+per::james clapper,James Clapper,per,16
+per::jared,Jared,per,16
+per::john kasich,John Kasich,per,16
+per::justin,Justin,per,16
+per::ke,Ke,per,16
+per::le,Le,per,16
+per::liz,Liz,per,16
+per::michael whatley,Michael Whatley,per,16
+per::ramaswamy,Ramaswamy,per,16
+per::richardg,Richardg,per,16
+per::ry,Ry,per,16
+per::scott bessent,Scott Bessent,per,16
+hashtag::asktrump,#asktrump,hashtag,15
+hashtag::oann,#oann,hashtag,15
+hashtag::saveamerica,#saveamerica,hashtag,15
+hashtag::scotus,#scotus,hashtag,15
+hashtag::trumptuesday,#trumptuesday,hashtag,15
+loc::al,Al,loc,15
+loc::beijing,Beijing,loc,15
+loc::cedar rapids,Cedar Rapids,loc,15
+loc::central park,Central Park,loc,15
+loc::city,City,loc,15
+loc::denver,Denver,loc,15
+loc::harrisburg,Harrisburg,loc,15
+loc::in,In,loc,15
+loc::lebanon,Lebanon,loc,15
+loc::pensacola,Pensacola,loc,15
+loc::s. c,S. C,loc,15
+loc::sa,Sa,loc,15
+loc::san diego,San Diego,loc,15
+loc::springfield,Springfield,loc,15
+loc::sweden,Sweden,loc,15
+mention::antbaxter,@antbaxter,mention,15
+mention::arthurschwartz,@arthurschwartz,mention,15
+mention::borntobegop,@borntobegop,mention,15
+mention::brandonstraka,@brandonstraka,mention,15
+mention::chanelrion,@chanelrion,mention,15
+mention::facethenation,@facethenation,mention,15
+mention::frankcaliendo,@frankcaliendo,mention,15
+mention::govchristie,@govchristie,mention,15
+mention::hhsgov,@hhsgov,mention,15
+mention::iapolls2022,@iapolls2022,mention,15
+mention::jasonmillerindc,@jasonmillerindc,mention,15
+mention::johnrich,@johnrich,mention,15
+mention::libertyu,@libertyu,mention,15
+mention::markmeadows,@markmeadows,mention,15
+mention::mattgaetz,@mattgaetz,mention,15
+mention::mediaite,@mediaite,mention,15
+mention::morningmika,@morningmika,mention,15
+mention::mrddmia,@mrddmia,mention,15
+mention::narendramodi,@narendramodi,mention,15
+mention::paulryanvp,@paulryanvp,mention,15
+mention::rapidresponse47president,@rapidresponse47president,mention,15
+mention::redcross,@redcross,mention,15
+mention::replouiegohmert,@replouiegohmert,mention,15
+mention::robertjeffress,@robertjeffress,mention,15
+mention::senatorfischer,@senatorfischer,mention,15
+mention::senbillcassidy,@senbillcassidy,mention,15
+mention::sencapito,@sencapito,mention,15
+mention::senschumer,@senschumer,mention,15
+mention::spacex,@spacex,mention,15
+mention::stjude,@stjude,mention,15
+mention::theleoterrell,@theleoterrell,mention,15
+mention::toure,@toure,mention,15
+mention::unionleader,@unionleader,mention,15
+mention::vattenfallgroup,@vattenfallgroup,mention,15
+org::american patriots,American Patriots,org,15
+org::american people,American People,org,15
+org::arneyco,Arneyco,org,15
+org::ba,Ba,org,15
+org::cbo,Cbo,org,15
+org::commerce,Commerce,org,15
+org::d. a,D. A,org,15
+org::d. a. ’ s office,D. A. ’ S Office,org,15
+org::de,De,org,15
+org::dems,Dems,org,15
+org::desantis,Desantis,org,15
+org::fcc,Fcc,org,15
+org::great farmers,Great Farmers,org,15
+org::intel,Intel,org,15
+org::lago,Lago,org,15
+org::newsm,Newsm,org,15
+org::npr,Npr,org,15
+org::nym,Nym,org,15
+org::repdougcollins,Repdougcollins,org,15
+org::the,The,org,15
+org::ttromney,Ttromney,org,15
+org::y,Y,org,15
+per::abeshinzo,Abeshinzo,per,15
+per::alan,Alan,per,15
+per::alex,Alex,per,15
+per::ali,Ali,per,15
+per::an,An,per,15
+per::andrew weissmann,Andrew Weissmann,per,15
+per::anthony,Anthony,per,15
+per::anyahu,Anyahu,per,15
+per::barack hussein obama,Barack Hussein Obama,per,15
+per::bill o ' reilly,Bill O ' Reilly,per,15
+per::bobby knight,Bobby Knight,per,15
+per::carter page,Carter Page,per,15
+per::doug,Doug,per,15
+per::doug burgum,Doug Burgum,per,15
+per::dr,Dr,per,15
+per::gregg,Gregg,per,15
+per::hutchinson,Hutchinson,per,15
+per::ian,Ian,per,15
+per::jerome,Jerome,per,15
+per::keith,Keith,per,15
+per::ken starr,Ken Starr,per,15
+per::kennedy,Kennedy,per,15
+per::lara trump,Lara Trump,per,15
+per::marsh,Marsh,per,15
+per::mike pompeo,Mike Pompeo,per,15
+per::mini,Mini,per,15
+per::patrick,Patrick,per,15
+per::peter navarro,Peter Navarro,per,15
+per::rama,Rama,per,15
+per::re,Re,per,15
+per::ret,Ret,per,15
+per::ron desanti,Ron Desanti,per,15
+per::tammy,Tammy,per,15
+per::te,Te,per,15
+per::tracea,Tracea,per,15
+per::zelensky,Zelensky,per,15
+hashtag::foxnews,#foxnews,hashtag,14
+hashtag::trump2020,#trump2020,hashtag,14
+hashtag::trump4prez,#trump4prez,hashtag,14
+hashtag::votetrump2016,#votetrump2016,hashtag,14
+loc::aberdeenshire,Aberdeenshire,loc,14
+loc::brand,Brand,loc,14
+loc::courthouse,Courthouse,loc,14
+loc::deep state,Deep State,loc,14
+loc::hell,Hell,loc,14
+loc::honduras,Honduras,loc,14
+loc::jordan,Jordan,loc,14
+loc::jupiter,Jupiter,loc,14
+loc::long island,Long Island,loc,14
+loc::oh,Oh,loc,14
+loc::rome,Rome,loc,14
+loc::washington state,Washington State,loc,14
+mention::1776wethepeople1776truth,@1776wethepeople1776truth,mention,14
+mention::andersoncooper,@andersoncooper,mention,14
+mention::beaumontanthony,@beaumontanthony,mention,14
+mention::erictrumpfdn,@erictrumpfdn,mention,14
+mention::erinmperrine,@erinmperrine,mention,14
+mention::forq2,@forq2,mention,14
+mention::govrondesantis,@govrondesantis,mention,14
+mention::hillarysusans,@hillarysusans,mention,14
+mention::israelipm,@israelipm,mention,14
+mention::jack_welch,@jack_welch,mention,14
+mention::johnboozman,@johnboozman,mention,14
+mention::joniernst,@joniernst,mention,14
+mention::jurciuoli19,@jurciuoli19,mention,14
+mention::mboyle1,@mboyle1,mention,14
+mention::mikecrapo,@mikecrapo,mention,14
+mention::nikkio,@nikkio,mention,14
+mention::nrsc,@nrsc,mention,14
+mention::oseanessytweet,@oseanessytweet,mention,14
+mention::patriots,@patriots,mention,14
+mention::repmikejohnson,@repmikejohnson,mention,14
+mention::secretarysonny,@secretarysonny,mention,14
+mention::senatorwicker,@senatorwicker,mention,14
+mention::stephenfhayes,@stephenfhayes,mention,14
+mention::thefamilyleader,@thefamilyleader,mention,14
+mention::therealmarilu,@therealmarilu,mention,14
+mention::trump_ireland,@trump_ireland,mention,14
+mention::usmc,@usmc,mention,14
+org::america first patriots,America First Patriots,org,14
+org::amnesty,Amnesty,org,14
+org::armed forces,Armed Forces,org,14
+org::bills,Bills,org,14
+org::breitbartnews,Breitbartnews,org,14
+org::cabinet,Cabinet,org,14
+org::coronav,Coronav,org,14
+org::da,Da,org,14
+org::energy independence,Energy Independence,org,14
+org::espn,Espn,org,14
+org::fox business,Fox Business,org,14
+org::id,Id,org,14
+org::karlrove,Karlrove,org,14
+org::maga movement,Maga Movement,org,14
+org::national archives,National Archives,org,14
+org::national intelligence,National Intelligence,org,14
+org::nba,Nba,org,14
+org::ne,Ne,org,14
+org::nydailynews,Nydailynews,org,14
+org::q,Q,org,14
+org::rin,Rin,org,14
+org::space force,Space Force,org,14
+org::tigerwoods,Tigerwoods,org,14
+org::trumppanama,Trumppanama,org,14
+org::unga,Unga,org,14
+org::vets,Vets,org,14
+per::ad,Ad,per,14
+per::andrew cuomo,Andrew Cuomo,per,14
+per::ash,Ash,per,14
+per::bloomberg,Bloomberg,per,14
+per::brad,Brad,per,14
+per::brandon judd,Brandon Judd,per,14
+per::chris sununu,Chris Sununu,per,14
+per::crazy,Crazy,per,14
+per::dad,Dad,per,14
+per::dana,Dana,per,14
+per::david letterman,David Letterman,per,14
+per::dora,Dora,per,14
+per::eller,Eller,per,14
+per::erin,Erin,per,14
+per::ewand,Ewand,per,14
+per::har,Har,per,14
+per::henry mcmaster,Henry Mcmaster,per,14
+per::jen,Jen,per,14
+per::john durham,John Durham,per,14
+per::justice roberts,Justice Roberts,per,14
+per::justin trudeau,Justin Trudeau,per,14
+per::katiep,Katiep,per,14
+per::la,La,per,14
+per::lara,Lara,per,14
+per::lawrence,Lawrence,per,14
+per::lindsey,Lindsey,per,14
+per::lo,Lo,per,14
+per::moon,Moon,per,14
+per::nadler,Nadler,per,14
+per::nelson mandela,Nelson Mandela,per,14
+per::oe biden,Oe Biden,per,14
+per::page,Page,per,14
+per::pat,Pat,per,14
+per::ret bai,Ret Bai,per,14
+per::ret baier,Ret Baier,per,14
+per::ron desanctus,Ron Desanctus,per,14
+per::sad,Sad,per,14
+per::scott walker,Scott Walker,per,14
+per::sondl,Sondl,per,14
+per::steve bannon,Steve Bannon,per,14
+per::steve hilton,Steve Hilton,per,14
+per::tam,Tam,per,14
+per::tas,Tas,per,14
+per::tiffany,Tiffany,per,14
+per::tomf,Tomf,per,14
+per::walker,Walker,per,14
+per::yn kelly,Yn Kelly,per,14
+hashtag::apprentice,#apprentice,hashtag,13
+hashtag::debates,#debates,hashtag,13
+hashtag::golf,#golf,hashtag,13
+hashtag::taxreform,#taxreform,hashtag,13
+hashtag::trumpadvice,#trumpadvice,hashtag,13
+loc::arena,Arena,loc,13
+loc::atlantic ocean,Atlantic Ocean,loc,13
+loc::borders,Borders,loc,13
+loc::britain,Britain,loc,13
+loc::crimea,Crimea,loc,13
+loc::e,E,loc,13
+loc::fifth avenue,Fifth Avenue,loc,13
+loc::great state of texas,Great State Of Texas,loc,13
+loc::green bay,Green Bay,loc,13
+loc::old post office,Old Post Office,loc,13
+loc::palm beach county,Palm Beach County,loc,13
+loc::pennsylvania avenue,Pennsylvania Avenue,loc,13
+loc::potomac river,Potomac River,loc,13
+loc::russi,Russi,loc,13
+loc::sarasota,Sarasota,loc,13
+loc::serbia,Serbia,loc,13
+loc::spain,Spain,loc,13
+loc::tower,Tower,loc,13
+loc::trump national doral,Trump National Doral,loc,13
+loc::united arab emirates,United Arab Emirates,loc,13
+loc::westchester,Westchester,loc,13
+mention::actbrigitte,@actbrigitte,mention,13
+mention::billygraham,@billygraham,mention,13
+mention::chuckrossdc,@chuckrossdc,mention,13
+mention::club4growth,@club4growth,mention,13
+mention::deptofdefense,@deptofdefense,mention,13
+mention::dougmillsnyt,@dougmillsnyt,mention,13
+mention::golfmagazine,@golfmagazine,mention,13
+mention::grahamledger,@grahamledger,mention,13
+mention::icegov,@icegov,mention,13
+mention::jackposobiecbreaking,@jackposobiecbreaking,mention,13
+mention::jamesokeefeiii,@jamesokeefeiii,mention,13
+mention::jayleno,@jayleno,mention,13
+mention::jerrymoran,@jerrymoran,mention,13
+mention::johnboehner,@johnboehner,mention,13
+mention::maathewdavis,@maathewdavis,mention,13
+mention::mlb,@mlb,mention,13
+mention::nygovcuomo,@nygovcuomo,mention,13
+mention::pastordscott,@pastordscott,mention,13
+mention::realdonaldtrumpcrooked,@realdonaldtrumpcrooked,mention,13
+mention::realgilbert,@realgilbert,mention,13
+mention::realpro4real,@realpro4real,mention,13
+mention::rushlimbaugh,@rushlimbaugh,mention,13
+mention::sebgorka,@sebgorka,mention,13
+mention::shawnjohnson,@shawnjohnson,mention,13
+mention::srqrepublicans,@srqrepublicans,mention,13
+mention::therealkiyosaki,@therealkiyosaki,mention,13
+mention::trumpwinery,@trumpwinery,mention,13
+mention::ttuberville,@ttuberville,mention,13
+mention::ustreasury,@ustreasury,mention,13
+mention::victoensing,@victoensing,mention,13
+mention::wattersworld,@wattersworld,mention,13
+org::aberdeen,Aberdeen,org,13
+org::amazon,Amazon,org,13
+org::corrupt media,Corrupt Media,org,13
+org::do nothing,Do Nothing,org,13
+org::dominion,Dominion,org,13
+org::elect,Elect,org,13
+org::er,Er,org,13
+org::fa,Fa,org,13
+org::fox and friends,Fox And Friends,org,13
+org::golfchannel,Golfchannel,org,13
+org::law and order,Law And Order,org,13
+org::liberty university,Liberty University,org,13
+org::life,Life,org,13
+org::ms,Ms,org,13
+org::mu,Mu,org,13
+org::nda,Nda,org,13
+org::obama,Obama,org,13
+org::pol,Pol,org,13
+org::post office,Post Office,org,13
+org::qvc,Qvc,org,13
+org::re,Re,org,13
+org::repmarkm,Repmarkm,org,13
+org::saracarte,Saracarte,org,13
+org::security,Security,org,13
+org::spacex,Spacex,org,13
+org::star witness,Star Witness,org,13
+org::ta,Ta,org,13
+org::tomcott,Tomcott,org,13
+per::al sharpton,Al Sharpton,per,13
+per::arnold palmer,Arnold Palmer,per,13
+per::barry,Barry,per,13
+per::biden,Biden,per,13
+per::bob woodward,Bob Woodward,per,13
+per::cc,Cc,per,13
+per::charles payne,Charles Payne,per,13
+per::charlie hurt,Charlie Hurt,per,13
+per::co chow,Co Chow,per,13
+per::elijah cummings,Elijah Cummings,per,13
+per::emmanuelmacron,Emmanuelmacron,per,13
+per::eric schneider,Eric Schneider,per,13
+per::eric schneiderman,Eric Schneiderman,per,13
+per::fau,Fau,per,13
+per::fi,Fi,per,13
+per::gary player,Gary Player,per,13
+per::george soros,George Soros,per,13
+per::glenn,Glenn,per,13
+per::greg murphy,Greg Murphy,per,13
+per::howard lutnick,Howard Lutnick,per,13
+per::jimmy fallon,Jimmy Fallon,per,13
+per::jimmy kimmel,Jimmy Kimmel,per,13
+per::john thune,John Thune,per,13
+per::justice,Justice,per,13
+per::kemp,Kemp,per,13
+per::kim reynolds,Kim Reynolds,per,13
+per::lee zeldin,Lee Zeldin,per,13
+per::lincoln,Lincoln,per,13
+per::mad,Mad,per,13
+per::mark zuckerberg,Mark Zuckerberg,per,13
+per::mary,Mary,per,13
+per::michaelcoh,Michaelcoh,per,13
+per::ner,Ner,per,13
+per::pa,Pa,per,13
+per::per,Per,per,13
+per::pete rose,Pete Rose,per,13
+per::peter s,Peter S,per,13
+per::q,Q,per,13
+per::rep,Rep,per,13
+per::reta,Reta,per,13
+per::rudy giulian,Rudy Giulian,per,13
+per::sugar,Sugar,per,13
+per::tom fitton,Tom Fitton,per,13
+per::u,U,per,13
+hashtag::cnn,#cnn,hashtag,12
+hashtag::isis,#isis,hashtag,12
+hashtag::obama,#obama,hashtag,12
+hashtag::obamagate,#obamagate,hashtag,12
+hashtag::president,#president,hashtag,12
+hashtag::rncincle,#rncincle,hashtag,12
+hashtag::thankyoutour2016,#thankyoutour2016,hashtag,12
+hashtag::trumptruths,#trumptruths,hashtag,12
+loc::austin,Austin,loc,12
+loc::bahamas,Bahamas,loc,12
+loc::baton rouge,Baton Rouge,loc,12
+loc::ch,Ch,loc,12
+loc::cities,Cities,loc,12
+loc::columbus,Columbus,loc,12
+loc::davos,Davos,loc,12
+loc::des moines,Des Moines,loc,12
+loc::england,England,loc,12
+loc::erie,Erie,loc,12
+loc::greensboro,Greensboro,loc,12
+loc::hong kong,Hong Kong,loc,12
+loc::indianapolis,Indianapolis,loc,12
+loc::lower manhattan,Lower Manhattan,loc,12
+loc::main street,Main Street,loc,12
+loc::myrtle beach,Myrtle Beach,loc,12
+loc::qatar,Qatar,loc,12
+loc::sanctuary cities,Sanctuary Cities,loc,12
+loc::staten island,Staten Island,loc,12
+loc::the white house,The White House,loc,12
+loc::trumpdoral,Trumpdoral,loc,12
+loc::washington dc,Washington Dc,loc,12
+mention::ainsleyearhardt,@ainsleyearhardt,mention,12
+mention::catturd2,@catturd2,mention,12
+mention::cbs,@cbs,mention,12
+mention::citizens_united,@citizens_united,mention,12
+mention::dnorrell,@dnorrell,mention,12
+mention::dougducey,@dougducey,mention,12
+mention::fitsnews,@fitsnews,mention,12
+mention::herschelwalker,@herschelwalker,mention,12
+mention::jonhuntsman,@jonhuntsman,mention,12
+mention::leezeldin,@leezeldin,mention,12
+mention::letterman,@letterman,mention,12
+mention::markhalperin,@markhalperin,mention,12
+mention::masterbaxter8,@masterbaxter8,mention,12
+mention::ncgop,@ncgop,mention,12
+mention::newsmaxtune,@newsmaxtune,mention,12
+mention::nycmayor,@nycmayor,mention,12
+mention::realamericasvoicethe,@realamericasvoicethe,mention,12
+mention::realcandaceo,@realcandaceo,mention,12
+mention::realdonaldtrumpmake,@realdonaldtrumpmake,mention,12
+mention::repdlesko,@repdlesko,mention,12
+mention::rodmonium91,@rodmonium91,mention,12
+mention::royblunt,@royblunt,mention,12
+mention::rsbnetwork,@rsbnetwork,mention,12
+mention::rsbnhappening,@rsbnhappening,mention,12
+mention::sbagov,@sbagov,mention,12
+mention::secretservice,@secretservice,mention,12
+mention::senjohnkennedy,@senjohnkennedy,mention,12
+mention::senmcsallyaz,@senmcsallyaz,mention,12
+mention::sixteenchicago,@sixteenchicago,mention,12
+mention::steveguest,@steveguest,mention,12
+mention::twitter,@twitter,mention,12
+mention::us_fda,@us_fda,mention,12
+mention::waynedupreeshow,@waynedupreeshow,mention,12
+org::amspec,Amspec,org,12
+org::anti,Anti,org,12
+org::attenfallgroup,Attenfallgroup,org,12
+org::banks,Banks,org,12
+org::beaumonta,Beaumonta,org,12
+org::bo,Bo,org,12
+org::buzzfeed,Buzzfeed,org,12
+org::chrysler,Chrysler,org,12
+org::diamondandsil,Diamondandsil,org,12
+org::electoral college,Electoral College,org,12
+org::gm,Gm,org,12
+org::hama,Hama,org,12
+org::healthcare,Healthcare,org,12
+org::ia,Ia,org,12
+org::ida,Ida,org,12
+org::iden crime family,Iden Crime Family,org,12
+org::isa court,Isa Court,org,12
+org::jennae,Jennae,org,12
+org::legislature,Legislature,org,12
+org::makeamericagrea,Makeamericagrea,org,12
+org::manhattan d. a. ’ s office,Manhattan D. A. ’ S Office,org,12
+org::nara,Nara,org,12
+org::ny,Ny,org,12
+org::press,Press,org,12
+org::radical left democrat party,Radical Left Democrat Party,org,12
+org::realamericasv,Realamericasv,org,12
+org::rinos,Rinos,org,12
+org::senateg,Senateg,org,12
+org::silent majority,Silent Majority,org,12
+org::state legislature,State Legislature,org,12
+org::trumpferrypoint,Trumpferrypoint,org,12
+org::trumpgolfdc,Trumpgolfdc,org,12
+org::unselects,Unselects,org,12
+org::vincem,Vincem,org,12
+per::aid,Aid,per,12
+per::ashley judd,Ashley Judd,per,12
+per::benjamin franklin,Benjamin Franklin,per,12
+per::boris,Boris,per,12
+per::cameron,Cameron,per,12
+per::cassidy hutchinson,Cassidy Hutchinson,per,12
+per::chuck hagel,Chuck Hagel,per,12
+per::don mcgahn,Don Mcgahn,per,12
+per::eliot spitzer,Eliot Spitzer,per,12
+per::erict,Erict,per,12
+per::fr,Fr,per,12
+per::ica,Ica,per,12
+per::ig,Ig,per,12
+per::jamie dimon,Jamie Dimon,per,12
+per::john ratcliffe,John Ratcliffe,per,12
+per::john solomon,John Solomon,per,12
+per::johnboozman,Johnboozman,per,12
+per::johnlege,Johnlege,per,12
+per::jr,Jr,per,12
+per::letitia james,Letitia James,per,12
+per::lil,Lil,per,12
+per::mattis,Mattis,per,12
+per::michael goodwin,Michael Goodwin,per,12
+per::michelle obama,Michelle Obama,per,12
+per::nell,Nell,per,12
+per::nicole,Nicole,per,12
+per::ny jackson,Ny Jackson,per,12
+per::oo james,Oo James,per,12
+per::petehegset,Petehegset,per,12
+per::randy fine,Randy Fine,per,12
+per::ri,Ri,per,12
+per::robert jeffress,Robert Jeffress,per,12
+per::ron johnson,Ron Johnson,per,12
+per::shin,Shin,per,12
+per::snow,Snow,per,12
+per::storm,Storm,per,12
+per::ti noem,Ti Noem,per,12
+per::tiger,Tiger,per,12
+per::tom cotton,Tom Cotton,per,12
+per::tom wolf,Tom Wolf,per,12
+per::troy balderson,Troy Balderson,per,12
+per::uo,Uo,per,12
+per::williams,Williams,per,12
+per::zele,Zele,per,12
+hashtag::dt47,#dt47,hashtag,11
+hashtag::flashbackfriday,#flashbackfriday,hashtag,11
+hashtag::hurricaneflorence,#hurricaneflorence,hashtag,11
+hashtag::hurricaneharvey,#hurricaneharvey,hashtag,11
+hashtag::jobsnotmobs,#jobsnotmobs,hashtag,11
+hashtag::maga2020,#maga2020,hashtag,11
+hashtag::missusa,#missusa,hashtag,11
+hashtag::trumptower,#trumptower,hashtag,11
+hashtag::trumpvine,#trumpvine,hashtag,11
+loc::annapolis,Annapolis,loc,11
+loc::arlington national cemetery,Arlington National Cemetery,loc,11
+loc::council bluffs,Council Bluffs,loc,11
+loc::faye,Faye,loc,11
+loc::finland,Finland,loc,11
+loc::georgi,Georgi,loc,11
+loc::greenland,Greenland,loc,11
+loc::guatemala,Guatemala,loc,11
+loc::johnstown,Johnstown,loc,11
+loc::kosovo,Kosovo,loc,11
+loc::north,North,loc,11
+loc::or,Or,loc,11
+loc::pearl harbor,Pearl Harbor,loc,11
+loc::sioux center,Sioux Center,loc,11
+loc::south,South,loc,11
+loc::st. louis,St. Louis,loc,11
+loc::taiwan,Taiwan,loc,11
+loc::thailand,Thailand,loc,11
+loc::the,The,loc,11
+loc::trump international hotel,Trump International Hotel,loc,11
+loc::waterloo,Waterloo,loc,11
+loc::wildwood,Wildwood,loc,11
+mention::_katherinewebb,@_katherinewebb,mention,11
+mention::amykremer,@amykremer,mention,11
+mention::autismspeaks,@autismspeaks,mention,11
+mention::billoreilly,@billoreilly,mention,11
+mention::danaperino,@danaperino,mention,11
+mention::dcfoodsafety,@dcfoodsafety,mention,11
+mention::devinnuneshttps,@devinnuneshttps,mention,11
+mention::dloesch,@dloesch,mention,11
+mention::dnc,@dnc,mention,11
+mention::facebook,@facebook,mention,11
+mention::fallontonight,@fallontonight,mention,11
+mention::forbesinspector,@forbesinspector,mention,11
+mention::foxnation,@foxnation,mention,11
+mention::hannityshow,@hannityshow,mention,11
+mention::jackshallis,@jackshallis,mention,11
+mention::justinrose99,@justinrose99,mention,11
+mention::karilake,@karilake,mention,11
+mention::kateplusmy8,@kateplusmy8,mention,11
+mention::latoyajackson,@latoyajackson,mention,11
+mention::leesmithdc,@leesmithdc,mention,11
+mention::lisarinna,@lisarinna,mention,11
+mention::mailonline,@mailonline,mention,11
+mention::marc_lotter,@marc_lotter,mention,11
+mention::marklevinshowthe,@marklevinshowthe,mention,11
+mention::mikegarcia2020,@mikegarcia2020,mention,11
+mention::mrandyngo,@mrandyngo,mention,11
+mention::mschlapp,@mschlapp,mention,11
+mention::nikkihaley,@nikkihaley,mention,11
+mention::reald,@reald,mention,11
+mention::realdonaldtru,@realdonaldtru,mention,11
+mention::realdonaldtrumpgreat,@realdonaldtrumpgreat,mention,11
+mention::realsquezz,@realsquezz,mention,11
+mention::redstate,@redstate,mention,11
+mention::scottgottliebmd,@scottgottliebmd,mention,11
+mention::speakerryan,@speakerryan,mention,11
+mention::steph93065,@steph93065,mention,11
+mention::stevedoocy,@stevedoocy,mention,11
+mention::team_mitch,@team_mitch,mention,11
+mention::theleegreenwood,@theleegreenwood,mention,11
+mention::timkaine,@timkaine,mention,11
+mention::trumpgolf,@trumpgolf,mention,11
+mention::truthsocial,@truthsocial,mention,11
+mention::wrestlemania,@wrestlemania,mention,11
+org::american public,American Public,org,11
+org::caucus,Caucus,org,11
+org::columbia university,Columbia University,org,11
+org::com,Com,org,11
+org::court of appeals,Court Of Appeals,org,11
+org::department,Department,org,11
+org::deutsche bank,Deutsche Bank,org,11
+org::doj & fbi,Doj & Fbi,org,11
+org::durham,Durham,org,11
+org::ethanol,Ethanol,org,11
+org::eu,Eu,org,11
+org::fl,Fl,org,11
+org::foxnewssunda,Foxnewssunda,org,11
+org::geraldoriver,Geraldoriver,org,11
+org::go,Go,org,11
+org::house intelligence committee,House Intelligence Committee,org,11
+org::house judiciary committee,House Judiciary Committee,org,11
+org::injustice department,Injustice Department,org,11
+"org::life, liberty & levin","Life, Liberty & Levin",org,11
+org::lindseygrahamsc,Lindseygrahamsc,org,11
+org::midas touch,Midas Touch,org,11
+org::mueller report,Mueller Report,org,11
+org::ndaa,Ndaa,org,11
+org::new hampshire,New Hampshire,org,11
+org::newsweek,Newsweek,org,11
+org::on,On,org,11
+org::politico,Politico,org,11
+org::tigerwood,Tigerwood,org,11
+org::tiktok,Tiktok,org,11
+org::trumpa,Trumpa,org,11
+org::trumpgolfla,Trumpgolfla,org,11
+org::trumpt,Trumpt,org,11
+org::unionleader,Unionleader,org,11
+org::unit,Unit,org,11
+org::united states district court,United States District Court,org,11
+org::usc,Usc,org,11
+org::varneyco,Varneyco,org,11
+org::washington examiner,Washington Examiner,org,11
+org::whiteh,Whiteh,org,11
+org::world health organization,World Health Organization,org,11
+per::amy,Amy,per,11
+per::andrew tahmooress,Andrew Tahmooress,per,11
+per::ashley,Ashley,per,11
+per::barron,Barron,per,11
+per::bergdah,Bergdah,per,11
+per::bet,Bet,per,11
+per::billy graham,Billy Graham,per,11
+per::blake masters,Blake Masters,per,11
+per::bob corker,Bob Corker,per,11
+per::bolton,Bolton,per,11
+per::boris johnson,Boris Johnson,per,11
+per::byron,Byron,per,11
+per::chris cuomo,Chris Cuomo,per,11
+per::cindy,Cindy,per,11
+per::cory,Cory,per,11
+per::cuo,Cuo,per,11
+per::daniel,Daniel,per,11
+per::dar,Dar,per,11
+per::david perdue,David Perdue,per,11
+per::dean,Dean,per,11
+per::dick,Dick,per,11
+per::donald j trump,Donald J Trump,per,11
+per::donna brazil,Donna Brazil,per,11
+per::douglas macarthur,Douglas Macarthur,per,11
+per::e phelan,E Phelan,per,11
+per::fred c. trump,Fred C. Trump,per,11
+per::george washington,George Washington,per,11
+per::geraldo,Geraldo,per,11
+per::henry,Henry,per,11
+per::jai,Jai,per,11
+per::jake tapper,Jake Tapper,per,11
+per::jerome powell,Jerome Powell,per,11
+per::jesse,Jesse,per,11
+per::jesus,Jesus,per,11
+per::joe manchin,Joe Manchin,per,11
+per::john roberts,John Roberts,per,11
+per::kat,Kat,per,11
+per::ken,Ken,per,11
+per::ko,Ko,per,11
+per::levin,Levin,per,11
+per::lewis kaplan,Lewis Kaplan,per,11
+per::lisa murkowski,Lisa Murkowski,per,11
+per::lou dobbs,Lou Dobbs,per,11
+per::mariab,Mariab,per,11
+per::mikegarcia,Mikegarcia,per,11
+per::morgan,Morgan,per,11
+per::n riley,N Riley,per,11
+per::nsky,Nsky,per,11
+per::paul manafort,Paul Manafort,per,11
+per::ralph waldo emerson,Ralph Waldo Emerson,per,11
+per::rick perry,Rick Perry,per,11
+per::rosie o ' donnell,Rosie O ' Donnell,per,11
+per::sally yates,Sally Yates,per,11
+per::schneider,Schneider,per,11
+per::sen,Sen,per,11
+per::thomas a. edison,Thomas A. Edison,per,11
+per::tom emmer,Tom Emmer,per,11
+per::tommy tuberville,Tommy Tuberville,per,11
+per::ttromney,Ttromney,per,11
+per::vol,Vol,per,11
+per::willis,Willis,per,11
+per::woodward,Woodward,per,11
+per::xi jinping,Xi Jinping,per,11
+hashtag::cnndebate,#cnndebate,hashtag,10
+hashtag::covid,#covid,hashtag,10
+hashtag::cpac,#cpac,hashtag,10
+hashtag::debatenight,#debatenight,hashtag,10
+hashtag::hurricanemichael,#hurricanemichael,hashtag,10
+hashtag::inprimary,#inprimary,hashtag,10
+hashtag::keepamericagreat,#keepamericagreat,hashtag,10
+hashtag::ndaa,#ndaa,hashtag,10
+hashtag::nhpolitics,#nhpolitics,hashtag,10
+hashtag::pelositantrum,#pelositantrum,hashtag,10
+hashtag::presidenttrump,#presidenttrump,hashtag,10
+hashtag::theartofthedeal,#theartofthedeal,hashtag,10
+hashtag::trump4president,#trump4president,hashtag,10
+hashtag::veterans,#veterans,hashtag,10
+loc::at,At,loc,10
+loc::doonbeg,Doonbeg,loc,10
+loc::flor,Flor,loc,10
+loc::hotel,Hotel,loc,10
+loc::ic,Ic,loc,10
+loc::ira,Ira,loc,10
+loc::is,Is,loc,10
+loc::kenosha,Kenosha,loc,10
+loc::macon,Macon,loc,10
+loc::madison square garden,Madison Square Garden,loc,10
+loc::mason city,Mason City,loc,10
+loc::mobile,Mobile,loc,10
+loc::nation,Nation,loc,10
+loc::normandy,Normandy,loc,10
+loc::park,Park,loc,10
+loc::tehran,Tehran,loc,10
+loc::tulsa,Tulsa,loc,10
+loc::v,V,loc,10
+loc::whiteh,Whiteh,loc,10
+mention::_ero,@_ero,mention,10
+mention::_snurk,@_snurk,mention,10
+mention::aberdeencc,@aberdeencc,mention,10
+mention::aberdeenshire,@aberdeenshire,mention,10
+mention::bdean1468,@bdean1468,mention,10
+mention::billhemmer,@billhemmer,mention,10
+mention::chris_r_2014,@chris_r_2014,mention,10
+mention::cortessteve,@cortessteve,mention,10
+mention::danhenninger,@danhenninger,mention,10
+mention::drake4444444,@drake4444444,mention,10
+mention::erinburnett,@erinburnett,mention,10
+mention::espngreeny,@espngreeny,mention,10
+mention::explorepress,@explorepress,mention,10
+mention::garyplayer,@garyplayer,mention,10
+mention::gavinnewsom,@gavinnewsom,mention,10
+mention::goangelo,@goangelo,mention,10
+mention::golfdigestmag,@golfdigestmag,mention,10
+mention::greggutfeldshow,@greggutfeldshow,mention,10
+mention::hbo,@hbo,mention,10
+mention::heyjude88,@heyjude88,mention,10
+mention::howardkurtz,@howardkurtz,mention,10
+mention::jdickerson,@jdickerson,mention,10
+mention::jimjordan,@jimjordan,mention,10
+mention::jonathanturley,@jonathanturley,mention,10
+mention::judgenap,@judgenap,mention,10
+mention::lancegooden,@lancegooden,mention,10
+mention::limbaugh,@limbaugh,mention,10
+mention::lindasuhler,@lindasuhler,mention,10
+mention::miamiherald,@miamiherald,mention,10
+mention::monicacrowley,@monicacrowley,mention,10
+mention::nato,@nato,mention,10
+mention::nbcnightlynews,@nbcnightlynews,mention,10
+mention::petestauber,@petestauber,mention,10
+mention::pgachampionship,@pgachampionship,mention,10
+mention::playstrumpcard,@playstrumpcard,mention,10
+mention::ralphreed,@ralphreed,mention,10
+mention::rasmussen_poll,@rasmussen_poll,mention,10
+mention::realdonald,@realdonald,mention,10
+mention::realdonaldtrumpit,@realdonaldtrumpit,mention,10
+mention::realsaavedra,@realsaavedra,mention,10
+mention::ryanbushby,@ryanbushby,mention,10
+mention::seanparnellusa,@seanparnellusa,mention,10
+mention::senatorlankford,@senatorlankford,mention,10
+mention::senrobportman,@senrobportman,mention,10
+mention::sexcounseling,@sexcounseling,mention,10
+mention::stillgray,@stillgray,mention,10
+mention::stuartpstevens,@stuartpstevens,mention,10
+mention::sundayfutures,@sundayfutures,mention,10
+mention::tgowdysc,@tgowdysc,mention,10
+mention::usarmy,@usarmy,mention,10
+mention::usnationalguard,@usnationalguard,mention,10
+mention::wsjopinion,@wsjopinion,mention,10
+mention::youtube,@youtube,mention,10
+org::al qaeda,Al Qaeda,org,10
+org::america first patriot,America First Patriot,org,10
+org::american energy independence,American Energy Independence,org,10
+org::american workers,American Workers,org,10
+org::aoc,Aoc,org,10
+org::at & t,At & T,org,10
+org::barack,Barack,org,10
+org::big,Big,org,10
+org::cbs news,Cbs News,org,10
+org::chinese communist party,Chinese Communist Party,org,10
+org::citizens _ united,Citizens _ United,org,10
+org::cnn & msdnc,Cnn & Msdnc,org,10
+org::cp,Cp,org,10
+org::democratic national committee,Democratic National Committee,org,10
+org::department of homeland security,Department Of Homeland Security,org,10
+org::disney,Disney,org,10
+org::do nothing dems,Do Nothing Dems,org,10
+org::elec,Elec,org,10
+org::electoral,Electoral,org,10
+org::fbi &,Fbi &,org,10
+org::fr,Fr,org,10
+org::fringe benefits,Fringe Benefits,org,10
+org::goldman sachs,Goldman Sachs,org,10
+org::il,Il,org,10
+org::ingrahama,Ingrahama,org,10
+org::judiciary committee,Judiciary Committee,org,10
+org::jw,Jw,org,10
+org::karlr,Karlr,org,10
+org::kellyannepoll,Kellyannepoll,org,10
+org::la,La,org,10
+org::libertyu,Libertyu,org,10
+org::missuniverse,Missuniverse,org,10
+org::mlb,Mlb,org,10
+org::mp,Mp,org,10
+org::national,National,org,10
+org::nbc news,Nbc News,org,10
+org::network,Network,org,10
+org::nro,Nro,org,10
+org::oj,Oj,org,10
+org::opposition party,Opposition Party,org,10
+org::ox,Ox,org,10
+org::plorepress,Plorepress,org,10
+org::quaw,Quaw,org,10
+org::romney,Romney,org,10
+org::s & p,S & P,org,10
+org::samsung,Samsung,org,10
+org::sec,Sec,org,10
+org::southern border,Southern Border,org,10
+org::u. s. coast guard,U. S. Coast Guard,org,10
+org::uscg,Uscg,org,10
+org::usda,Usda,org,10
+org::watch,Watch,org,10
+org::youtube,Youtube,org,10
+org::zebag,Zebag,org,10
+org::“ justice ” department,“ Justice ” Department,org,10
+per::bird,Bird,per,10
+per::bob kraft,Bob Kraft,per,10
+per::brian roberts,Brian Roberts,per,10
+per::briankempga,Briankempga,per,10
+per::ca,Ca,per,10
+per::cha,Cha,per,10
+per::con,Con,per,10
+per::dan bongino,Dan Bongino,per,10
+per::devin,Devin,per,10
+per::eli,Eli,per,10
+per::erik,Erik,per,10
+per::franklunt,Franklunt,per,10
+per::george bush,George Bush,per,10
+per::glenn simpson,Glenn Simpson,per,10
+per::guy,Guy,per,10
+per::harvey,Harvey,per,10
+per::hi,Hi,per,10
+per::i gabbard,I Gabbard,per,10
+per::ianz,Ianz,per,10
+per::jacksha,Jacksha,per,10
+per::jackson,Jackson,per,10
+per::jake,Jake,per,10
+per::jamie,Jamie,per,10
+per::jim banks,Jim Banks,per,10
+per::joe gruters,Joe Gruters,per,10
+per::john james,John James,per,10
+per::johnson,Johnson,per,10
+per::judge merchan,Judge Merchan,per,10
+per::k ramaswamy,K Ramaswamy,per,10
+per::kaplan,Kaplan,per,10
+per::khan,Khan,per,10
+per::lea,Lea,per,10
+per::letter,Letter,per,10
+per::llie hemingway,Llie Hemingway,per,10
+per::mark pomerantz,Mark Pomerantz,per,10
+per::mark twain,Mark Twain,per,10
+per::martha,Martha,per,10
+per::megan,Megan,per,10
+per::melania trump,Melania Trump,per,10
+per::mike davis,Mike Davis,per,10
+per::mike waltz,Mike Waltz,per,10
+per::monica,Monica,per,10
+per::oz,Oz,per,10
+per::rand,Rand,per,10
+per::reid hoffman,Reid Hoffman,per,10
+per::rex tillerson,Rex Tillerson,per,10
+per::rich,Rich,per,10
+per::richard,Richard,per,10
+per::robin vos,Robin Vos,per,10
+per::roy moore,Roy Moore,per,10
+per::rubio,Rubio,per,10
+per::sale,Sale,per,10
+per::sandy,Sandy,per,10
+per::sche,Sche,per,10
+per::shawn,Shawn,per,10
+per::smussen,Smussen,per,10
+per::son dechambeau,Son Dechambeau,per,10
+per::stevedaines,Stevedaines,per,10
+per::stevescal,Stevescal,per,10
+per::sun,Sun,per,10
+per::sun tzu,Sun Tzu,per,10
+per::tim walz,Tim Walz,per,10
+per::timmurt,Timmurt,per,10
+per::us,Us,per,10
+per::wade,Wade,per,10
+per::wayne,Wayne,per,10
+per::will,Will,per,10
+per::wright,Wright,per,10
+hashtag::bebest,#bebest,hashtag,9
+hashtag::caresact,#caresact,hashtag,9
+hashtag::crippledamerica,#crippledamerica,hashtag,9
+hashtag::economy,#economy,hashtag,9
+hashtag::electionday,#electionday,hashtag,9
+hashtag::freeourmarine,#freeourmarine,hashtag,9
+hashtag::imwithyouhttps,#imwithyouhttps,hashtag,9
+hashtag::memorialday,#memorialday,hashtag,9
+hashtag::rnc2020,#rnc2020,hashtag,9
+hashtag::sotu,#sotu,hashtag,9
+hashtag::swampthevote,#swampthevote,hashtag,9
+hashtag::wgdp,#wgdp,hashtag,9
+hashtag::wiprimary,#wiprimary,hashtag,9
+loc::aukesha,Aukesha,loc,9
+loc::colombia,Colombia,loc,9
+loc::columbia,Columbia,loc,9
+loc::denmark,Denmark,loc,9
+loc::district of columbia,District Of Columbia,loc,9
+loc::east coast,East Coast,loc,9
+loc::east palestine,East Palestine,loc,9
+loc::gerald,Gerald,loc,9
+loc::greece,Greece,loc,9
+loc::haiti,Haiti,loc,9
+loc::hanoi,Hanoi,loc,9
+loc::honolulu,Honolulu,loc,9
+loc::hungary,Hungary,loc,9
+loc::korea,Korea,loc,9
+loc::lincoln memorial,Lincoln Memorial,loc,9
+loc::panama canal,Panama Canal,loc,9
+loc::racine,Racine,loc,9
+loc::republic,Republic,loc,9
+loc::trump towers,Trump Towers,loc,9
+loc::tteville,Tteville,loc,9
+loc::walter reed medical center,Walter Reed Medical Center,loc,9
+loc::wilkes - barre,Wilkes - Barre,loc,9
+loc::yemen,Yemen,loc,9
+loc::youngstown,Youngstown,loc,9
+mention::abcpolitics,@abcpolitics,mention,9
+mention::actforamerica,@actforamerica,mention,9
+mention::alwaysactions,@alwaysactions,mention,9
+mention::amacforamerica,@amacforamerica,mention,9
+mention::andrewpollackfl,@andrewpollackfl,mention,9
+mention::billrancic,@billrancic,mention,9
+mention::brian,@brian,mention,9
+mention::cabinet,@cabinet,mention,9
+mention::cbp,@cbp,mention,9
+mention::chriscuomo,@chriscuomo,mention,9
+mention::cpac,@cpac,mention,9
+mention::dallasmavs,@dallasmavs,mention,9
+mention::david_bossie,@david_bossie,mention,9
+mention::david_cameron,@david_cameron,mention,9
+mention::deadspin,@deadspin,mention,9
+mention::deptvetaffairs,@deptvetaffairs,mention,9
+mention::dhs_wolf,@dhs_wolf,mention,9
+mention::edhenry,@edhenry,mention,9
+mention::elonmusk,@elonmusk,mention,9
+mention::ericearly_ca,@ericearly_ca,mention,9
+mention::extratv,@extratv,mention,9
+mention::geoffduncanga,@geoffduncanga,mention,9
+mention::giulianarancic,@giulianarancic,mention,9
+mention::jimlibertarian,@jimlibertarian,mention,9
+mention::johncornyn,@johncornyn,mention,9
+mention::johnkasich,@johnkasich,mention,9
+mention::jonkarl,@jonkarl,mention,9
+mention::jonvoight,@jonvoight,mention,9
+mention::judiciarygop,@judiciarygop,mention,9
+mention::justintrudeau,@justintrudeau,mention,9
+mention::knight276,@knight276,mention,9
+mention::kthopkins,@kthopkins,mention,9
+mention::lancearmstrong,@lancearmstrong,mention,9
+mention::landexpo,@landexpo,mention,9
+mention::lisalampanelli,@lisalampanelli,mention,9
+mention::marcthiessen,@marcthiessen,mention,9
+mention::marianorivera,@marianorivera,mention,9
+mention::melrivers,@melrivers,mention,9
+mention::michellemalkin,@michellemalkin,mention,9
+mention::nascar,@nascar,mention,9
+mention::newyorkobserver,@newyorkobserver,mention,9
+mention::nyjets,@nyjets,mention,9
+mention::obamacare,@obamacare,mention,9
+mention::peterose_14,@peterose_14,mention,9
+mention::pgatour,@pgatour,mention,9
+mention::realamericasvoicei,@realamericasvoicei,mention,9
+mention::realdonaldtr,@realdonaldtr,mention,9
+mention::realdonaldtrumpjudge,@realdonaldtrumpjudge,mention,9
+mention::realdonaldtrumpon,@realdonaldtrumpon,mention,9
+mention::realitytvbliss,@realitytvbliss,mention,9
+mention::ronnyjackson4tx,@ronnyjackson4tx,mention,9
+mention::rosannascotto,@rosannascotto,mention,9
+mention::sendansullivan,@sendansullivan,mention,9
+mention::senkevincramer,@senkevincramer,mention,9
+mention::senshelby,@senshelby,mention,9
+mention::serenawilliams,@serenawilliams,mention,9
+mention::sethmeyers,@sethmeyers,mention,9
+mention::shannonbream,@shannonbream,mention,9
+mention::sharkgregnorman,@sharkgregnorman,mention,9
+mention::sidneypowell1,@sidneypowell1,mention,9
+mention::silverknight57,@silverknight57,mention,9
+mention::stevefda,@stevefda,mention,9
+mention::surabees,@surabees,mention,9
+mention::talismanjohnnya,@talismanjohnnya,mention,9
+mention::theapprentice9,@theapprentice9,mention,9
+mention::thefive,@thefive,mention,9
+mention::thejusticedept,@thejusticedept,mention,9
+mention::theview,@theview,mention,9
+mention::timtebow,@timtebow,mention,9
+mention::tpusa,@tpusa,mention,9
+mention::trumpnationalny,@trumpnationalny,mention,9
+mention::trumpstudents,@trumpstudents,mention,9
+mention::trumpto,@trumpto,mention,9
+mention::warrencasselljr,@warrencasselljr,mention,9
+mention::warroom2020,@warroom2020,mention,9
+mention::woofeous,@woofeous,mention,9
+org::andrewcmccart,Andrewcmccart,org,9
+org::bbc,Bbc,org,9
+org::cahon,Cahon,org,9
+org::cbp,Cbp,org,9
+org::champion american energy,Champion American Energy,org,9
+org::chuckrossdc,Chuckrossdc,org,9
+org::coast guard,Coast Guard,org,9
+org::coll,Coll,org,9
+org::colorado supreme court,Colorado Supreme Court,org,9
+org::cpompeo,Cpompeo,org,9
+org::cru,Cru,org,9
+org::dailycaller,Dailycaller,org,9
+org::dr,Dr,org,9
+org::estapo,Estapo,org,9
+org::fbi & doj,Fbi & Doj,org,9
+org::federal election commission,Federal Election Commission,org,9
+org::grand jury,Grand Jury,org,9
+org::harvard university,Harvard University,org,9
+org::house oversight committee,House Oversight Committee,org,9
+org::hrc,Hrc,org,9
+org::huffingtonpost,Huffingtonpost,org,9
+org::ic,Ic,org,9
+org::iktok,Iktok,org,9
+org::itbartn,Itbartn,org,9
+org::ivankat,Ivankat,org,9
+org::landexpo,Landexpo,org,9
+org::macy ’ s,Macy ’ S,org,9
+org::mcdonalds,Mcdonalds,org,9
+org::military / veterans,Military / Veterans,org,9
+org::military / vets,Military / Vets,org,9
+org::msm,Msm,org,9
+org::my administration,My Administration,org,9
+org::ney,Ney,org,9
+org::nia,Nia,org,9
+org::nothing,Nothing,org,9
+org::ny times,Ny Times,org,9
+org::nypost,Nypost,org,9
+org::obamac,Obamac,org,9
+org::pier,Pier,org,9
+org::pre,Pre,org,9
+org::public,Public,org,9
+org::redstate,Redstate,org,9
+org::repmattgaetz,Repmattgaetz,org,9
+org::s &,S &,org,9
+org::schiff,Schiff,org,9
+org::state senate,State Senate,org,9
+org::super committee,Super Committee,org,9
+org::the people,The People,org,9
+org::trump campaign,Trump Campaign,org,9
+org::trumpc,Trumpc,org,9
+org::trumpcollection,Trumpcollection,org,9
+org::trumps,Trumps,org,9
+org::u. s. air force,U. S. Air Force,org,9
+org::ufc,Ufc,org,9
+org::we the people,We The People,org,9
+org::who,Who,org,9
+org::x,X,org,9
+per::ack,Ack,per,9
+per::adrian,Adrian,per,9
+per::ai,Ai,per,9
+per::aristotle,Aristotle,per,9
+per::barbara,Barbara,per,9
+per::barbara walters,Barbara Walters,per,9
+per::bill belichick,Bill Belichick,per,9
+per::brandonstra,Brandonstra,per,9
+per::briank,Briank,per,9
+per::briankem,Briankem,per,9
+per::brooke rollins,Brooke Rollins,per,9
+per::bryan,Bryan,per,9
+per::carl,Carl,per,9
+per::charles koch,Charles Koch,per,9
+per::chuck grassley,Chuck Grassley,per,9
+per::chuckgrass,Chuckgrass,per,9
+per::clap,Clap,per,9
+per::clay,Clay,per,9
+per::colin powell,Colin Powell,per,9
+per::corey,Corey,per,9
+per::dan bongin,Dan Bongin,per,9
+per::david covey,David Covey,per,9
+per::david rivkin,David Rivkin,per,9
+per::derek jeter,Derek Jeter,per,9
+per::desanctus,Desanctus,per,9
+per::dick cheney,Dick Cheney,per,9
+per::du,Du,per,9
+per::dustin johnson,Dustin Johnson,per,9
+per::eek,Eek,per,9
+per::ele,Ele,per,9
+per::elise,Elise,per,9
+per::elise stefanik,Elise Stefanik,per,9
+per::far,Far,per,9
+per::fe,Fe,per,9
+per::franklin graham,Franklin Graham,per,9
+per::garrett ventry,Garrett Ventry,per,9
+per::heather,Heather,per,9
+per::ho,Ho,per,9
+per::hope,Hope,per,9
+per::howards,Howards,per,9
+per::jeff flake,Jeff Flake,per,9
+per::jerry brown,Jerry Brown,per,9
+per::jessica,Jessica,per,9
+per::jimmy patronis,Jimmy Patronis,per,9
+per::joe rogan,Joe Rogan,per,9
+per::john kasi,John Kasi,per,9
+per::john wayne,John Wayne,per,9
+per::jonh,Jonh,per,9
+per::keith kellogg,Keith Kellogg,per,9
+per::koch,Koch,per,9
+per::l walker,L Walker,per,9
+per::lance,Lance,per,9
+per::lindasuh,Lindasuh,per,9
+per::ls,Ls,per,9
+per::macm,Macm,per,9
+per::macron,Macron,per,9
+per::manchin,Manchin,per,9
+per::mary miller,Mary Miller,per,9
+per::may,May,per,9
+per::mccabe,Mccabe,per,9
+per::mike braun,Mike Braun,per,9
+per::mike lee,Mike Lee,per,9
+per::mike wallace,Mike Wallace,per,9
+per::murdoch,Murdoch,per,9
+per::nathan wade,Nathan Wade,per,9
+per::ni,Ni,per,9
+per::nye west,Nye West,per,9
+per::paula,Paula,per,9
+per::perry,Perry,per,9
+per::pine,Pine,per,9
+per::pocahon,Pocahon,per,9
+per::rachel,Rachel,per,9
+per::reta van susteren,Reta Van Susteren,per,9
+per::richardgrenell,Richardgrenell,per,9
+per::roberts,Roberts,per,9
+per::rod rosenstein,Rod Rosenstein,per,9
+per::rose,Rose,per,9
+per::rro,Rro,per,9
+per::rsen,Rsen,per,9
+per::rudy,Rudy,per,9
+per::russell,Russell,per,9
+per::sarah palin,Sarah Palin,per,9
+per::scottwalk,Scottwalk,per,9
+per::seanhannity,Seanhannity,per,9
+per::seth,Seth,per,9
+per::seth meyer,Seth Meyer,per,9
+per::sh,Sh,per,9
+per::stephanopoulos,Stephanopoulos,per,9
+per::sullivan,Sullivan,per,9
+per::tammy bruce,Tammy Bruce,per,9
+per::tiger woods,Tiger Woods,per,9
+per::tim cook,Tim Cook,per,9
+per::tom steyer,Tom Steyer,per,9
+per::vindman,Vindman,per,9
+per::wheeler,Wheeler,per,9
+per::yo,Yo,per,9
+hashtag::caucusfortrump,#caucusfortrump,hashtag,8
+hashtag::covfefe,#covfefe,hashtag,8
+hashtag::foxandfriends,#foxandfriends,hashtag,8
+hashtag::g7summit,#g7summit,hashtag,8
+hashtag::harvey,#harvey,hashtag,8
+hashtag::jan6,#jan6,hashtag,8
+hashtag::ncgopcon,#ncgopcon,hashtag,8
+hashtag::neverforget,#neverforget,hashtag,8
+hashtag::nyc,#nyc,hashtag,8
+hashtag::puertorico,#puertorico,hashtag,8
+hashtag::smallbiz,#smallbiz,hashtag,8
+hashtag::spygate,#spygate,hashtag,8
+hashtag::success,#success,hashtag,8
+hashtag::superbowl,#superbowl,hashtag,8
+hashtag::thedonald,#thedonald,hashtag,8
+hashtag::trumppence2020,#trumppence2020,hashtag,8
+hashtag::tx13,#tx13,hashtag,8
+hashtag::ultramaga,#ultramaga,hashtag,8
+hashtag::votetrumpsc,#votetrumpsc,hashtag,8
+hashtag::weeklyaddress,#weeklyaddress,hashtag,8
+loc::albany,Albany,loc,8
+loc::allentown,Allentown,loc,8
+loc::baghdad,Baghdad,loc,8
+loc::cal,Cal,loc,8
+loc::capitol building,Capitol Building,loc,8
+loc::charleston,Charleston,loc,8
+loc::colorado springs,Colorado Springs,loc,8
+loc::cot,Cot,loc,8
+loc::east room,East Room,loc,8
+loc::ethiopia,Ethiopia,loc,8
+loc::golf links,Golf Links,loc,8
+loc::heaven,Heaven,loc,8
+loc::helsinki,Helsinki,loc,8
+loc::indonesia,Indonesia,loc,8
+loc::ka,Ka,loc,8
+loc::l. a,L. A,loc,8
+loc::midwest,Midwest,loc,8
+loc::minden,Minden,loc,8
+loc::morocco,Morocco,loc,8
+loc::n. y,N. Y,loc,8
+loc::new orleans,New Orleans,loc,8
+loc::norfolk,Norfolk,loc,8
+loc::panhandle,Panhandle,loc,8
+loc::parkland,Parkland,loc,8
+loc::philly,Philly,loc,8
+loc::richmond,Richmond,loc,8
+loc::rochester,Rochester,loc,8
+loc::san jose,San Jose,loc,8
+loc::san juan,San Juan,loc,8
+loc::state of israel,State Of Israel,loc,8
+loc::suburbs,Suburbs,loc,8
+loc::toledo,Toledo,loc,8
+loc::trump park avenue,Trump Park Avenue,loc,8
+loc::ussia,Ussia,loc,8
+loc::warren,Warren,loc,8
+loc::washington swamp,Washington Swamp,loc,8
+loc::windy city,Windy City,loc,8
+loc::world trade center,World Trade Center,loc,8
+mention::2014_vince,@2014_vince,mention,8
+mention::abc2020,@abc2020,mention,8
+mention::allenwest,@allenwest,mention,8
+mention::americanewsroom,@americanewsroom,mention,8
+mention::anthonyweiner,@anthonyweiner,mention,8
+mention::aplemonlemon,@aplemonlemon,mention,8
+mention::arsenioofficial,@arsenioofficial,mention,8
+mention::bbcnews,@bbcnews,mention,8
+mention::berniesanders,@berniesanders,mention,8
+mention::bestbergerever,@bestbergerever,mention,8
+mention::bfraser747,@bfraser747,mention,8
+mention::billclinton,@billclinton,mention,8
+mention::billkristol,@billkristol,mention,8
+mention::borisep,@borisep,mention,8
+mention::borisjohnson,@borisjohnson,mention,8
+mention::bpolitics,@bpolitics,mention,8
+mention::brandenroderick,@brandenroderick,mention,8
+mention::business,@business,mention,8
+mention::buzzfeed,@buzzfeed,mention,8
+mention::carlhigbie,@carlhigbie,mention,8
+mention::cbnnews,@cbnnews,mention,8
+mention::cbs_herridge,@cbs_herridge,mention,8
+mention::cindyhydesmith,@cindyhydesmith,mention,8
+mention::congressmanhice,@congressmanhice,mention,8
+mention::dakine17,@dakine17,mention,8
+mention::dancrenshawtx,@dancrenshawtx,mention,8
+mention::elisestefanikmy,@elisestefanikmy,mention,8
+mention::eonline,@eonline,mention,8
+mention::ericleebow,@ericleebow,mention,8
+mention::fbi,@fbi,mention,8
+mention::francisbrennan,@francisbrennan,mention,8
+mention::georgewill,@georgewill,mention,8
+mention::golfweekmag,@golfweekmag,mention,8
+mention::google,@google,mention,8
+mention::governorperry,@governorperry,mention,8
+mention::heatherchilders,@heatherchilders,mention,8
+mention::heritage,@heritage,mention,8
+mention::johnkstahlusa,@johnkstahlusa,mention,8
+mention::justthenews,@justthenews,mention,8
+mention::kerrygold1914,@kerrygold1914,mention,8
+mention::kevinomccarthy,@kevinomccarthy,mention,8
+mention::lisamarieboothe,@lisamarieboothe,mention,8
+mention::llinwood,@llinwood,mention,8
+mention::markknoller,@markknoller,mention,8
+mention::marksimoneny,@marksimoneny,mention,8
+mention::mercedesschlapp,@mercedesschlapp,mention,8
+mention::mikebloomberg,@mikebloomberg,mention,8
+mention::mrddmiadear,@mrddmiadear,mention,8
+mention::natashaownfan,@natashaownfan,mention,8
+mention::nws,@nws,mention,8
+mention::oprah,@oprah,mention,8
+mention::pierpaolomonni,@pierpaolomonni,mention,8
+mention::puppyslug,@puppyslug,mention,8
+mention::qvc,@qvc,mention,8
+mention::raheemkassam,@raheemkassam,mention,8
+mention::rea,@rea,mention,8
+mention::realdona,@realdona,mention,8
+mention::realdonaldtrumpif,@realdonaldtrumpif,mention,8
+mention::realdonaldtrumpmy,@realdonaldtrumpmy,mention,8
+mention::realdonaldtrumpour,@realdonaldtrumpour,mention,8
+mention::realdonaldtrumpthere,@realdonaldtrumpthere,mention,8
+mention::realdonaldtrumpwhy,@realdonaldtrumpwhy,mention,8
+mention::realjeffreylord,@realjeffreylord,mention,8
+mention::rizz_lizz,@rizz_lizz,mention,8
+mention::rketeltas,@rketeltas,mention,8
+mention::sarahhuckabee,@sarahhuckabee,mention,8
+mention::seemacms,@seemacms,mention,8
+mention::senatorbraun,@senatorbraun,mention,8
+mention::senjudiciary,@senjudiciary,mention,8
+mention::senmikelee,@senmikelee,mention,8
+mention::stevenmnuchin1,@stevenmnuchin1,mention,8
+mention::stkolbeofpoland,@stkolbeofpoland,mention,8
+mention::teamtrumpkamala,@teamtrumpkamala,mention,8
+mention::terrellowens,@terrellowens,mention,8
+mention::the_trump_train,@the_trump_train,mention,8
+mention::thefix,@thefix,mention,8
+mention::tpgraf82,@tpgraf82,mention,8
+mention::trumpvancouver,@trumpvancouver,mention,8
+mention::univision,@univision,mention,8
+mention::veryodddog,@veryodddog,mention,8
+mention::wmur9,@wmur9,mention,8
+mention::yankeerunnerlv,@yankeerunnerlv,mention,8
+org::9th circuit,9Th Circuit,org,8
+org::a h,A H,org,8
+org::ac,Ac,org,8
+org::americaf,Americaf,org,8
+org::american worker,American Worker,org,8
+org::americanewsroom,Americanewsroom,org,8
+org::an,An,org,8
+org::bigleaguetru,Bigleaguetru,org,8
+org::billc,Billc,org,8
+org::bloomberg,Bloomberg,org,8
+org::brave law enforcement,Brave Law Enforcement,org,8
+org::ca,Ca,org,8
+org::cbnnews,Cbnnews,org,8
+org::con,Con,org,8
+org::department of defense,Department Of Defense,org,8
+org::department of “ justice,Department Of “ Justice,org,8
+org::division,Division,org,8
+org::elon musk,Elon Musk,org,8
+org::emails,Emails,org,8
+org::fake media,Fake Media,org,8
+org::great american patriots,Great American Patriots,org,8
+org::great news,Great News,org,8
+org::green new scam,Green New Scam,org,8
+org::harvard law school,Harvard Law School,org,8
+org::huffington post,Huffington Post,org,8
+org::intelligence community,Intelligence Community,org,8
+org::iowa caucus,Iowa Caucus,org,8
+org::ivan,Ivan,org,8
+org::joe,Joe,org,8
+org::jury,Jury,org,8
+org::justice ” department,Justice ” Department,org,8
+org::katrinap,Katrinap,org,8
+org::leesmithdc,Leesmithdc,org,8
+org::lo,Lo,org,8
+org::meet the press,Meet The Press,org,8
+org::mo,Mo,org,8
+org::morning consult,Morning Consult,org,8
+org::mueller,Mueller,org,8
+org::nc,Nc,org,8
+org::networks,Networks,org,8
+org::new york magazine,New York Magazine,org,8
+org::nhc,Nhc,org,8
+org::ninth circuit,Ninth Circuit,org,8
+org::ny post,Ny Post,org,8
+org::nymag,Nymag,org,8
+org::nyt,Nyt,org,8
+org::of,Of,org,8
+org::one america news,One America News,org,8
+org::op,Op,org,8
+org::or,Or,org,8
+org::pbs,Pbs,org,8
+org::penn state,Penn State,org,8
+org::pennsylvania federal leadership team,Pennsylvania Federal Leadership Team,org,8
+org::pocahontas,Pocahontas,org,8
+org::pompeo,Pompeo,org,8
+org::realitytvblis,Realitytvblis,org,8
+org::ret,Ret,org,8
+org::revol,Revol,org,8
+org::rity,Rity,org,8
+org::saracarter,Saracarter,org,8
+org::sba,Sba,org,8
+org::senate intelligence committee,Senate Intelligence Committee,org,8
+org::squawkcnbc,Squawkcnbc,org,8
+org::state dept,State Dept,org,8
+org::texas house of representatives,Texas House Of Representatives,org,8
+org::the atlantic,The Atlantic,org,8
+org::time,Time,org,8
+org::tomcotton,Tomcotton,org,8
+org::tow,Tow,org,8
+org::trans - pacific partnership,Trans - Pacific Partnership,org,8
+org::trump team,Trump Team,org,8
+org::trumplasvegas,Trumplasvegas,org,8
+org::trumptowern,Trumptowern,org,8
+org::union,Union,org,8
+org::united autoworkers,United Autoworkers,org,8
+org::university of pennsylvania,University Of Pennsylvania,org,8
+org::usdot,Usdot,org,8
+org::ustreasury,Ustreasury,org,8
+org::wharton,Wharton,org,8
+org::wisconsin supreme court,Wisconsin Supreme Court,org,8
+org::witch hunt,Witch Hunt,org,8
+per::aaron,Aaron,per,8
+per::alan dershow,Alan Dershow,per,8
+per::andre,Andre,per,8
+per::angela merkel,Angela Merkel,per,8
+per::anne,Anne,per,8
+per::anthony wien,Anthony Wien,per,8
+per::ar,Ar,per,8
+per::aria,Aria,per,8
+per::ass,Ass,per,8
+per::babe ruth,Babe Ruth,per,8
+per::bara,Bara,per,8
+per::bbush,Bbush,per,8
+per::bernie moreno,Bernie Moreno,per,8
+per::big jim,Big Jim,per,8
+per::bill nelson,Bill Nelson,per,8
+per::bolsonaro,Bolsonaro,per,8
+per::brad blakeman,Brad Blakeman,per,8
+per::brad raffensperger,Brad Raffensperger,per,8
+per::bryant gumbel,Bryant Gumbel,per,8
+per::byron donalds,Byron Donalds,per,8
+per::cabe,Cabe,per,8
+per::chuckg,Chuckg,per,8
+per::clint eastwood,Clint Eastwood,per,8
+per::cory mills,Cory Mills,per,8
+per::david muir,David Muir,per,8
+per::dennis,Dennis,per,8
+per::derrick,Derrick,per,8
+per::desantis,Desantis,per,8
+per::diana,Diana,per,8
+per::duffy,Duffy,per,8
+per::eddie,Eddie,per,8
+per::eddie gallagher,Eddie Gallagher,per,8
+per::eddierispo,Eddierispo,per,8
+per::eekab,Eekab,per,8
+per::eric holder,Eric Holder,per,8
+per::george s. patton,George S. Patton,per,8
+per::glenn youngkin,Glenn Youngkin,per,8
+per::goldberg,Goldberg,per,8
+per::greg gutfeld,Greg Gutfeld,per,8
+per::harry reid,Harry Reid,per,8
+per::helen,Helen,per,8
+per::hilary,Hilary,per,8
+per::hillaryclint,Hillaryclint,per,8
+per::hoffman,Hoffman,per,8
+per::ivanka trump,Ivanka Trump,per,8
+per::jam,Jam,per,8
+per::jane,Jane,per,8
+per::jeffrey epstein,Jeffrey Epstein,per,8
+per::jesse watters,Jesse Watters,per,8
+per::jill,Jill,per,8
+per::john barrasso,John Barrasso,per,8
+per::john mcguire,John Mcguire,per,8
+per::johnkasi,Johnkasi,per,8
+per::juan merch,Juan Merch,per,8
+per::judge barrett,Judge Barrett,per,8
+per::junior,Junior,per,8
+per::justice kavanaugh,Justice Kavanaugh,per,8
+per::kelly tshibaka,Kelly Tshibaka,per,8
+per::king,King,per,8
+per::kins,Kins,per,8
+per::la harris,La Harris,per,8
+per::larry hogan,Larry Hogan,per,8
+per::lee zeld,Lee Zeld,per,8
+per::leo,Leo,per,8
+per::man,Man,per,8
+per::mar,Mar,per,8
+per::marc,Marc,per,8
+per::mariano rivera,Mariano Rivera,per,8
+per::marjorie taylor greene,Marjorie Taylor Greene,per,8
+per::mark burns,Mark Burns,per,8
+per::mark milley,Mark Milley,per,8
+per::martha mcsally,Martha Mcsally,per,8
+per::michael jackson,Michael Jackson,per,8
+per::michael jordan,Michael Jordan,per,8
+per::michael moore,Michael Moore,per,8
+per::michael waltz,Michael Waltz,per,8
+per::mike ditka,Mike Ditka,per,8
+per::miranda,Miranda,per,8
+per::nixon,Nixon,per,8
+per::op,Op,per,8
+per::ove,Ove,per,8
+per::patton,Patton,per,8
+per::peter baker,Peter Baker,per,8
+per::ph,Ph,per,8
+per::ps,Ps,per,8
+per::rachel morin,Rachel Morin,per,8
+per::ray kelly,Ray Kelly,per,8
+per::richard burr,Richard Burr,per,8
+per::rob schmitt,Rob Schmitt,per,8
+per::rory,Rory,per,8
+per::rosenstein,Rosenstein,per,8
+per::russ,Russ,per,8
+per::russell fry,Russell Fry,per,8
+per::sam brown,Sam Brown,per,8
+per::sara,Sara,per,8
+per::sarahpali,Sarahpali,per,8
+per::sean parnell,Sean Parnell,per,8
+per::stacey abrams,Stacey Abrams,per,8
+per::stephen moore,Stephen Moore,per,8
+per::steve witkoff,Steve Witkoff,per,8
+per::stuart stevens,Stuart Stevens,per,8
+per::stuart varney,Stuart Varney,per,8
+per::tate reeves,Tate Reeves,per,8
+per::thomas,Thomas,per,8
+per::thomas jefferson,Thomas Jefferson,per,8
+per::tomfitt,Tomfitt,per,8
+per::tour,Tour,per,8
+per::troy nehls,Troy Nehls,per,8
+per::tyler,Tyler,per,8
+per::wilson,Wilson,per,8
+per::zo abe,Zo Abe,per,8
+per::…,…,per,8
