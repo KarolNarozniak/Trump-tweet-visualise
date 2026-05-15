@@ -8,6 +8,7 @@ const sidebars = {
     "global-animation",
     "truth-social",
     "semantic-unified",
+    "temporal-models",
     "temporal-forecast",
     "results-snapshot",
     "streamlit-app",

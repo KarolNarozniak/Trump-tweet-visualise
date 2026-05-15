@@ -36,6 +36,36 @@ from trump_graph.app import (
 from trump_graph.forecast import build_baseline_forecast_payload
 from trump_graph.settings import ProjectSettings, load_settings
 
+FORECAST_MODEL_REGISTRY: tuple[dict[str, str], ...] = (
+    {
+        "key": "tgn",
+        "label": "TGN",
+        "name": "Temporal Graph Network",
+        "category": "Continuous-time event model",
+        "paper_url": "https://arxiv.org/abs/2006.10637",
+        "impl_url": "https://pytorch-geometric.readthedocs.io/en/2.6.1/generated/torch_geometric.nn.models.TGNMemory.html",
+        "desc": "Memory-based temporal message passing over timestamped events.",
+    },
+    {
+        "key": "evolvegcn",
+        "label": "EvolveGCN-H",
+        "name": "Evolving Graph Convolutional Networks",
+        "category": "Snapshot recurrent graph convolution",
+        "paper_url": "https://ojs.aaai.org/index.php/AAAI/article/view/5984",
+        "impl_url": "https://pytorch-geometric-temporal.readthedocs.io/en/latest/modules/root.html",
+        "desc": "Evolves GCN parameters through time with recurrent dynamics.",
+    },
+    {
+        "key": "gconvgru",
+        "label": "GConvGRU",
+        "name": "Graph Convolutional Recurrent Network",
+        "category": "Snapshot graph recurrent sequence model",
+        "paper_url": "https://arxiv.org/abs/1612.07659",
+        "impl_url": "https://pytorch-geometric-temporal.readthedocs.io/en/latest/modules/root.html",
+        "desc": "Combines graph convolution and GRU for temporal graph snapshots.",
+    },
+)
+
 
 @st.cache_data(show_spinner=False)
 def _cached_week_index(processed_dir: str):
@@ -304,6 +334,42 @@ def _ensure_delta_sets(payload: dict[str, object]) -> dict[str, object]:
         }
     }
     return out
+
+
+def _forecast_model_output_dir(forecast_root: Path, model_key: str) -> Path:
+    return forecast_root / model_key
+
+
+def _load_optional_model_metrics(model_dir: Path) -> dict[str, object]:
+    metrics_path = model_dir / "metrics.json"
+    if not metrics_path.exists():
+        return {}
+    try:
+        return json.loads(metrics_path.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError):
+        return {}
+
+
+def _forecast_model_status_rows(forecast_root: Path) -> pd.DataFrame:
+    rows: list[dict[str, object]] = []
+    for model in FORECAST_MODEL_REGISTRY:
+        model_key = model["key"]
+        model_dir = _forecast_model_output_dir(forecast_root, model_key)
+        artifact_path = model_dir / "forecast_graph" / "animation_state.json"
+        metrics = _load_optional_model_metrics(model_dir)
+        rows.append(
+            {
+                "model": model["label"],
+                "category": model["category"],
+                "status": "ready" if artifact_path.exists() else "missing",
+                "artifact_path": str(artifact_path),
+                "best_val_score": metrics.get("best_val_score", ""),
+                "mae": metrics.get("mae", ""),
+                "rmse": metrics.get("rmse", ""),
+                "map": metrics.get("map", ""),
+            }
+        )
+    return pd.DataFrame(rows)
 
 
 def _format_semantic_dataset_summary(
@@ -611,15 +677,23 @@ def _render_forecast_page(settings: ProjectSettings) -> None:
         "Semantic source directory",
         value=str(settings.forecast_app.semantic_processed_dir),
     )
-    forecast_dir_input = st.sidebar.text_input(
-        "Forecast model directory",
+    forecast_root_input = st.sidebar.text_input(
+        "Forecast models root directory",
         value=str(settings.forecast_app.forecast_processed_dir),
     )
     default_mode = settings.forecast_app.default_mode.strip().lower()
+    forecast_source_options = ["baseline"] + [model["key"] for model in FORECAST_MODEL_REGISTRY]
+    if default_mode not in forecast_source_options:
+        default_mode = "baseline"
     mode = st.sidebar.selectbox(
         "Forecast source",
-        options=["baseline", "model"],
-        index=1 if default_mode == "model" else 0,
+        options=forecast_source_options,
+        index=forecast_source_options.index(default_mode),
+        format_func=lambda key: (
+            "Baseline preview"
+            if key == "baseline"
+            else next((f"{model['label']} ({model['category']})" for model in FORECAST_MODEL_REGISTRY if model["key"] == key), key)
+        ),
     )
     horizon_weeks = st.sidebar.slider(
         "Future horizon (weeks)",
@@ -687,14 +761,18 @@ def _render_forecast_page(settings: ProjectSettings) -> None:
 
     payload_to_render: dict[str, object]
     backend_label = "Baseline preview"
-    if mode == "model":
-        forecast_dir = Path(forecast_dir_input)
+    forecast_root = Path(forecast_root_input)
+    if mode != "baseline":
+        model_dir = _forecast_model_output_dir(forecast_root, mode)
         try:
-            payload_to_render = _cached_forecast_animation_payload(str(forecast_dir))
+            payload_to_render = _cached_forecast_animation_payload(str(model_dir))
             payload_to_render = _ensure_delta_sets(payload_to_render)
-            backend_label = "Trained model output"
+            model_label = next((model["label"] for model in FORECAST_MODEL_REGISTRY if model["key"] == mode), mode)
+            backend_label = f"{model_label} trained model output"
         except FileNotFoundError:
-            st.warning("Model forecast artifacts were not found, using baseline preview for now.")
+            st.warning(
+                f"Model artifact not found for `{mode}` at `{model_dir / 'forecast_graph' / 'animation_state.json'}`. Using baseline preview."
+            )
             payload_to_render = build_baseline_forecast_payload(
                 semantic_payload,
                 horizon_weeks=horizon_weeks,
@@ -734,6 +812,12 @@ def _render_forecast_page(settings: ProjectSettings) -> None:
     st.caption(
         f"Source: {backend_label}. This page is prepared for your trained model artifacts and can already preview future dynamics."
     )
+    with st.expander("Three Planned Temporal Models"):
+        for model in FORECAST_MODEL_REGISTRY:
+            st.markdown(
+                f"- **{model['label']}** ({model['category']}): {model['desc']} "
+                f"[Paper]({model['paper_url']}) · [Implementation Reference]({model['impl_url']})"
+            )
     graph_html = build_truth_semantic_animation_html(
         payload=payload_to_render,
         included_node_types=set(selected_node_types),
@@ -760,11 +844,17 @@ def _render_forecast_page(settings: ProjectSettings) -> None:
     metric_cols[2].metric("Total nodes", f"{len(payload_to_render.get('global_nodes', [])):,}")
     metric_cols[3].metric("Total edges", f"{len(payload_to_render.get('global_edges', [])):,}")
 
+    st.subheader("Model Comparison Readiness")
+    model_status_df = _forecast_model_status_rows(forecast_root)
+    st.dataframe(model_status_df, width="stretch", hide_index=True)
+
     st.subheader("Model Artifact Contract")
     st.markdown(
-        "- Place trained forecast payload at `data/processed_forecast/forecast_graph/animation_state.json`.\n"
+        "- Place trained payloads in `data/processed_forecast/<model_key>/forecast_graph/animation_state.json`.\n"
+        "- Supported model keys in UI: `tgn`, `evolvegcn`, `gconvgru`.\n"
         "- Required keys: `weeks`, `global_nodes`, `global_edges`, `node_week_deltas`, `edge_week_deltas`, `heat_decay`, `heat_scale`, `max_cumulative_edge`.\n"
-        "- Optional: include `delta_sets` for additional filters; if omitted, the app uses `all` from top-level deltas."
+        "- Optional: include `delta_sets` for additional filters; if omitted, the app uses `all` from top-level deltas.\n"
+        "- Optional model metrics: `data/processed_forecast/<model_key>/metrics.json` with fields like `best_val_score`, `mae`, `rmse`, `map` for comparison table."
     )
 
     payload_export = json.dumps(payload_to_render, indent=2).encode("utf-8")

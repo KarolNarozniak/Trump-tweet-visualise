@@ -59,7 +59,9 @@ http://localhost:3001/?page=forecast
 
 The Forecast page is prepared for temporal neural-network outputs and supports two sources:
 
-- `model`: reads `data/processed_forecast/forecast_graph/animation_state.json`
+- `tgn`: reads `data/processed_forecast/tgn/forecast_graph/animation_state.json`
+- `evolvegcn`: reads `data/processed_forecast/evolvegcn/forecast_graph/animation_state.json`
+- `gconvgru`: reads `data/processed_forecast/gconvgru/forecast_graph/animation_state.json`
 - `baseline`: generates a local future preview from semantic artifacts
 
 Both renderings keep stable node positions and extend weeks into future slots.

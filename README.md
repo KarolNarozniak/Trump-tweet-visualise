@@ -323,9 +323,11 @@ Default Unified output directory: `data/processed_unified`
 
 Optional forecast model output directory: `data/processed_forecast`
 
-- `forecast_graph/animation_state.json`
+- `tgn/forecast_graph/animation_state.json`
+- `evolvegcn/forecast_graph/animation_state.json`
+- `gconvgru/forecast_graph/animation_state.json`
 
-If `forecast_graph/animation_state.json` is not present, the Forecast page can render a baseline future preview from semantic artifacts.
+If a selected model artifact is not present, the Forecast page falls back to a baseline future preview generated from semantic artifacts.
 
 ## Testing
 

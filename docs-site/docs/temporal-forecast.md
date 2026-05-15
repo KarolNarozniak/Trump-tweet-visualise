@@ -10,14 +10,16 @@ http://localhost:3001/?page=forecast
 
 ## Modes
 
-- `model`: load trained output from forecast artifacts
+- `tgn`: load trained TGN output
+- `evolvegcn`: load trained EvolveGCN output
+- `gconvgru`: load trained GConvGRU output
 - `baseline`: local preview built from semantic history while training is in progress
 
 ## Expected Model Artifact
 
 Path:
 
-- `data/processed_forecast/forecast_graph/animation_state.json`
+- `data/processed_forecast/<model_key>/forecast_graph/animation_state.json`
 
 Required keys:
 
@@ -33,6 +35,10 @@ Required keys:
 Optional key:
 
 - `delta_sets` (if omitted, app uses top-level deltas as `all`)
+
+Optional sidecar metrics:
+
+- `data/processed_forecast/<model_key>/metrics.json`
 
 ## UX Behavior
 
