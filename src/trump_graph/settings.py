@@ -197,6 +197,21 @@ class ForecastAppSettings:
 
 
 @dataclass(frozen=True)
+class ForecastTrainSettings:
+    semantic_input_dir: Path
+    output_dir: Path
+    device: str
+    horizon_weeks: int
+    lookback_weeks: int
+    validation_weeks: int
+    epochs: int
+    hidden_dim: int
+    learning_rate: float
+    weight_decay: float
+    seed: int
+
+
+@dataclass(frozen=True)
 class AppSettings:
     processed_dir: Path
     include_hub: bool
@@ -254,6 +269,7 @@ class ProjectSettings:
     truth_app: TruthAppSettings
     semantic_app: SemanticAppSettings
     forecast_app: ForecastAppSettings
+    forecast_train: ForecastTrainSettings
     runtime: RuntimeSettings
     meta: MetaSettings
 
@@ -964,6 +980,97 @@ def load_settings(config_path: Path | None = None, env_path: Path | None = None)
         ),
     )
 
+    forecast_train = ForecastTrainSettings(
+        semantic_input_dir=_resolve_value(
+            env_name="TG_FORECAST_TRAIN_INPUT_DIR",
+            config_keys=("forecast_train", "input_dir"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value="data/processed_unified",
+            parser=_path_parser,
+        ),
+        output_dir=_resolve_value(
+            env_name="TG_FORECAST_TRAIN_OUTPUT_DIR",
+            config_keys=("forecast_train", "output_dir"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value="data/processed_forecast",
+            parser=_path_parser,
+        ),
+        device=_resolve_value(
+            env_name="TG_FORECAST_TRAIN_DEVICE",
+            config_keys=("forecast_train", "device"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value="auto",
+            parser=_to_str,
+        ),
+        horizon_weeks=_resolve_value(
+            env_name="TG_FORECAST_TRAIN_HORIZON_WEEKS",
+            config_keys=("forecast_train", "horizon_weeks"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value=16,
+            parser=_to_int,
+        ),
+        lookback_weeks=_resolve_value(
+            env_name="TG_FORECAST_TRAIN_LOOKBACK_WEEKS",
+            config_keys=("forecast_train", "lookback_weeks"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value=12,
+            parser=_to_int,
+        ),
+        validation_weeks=_resolve_value(
+            env_name="TG_FORECAST_TRAIN_VALIDATION_WEEKS",
+            config_keys=("forecast_train", "validation_weeks"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value=12,
+            parser=_to_int,
+        ),
+        epochs=_resolve_value(
+            env_name="TG_FORECAST_TRAIN_EPOCHS",
+            config_keys=("forecast_train", "epochs"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value=30,
+            parser=_to_int,
+        ),
+        hidden_dim=_resolve_value(
+            env_name="TG_FORECAST_TRAIN_HIDDEN_DIM",
+            config_keys=("forecast_train", "hidden_dim"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value=32,
+            parser=_to_int,
+        ),
+        learning_rate=_resolve_value(
+            env_name="TG_FORECAST_TRAIN_LEARNING_RATE",
+            config_keys=("forecast_train", "learning_rate"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value=0.002,
+            parser=_to_float,
+        ),
+        weight_decay=_resolve_value(
+            env_name="TG_FORECAST_TRAIN_WEIGHT_DECAY",
+            config_keys=("forecast_train", "weight_decay"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value=0.00001,
+            parser=_to_float,
+        ),
+        seed=_resolve_value(
+            env_name="TG_FORECAST_TRAIN_SEED",
+            config_keys=("forecast_train", "seed"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value=42,
+            parser=_to_int,
+        ),
+    )
+
     streamlit_host = _resolve_value(
         env_name="TG_RUNTIME_STREAMLIT_HOST",
         config_keys=("runtime", "streamlit_host"),
@@ -1092,6 +1199,7 @@ def load_settings(config_path: Path | None = None, env_path: Path | None = None)
         truth_app=truth_app,
         semantic_app=semantic_app,
         forecast_app=forecast_app,
+        forecast_train=forecast_train,
         runtime=runtime,
         meta=meta,
     )

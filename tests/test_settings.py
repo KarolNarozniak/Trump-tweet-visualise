@@ -94,6 +94,17 @@ def _clean_overrides(monkeypatch) -> None:
         "TG_FORECAST_APP_LAYOUT_SPREAD",
         "TG_FORECAST_APP_INITIAL_ZOOM_BOOST",
         "TG_FORECAST_APP_GRAPH_HEIGHT_PX",
+        "TG_FORECAST_TRAIN_INPUT_DIR",
+        "TG_FORECAST_TRAIN_OUTPUT_DIR",
+        "TG_FORECAST_TRAIN_DEVICE",
+        "TG_FORECAST_TRAIN_HORIZON_WEEKS",
+        "TG_FORECAST_TRAIN_LOOKBACK_WEEKS",
+        "TG_FORECAST_TRAIN_VALIDATION_WEEKS",
+        "TG_FORECAST_TRAIN_EPOCHS",
+        "TG_FORECAST_TRAIN_HIDDEN_DIM",
+        "TG_FORECAST_TRAIN_LEARNING_RATE",
+        "TG_FORECAST_TRAIN_WEIGHT_DECAY",
+        "TG_FORECAST_TRAIN_SEED",
         "TG_RUNTIME_STREAMLIT_HOST",
         "TG_RUNTIME_STREAMLIT_PORT",
         "TG_RUNTIME_DOCS_HOST",
@@ -173,6 +184,8 @@ TG_APP_PLAYBACK_SPEED=6.0
         assert settings.unified_build.semantic_backend == "hf"
         assert settings.semantic_app.processed_dir.name == "processed_unified"
         assert settings.forecast_app.default_mode == "baseline"
+        assert settings.forecast_train.output_dir.name == "processed_forecast"
+        assert settings.forecast_train.epochs == 30
     finally:
         shutil.rmtree(temp_dir_path, ignore_errors=True)
 

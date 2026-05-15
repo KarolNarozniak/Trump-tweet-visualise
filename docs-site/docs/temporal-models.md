@@ -1,65 +1,52 @@
-# Temporal Models (Research Plan)
+# Temporal Models
 
-This project will train and compare three temporal graph models on the unified semantic graph timeline.
+The Forecast stack supports three trainable model keys on top of unified semantic artifacts.
 
-## Model 1: TGN
+## Implemented Model Keys
 
-- name: Temporal Graph Network (TGN)
-- type: continuous-time event model with memory
-- paper: https://arxiv.org/abs/2006.10637
-- implementation reference: https://pytorch-geometric.readthedocs.io/en/2.6.1/generated/torch_geometric.nn.models.TGNMemory.html
+### `tgn`
 
-Why here:
+- style: memory-based temporal node forecaster
+- implementation: GRU memory over per-node weekly signal + normalized neighbor aggregation
+- role: fast sequence baseline that still uses graph context
 
-- fits event-level temporal interactions
-- captures long-term dependencies with node memory
-- strong baseline for dynamic link-style prediction
+### `evolvegcn`
 
-## Model 2: EvolveGCN-H
+- style: EvolveGCN-H snapshot model
+- implementation: `torch_geometric_temporal.nn.recurrent.EvolveGCNH`
+- role: evolves graph convolution parameters across weekly snapshots
 
-- name: Evolving Graph Convolutional Networks (EvolveGCN)
-- type: recurrent evolution of GCN parameters over time snapshots
-- paper: https://ojs.aaai.org/index.php/AAAI/article/view/5984
-- implementation reference: https://pytorch-geometric-temporal.readthedocs.io/en/latest/modules/root.html
+### `gconvgru`
 
-Why here:
+- style: graph-convolutional recurrent model
+- implementation: `torch_geometric_temporal.nn.recurrent.GConvGRU`
+- role: recurrent graph forecasting baseline with explicit hidden state
 
-- built for evolving graph snapshots
-- parameter evolution can adapt across long weekly horizons
-- no strict dependency on fixed node embeddings
+## Training Command
 
-## Model 3: GConvGRU
+```bash
+python -m trump_graph train-forecast \
+  --model evolvegcn \
+  --input-dir data/processed_unified \
+  --out data/processed_forecast \
+  --device cuda \
+  --horizon-weeks 16 \
+  --validation-weeks 12 \
+  --epochs 30
+```
 
-- name: Graph Convolutional Recurrent Network (GConvGRU cell)
-- type: graph convolution + GRU sequence model over snapshots
-- paper: https://arxiv.org/abs/1612.07659
-- implementation reference: https://pytorch-geometric-temporal.readthedocs.io/en/latest/modules/root.html
+Supported `--model` values:
 
-Why here:
+- `baseline`
+- `tgn`
+- `evolvegcn`
+- `gconvgru`
 
-- stable and efficient recurrent baseline
-- good bias for weekly temporal smoothness
-- easy to tune and interpret for first production training runs
+## Produced Artifacts
 
-## Comparison Protocol
+Each model writes:
 
-Use one consistent split across all three:
-
-1. train: earliest 70% weeks
-2. validation: next 15% weeks
-3. test: final 15% weeks
-
-Primary metrics:
-
-- MAE / RMSE on predicted weekly node and edge deltas
-- MAP for ranking high-activity nodes/edges
-
-All model outputs should be exported to:
-
-- `data/processed_forecast/tgn/forecast_graph/animation_state.json`
-- `data/processed_forecast/evolvegcn/forecast_graph/animation_state.json`
-- `data/processed_forecast/gconvgru/forecast_graph/animation_state.json`
-
-Optional per-model metrics file:
-
+- `data/processed_forecast/<model_key>/forecast_graph/animation_state.json`
 - `data/processed_forecast/<model_key>/metrics.json`
+
+The Forecast page reads these directly.

@@ -95,6 +95,19 @@ layout_spread = 1.15
 initial_zoom_boost = 0.92
 graph_height_px = 920
 
+[forecast_train]
+input_dir = "data/processed_unified"
+output_dir = "data/processed_forecast"
+device = "auto"
+horizon_weeks = 16
+lookback_weeks = 12
+validation_weeks = 12
+epochs = 30
+hidden_dim = 32
+learning_rate = 0.002
+weight_decay = 0.00001
+seed = 42
+
 [runtime]
 streamlit_host = "0.0.0.0"
 streamlit_port = 3001

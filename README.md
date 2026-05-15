@@ -166,6 +166,49 @@ python -m trump_graph build-unified \
   --min-node-count 1
 ```
 
+## Train Forecast Models (Layer 3)
+
+After `build-unified`, train one model at a time:
+
+```bash
+python -m trump_graph train-forecast --model tgn --device cuda
+python -m trump_graph train-forecast --model evolvegcn --device cuda
+python -m trump_graph train-forecast --model gconvgru --device cuda
+```
+
+For `evolvegcn` and `gconvgru`, install PyG wheels that match your Torch/CUDA build first:
+
+```bash
+python -m pip install pyg_lib torch_scatter torch_sparse torch_cluster \
+  -f https://data.pyg.org/whl/torch-2.11.0+cu126.html
+python -m pip install torch-geometric torch-geometric-temporal --no-deps
+python -m pip install cython decorator==4.4.2
+```
+
+Recommended production command shape:
+
+```bash
+python -m trump_graph train-forecast \
+  --model evolvegcn \
+  --input-dir "data/processed_unified" \
+  --out "data/processed_forecast" \
+  --device cuda \
+  --horizon-weeks 16 \
+  --lookback-weeks 12 \
+  --validation-weeks 12 \
+  --epochs 30 \
+  --hidden-dim 32 \
+  --learning-rate 0.002 \
+  --weight-decay 0.00001 \
+  --seed 42
+```
+
+Baseline payload generation (no training loop):
+
+```bash
+python -m trump_graph train-forecast --model baseline
+```
+
 ## Run App and Docs Together
 
 ### Windows
@@ -276,6 +319,20 @@ Configuration resolution order:
 - `TG_UNIFIED_BUILD_TOPIC_THRESHOLD`
 - `TG_UNIFIED_BUILD_MIN_NODE_COUNT`
 
+### Key Forecast Train Vars
+
+- `TG_FORECAST_TRAIN_INPUT_DIR`
+- `TG_FORECAST_TRAIN_OUTPUT_DIR`
+- `TG_FORECAST_TRAIN_DEVICE`
+- `TG_FORECAST_TRAIN_HORIZON_WEEKS`
+- `TG_FORECAST_TRAIN_LOOKBACK_WEEKS`
+- `TG_FORECAST_TRAIN_VALIDATION_WEEKS`
+- `TG_FORECAST_TRAIN_EPOCHS`
+- `TG_FORECAST_TRAIN_HIDDEN_DIM`
+- `TG_FORECAST_TRAIN_LEARNING_RATE`
+- `TG_FORECAST_TRAIN_WEIGHT_DECAY`
+- `TG_FORECAST_TRAIN_SEED`
+
 ### Key Truth App Vars
 
 - `TG_TRUTH_APP_PROCESSED_DIR`
@@ -326,6 +383,7 @@ Optional forecast model output directory: `data/processed_forecast`
 - `tgn/forecast_graph/animation_state.json`
 - `evolvegcn/forecast_graph/animation_state.json`
 - `gconvgru/forecast_graph/animation_state.json`
+- `<model_key>/metrics.json`
 
 If a selected model artifact is not present, the Forecast page falls back to a baseline future preview generated from semantic artifacts.
 

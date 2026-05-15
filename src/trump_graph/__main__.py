@@ -1,8 +1,12 @@
 from __future__ import annotations
 
 import argparse
+import json
 from pathlib import Path
 
+from .app import load_unified_animation_artifacts
+from .forecast import build_baseline_forecast_payload
+from .io import ensure_directory
 from .pipeline import build_weekly_artifacts
 from .truth_pipeline import build_truth_artifacts
 from .truth_semantics import TruthSemanticConfig
@@ -167,6 +171,38 @@ def _build_parser() -> argparse.ArgumentParser:
     )
     unified_parser.add_argument("--heat-decay", type=float, default=settings.unified_build.heat_decay)
     unified_parser.add_argument("--layout-seed", type=int, default=settings.unified_build.layout_seed)
+
+    forecast_parser = subparsers.add_parser(
+        "train-forecast",
+        help="Train a temporal forecast model and emit forecast animation artifacts.",
+    )
+    forecast_parser.add_argument(
+        "--model",
+        choices=("baseline", "tgn", "evolvegcn", "gconvgru"),
+        default="baseline",
+        help="Forecast backend to train/build.",
+    )
+    forecast_parser.add_argument(
+        "--input-dir",
+        type=Path,
+        default=settings.forecast_train.semantic_input_dir,
+        help="Directory containing unified semantic artifacts (expects unified_semantic_graph/animation_state.json).",
+    )
+    forecast_parser.add_argument(
+        "--out",
+        type=Path,
+        default=settings.forecast_train.output_dir,
+        help="Root output directory for forecast model artifacts.",
+    )
+    forecast_parser.add_argument("--device", default=settings.forecast_train.device, help="Training device: auto, cuda, or cpu.")
+    forecast_parser.add_argument("--horizon-weeks", type=int, default=settings.forecast_train.horizon_weeks)
+    forecast_parser.add_argument("--lookback-weeks", type=int, default=settings.forecast_train.lookback_weeks)
+    forecast_parser.add_argument("--validation-weeks", type=int, default=settings.forecast_train.validation_weeks)
+    forecast_parser.add_argument("--epochs", type=int, default=settings.forecast_train.epochs)
+    forecast_parser.add_argument("--hidden-dim", type=int, default=settings.forecast_train.hidden_dim)
+    forecast_parser.add_argument("--learning-rate", type=float, default=settings.forecast_train.learning_rate)
+    forecast_parser.add_argument("--weight-decay", type=float, default=settings.forecast_train.weight_decay)
+    forecast_parser.add_argument("--seed", type=int, default=settings.forecast_train.seed)
     return parser
 
 
@@ -256,6 +292,69 @@ def main(argv: list[str] | None = None) -> int:
         print(f"Unified semantic nodes: {stats.semantic_nodes}")
         print(f"Unified semantic edges: {stats.semantic_edges}")
         print(f"Embedding dim: {stats.embedding_dim}")
+        print(f"Artifacts written to: {stats.output_dir}")
+        return 0
+
+    if args.command == "train-forecast":
+        if args.model == "baseline":
+            semantic_payload = load_unified_animation_artifacts(args.input_dir)
+            forecast_payload = build_baseline_forecast_payload(
+                semantic_payload,
+                horizon_weeks=args.horizon_weeks,
+                lookback_weeks=args.lookback_weeks,
+            )
+            output_dir = ensure_directory(args.out / "baseline")
+            graph_dir = ensure_directory(output_dir / "forecast_graph")
+            (graph_dir / "animation_state.json").write_text(
+                json.dumps(forecast_payload, sort_keys=False),
+                encoding="utf-8",
+            )
+            (output_dir / "metrics.json").write_text(
+                json.dumps(
+                    {
+                        "model_key": "baseline",
+                        "horizon_weeks": int(args.horizon_weeks),
+                        "lookback_weeks": int(args.lookback_weeks),
+                    },
+                    indent=2,
+                    sort_keys=True,
+                ),
+                encoding="utf-8",
+            )
+            print("Forecast model: baseline")
+            print(f"Artifacts written to: {output_dir}")
+            return 0
+
+        from .forecast_training import ForecastTrainingConfig, train_forecast_model
+
+        stats = train_forecast_model(
+            ForecastTrainingConfig(
+                model_key=args.model,
+                semantic_input_dir=args.input_dir,
+                output_root_dir=args.out,
+                horizon_weeks=args.horizon_weeks,
+                lookback_weeks=args.lookback_weeks,
+                validation_weeks=args.validation_weeks,
+                epochs=args.epochs,
+                hidden_dim=args.hidden_dim,
+                learning_rate=args.learning_rate,
+                weight_decay=args.weight_decay,
+                device=args.device,
+                seed=args.seed,
+            )
+        )
+        print(f"Forecast model: {stats.model_key}")
+        print(f"Weeks seen: {stats.weeks_seen}")
+        print(f"Nodes seen: {stats.nodes_seen}")
+        print(f"Edges seen: {stats.edges_seen}")
+        print(f"Horizon weeks: {stats.horizon_weeks}")
+        print(f"Validation weeks: {stats.validation_weeks}")
+        print(f"Epochs: {stats.epochs}")
+        print(f"Train seconds: {stats.train_seconds:.2f}")
+        print(f"Best val loss: {stats.best_val_loss:.6f}")
+        print(f"MAE: {stats.mae:.6f}")
+        print(f"RMSE: {stats.rmse:.6f}")
+        print(f"Device used: {stats.device_used}")
         print(f"Artifacts written to: {stats.output_dir}")
         return 0
 

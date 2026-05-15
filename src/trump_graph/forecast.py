@@ -122,6 +122,18 @@ def _max_heat(
     return peak if peak > 0 else 1.0
 
 
+def _max_cumulative_edge_count(edge_week_deltas: list[list[list[Any]]]) -> int:
+    cumulative: dict[str, int] = {}
+    max_value = 0
+    for week_entries in edge_week_deltas:
+        for edge_id, delta in week_entries:
+            edge_key = str(edge_id)
+            cumulative[edge_key] = cumulative.get(edge_key, 0) + int(delta)
+            if cumulative[edge_key] > max_value:
+                max_value = cumulative[edge_key]
+    return max(1, int(max_value))
+
+
 def build_baseline_forecast_payload(
     semantic_payload: Mapping[str, Any],
     *,
@@ -204,4 +216,72 @@ def build_baseline_forecast_payload(
     forecast_payload["forecast_horizon_weeks"] = int(horizon_weeks)
     forecast_payload["forecast_backend"] = "baseline"
     forecast_payload["forecast_source"] = "generated_from_semantic_payload"
+    return forecast_payload
+
+
+def build_forecast_payload_with_future_deltas(
+    semantic_payload: Mapping[str, Any],
+    *,
+    future_node_deltas: list[list[list[Any]]],
+    future_edge_deltas: list[list[list[Any]]],
+    backend: str,
+    source: str,
+    model_meta: Mapping[str, Any] | None = None,
+) -> dict[str, Any]:
+    if len(future_node_deltas) != len(future_edge_deltas):
+        raise ValueError("future_node_deltas and future_edge_deltas must have the same horizon length")
+
+    weeks = [dict(week) for week in semantic_payload.get("weeks", [])]
+    if not weeks:
+        raise ValueError("Semantic payload contains no weeks.")
+
+    history_node_deltas = [
+        [[str(node_id), int(delta)] for node_id, delta in week_entries]
+        for week_entries in semantic_payload.get("node_week_deltas", [])
+    ]
+    history_edge_deltas = [
+        [[str(edge_id), int(delta)] for edge_id, delta in week_entries]
+        for week_entries in semantic_payload.get("edge_week_deltas", [])
+    ]
+
+    if len(history_node_deltas) != len(weeks) or len(history_edge_deltas) != len(weeks):
+        raise ValueError("Historical weekly deltas are inconsistent with weeks in semantic payload.")
+
+    normalized_future_nodes = [
+        [[str(node_id), int(delta)] for node_id, delta in week_entries if int(delta) > 0]
+        for week_entries in future_node_deltas
+    ]
+    normalized_future_edges = [
+        [[str(edge_id), int(delta)] for edge_id, delta in week_entries if int(delta) > 0]
+        for week_entries in future_edge_deltas
+    ]
+    horizon_weeks = len(normalized_future_nodes)
+    future_weeks = _future_week_records(weeks, horizon_weeks)
+
+    combined_weeks = weeks + future_weeks
+    combined_node_deltas = history_node_deltas + normalized_future_nodes
+    combined_edge_deltas = history_edge_deltas + normalized_future_edges
+    node_ids = [str(node.get("id")) for node in semantic_payload.get("global_nodes", [])]
+    heat_decay = float(semantic_payload.get("heat_decay", 0.85))
+    heat_scale = _max_heat(node_ids, combined_node_deltas, heat_decay)
+    max_cumulative_edge = _max_cumulative_edge_count(combined_edge_deltas)
+
+    forecast_payload = dict(semantic_payload)
+    forecast_payload["graph_kind"] = "temporal_forecast"
+    forecast_payload["weeks"] = combined_weeks
+    forecast_payload["node_week_deltas"] = combined_node_deltas
+    forecast_payload["edge_week_deltas"] = combined_edge_deltas
+    forecast_payload["delta_sets"] = {
+        "all": {
+            "node_week_deltas": combined_node_deltas,
+            "edge_week_deltas": combined_edge_deltas,
+        }
+    }
+    forecast_payload["heat_scale"] = round(float(heat_scale), 6)
+    forecast_payload["max_cumulative_edge"] = int(max_cumulative_edge)
+    forecast_payload["forecast_horizon_weeks"] = int(horizon_weeks)
+    forecast_payload["forecast_backend"] = str(backend)
+    forecast_payload["forecast_source"] = str(source)
+    if model_meta:
+        forecast_payload["forecast_model_meta"] = dict(model_meta)
     return forecast_payload

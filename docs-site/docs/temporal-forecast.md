@@ -15,6 +15,28 @@ http://localhost:3001/?page=forecast
 - `gconvgru`: load trained GConvGRU output
 - `baseline`: local preview built from semantic history while training is in progress
 
+## Training CLI
+
+```bash
+python -m trump_graph train-forecast --model tgn --device cuda
+python -m trump_graph train-forecast --model evolvegcn --device cuda
+python -m trump_graph train-forecast --model gconvgru --device cuda
+```
+
+You can tune horizon and optimization:
+
+```bash
+python -m trump_graph train-forecast \
+  --model evolvegcn \
+  --horizon-weeks 16 \
+  --validation-weeks 12 \
+  --epochs 30 \
+  --hidden-dim 32 \
+  --learning-rate 0.002
+```
+
+For `evolvegcn` and `gconvgru`, install compatible PyG wheels before training.
+
 ## Expected Model Artifact
 
 Path:
