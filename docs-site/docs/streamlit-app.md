@@ -14,7 +14,7 @@ python -m streamlit run app/main.py --server.port 3001 --server.address 0.0.0.0
 
 1. Stable global graph
 2. Semantic temporal graph (unified labels)
-3. Temporal forecast graph (model or baseline preview)
+3. Temporal forecast comparison grid (original + 3 models)
 4. Timeline controls (play/pause/stop/speed/week scrubber)
 5. Weekly tables and export actions
 
@@ -57,11 +57,16 @@ Open:
 http://localhost:3001/?page=forecast
 ```
 
-The Forecast page is prepared for temporal neural-network outputs and supports two sources:
+The Forecast page renders four synchronized comparison panels:
 
-- `tgn`: reads `data/processed_forecast/tgn/forecast_graph/animation_state.json`
-- `evolvegcn`: reads `data/processed_forecast/evolvegcn/forecast_graph/animation_state.json`
-- `gconvgru`: reads `data/processed_forecast/gconvgru/forecast_graph/animation_state.json`
-- `baseline`: generates a local future preview from semantic artifacts
+- Original timeline (ground truth)
+- `tgn`: `data/processed_forecast/tgn/forecast_graph/animation_state.json`
+- `evolvegcn`: `data/processed_forecast/evolvegcn/forecast_graph/animation_state.json`
+- `gconvgru`: `data/processed_forecast/gconvgru/forecast_graph/animation_state.json`
 
-Both renderings keep stable node positions and extend weeks into future slots.
+If any trained model artifact is missing, that panel falls back to a baseline forecast preview.
+
+All panels keep fixed coordinates and start from the same comparison anchor:
+
+- default: 52 weeks before history end
+- config key: `forecast_app.comparison_lookback_weeks`

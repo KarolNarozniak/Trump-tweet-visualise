@@ -943,6 +943,7 @@ def build_truth_semantic_animation_html(
     included_node_types: set[str],
     min_total_count: int,
     delta_set_name: str,
+    initial_week_index: int | None = None,
     initial_speed: float = 6.0,
     node_size_multiplier: float = 1.8,
     initial_zoom_boost: float = 0.85,
@@ -961,10 +962,12 @@ def build_truth_semantic_animation_html(
         raise ValueError("Truth animation payload has no weeks.")
 
     max_week_index = len(weeks) - 1
-    initial_week_index = next(
-        (index for index, entries in enumerate(filtered_payload.get("node_week_deltas", [])) if entries),
-        0,
-    )
+    if initial_week_index is None:
+        initial_week_index = next(
+            (index for index, entries in enumerate(filtered_payload.get("node_week_deltas", [])) if entries),
+            0,
+        )
+    initial_week_index = max(0, min(max_week_index, int(initial_week_index)))
     speed_value = max(0.5, min(8.0, float(initial_speed)))
     size_multiplier = max(0.4, min(3.0, float(node_size_multiplier)))
     zoom_boost = max(0.55, min(2.5, float(initial_zoom_boost)))

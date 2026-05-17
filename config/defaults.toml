@@ -87,6 +87,7 @@ processed_dir = "data/processed_forecast"
 default_mode = "baseline"
 horizon_weeks = 16
 lookback_weeks = 12
+comparison_lookback_weeks = 52
 node_types = ["topic", "per", "org", "loc"]
 min_node_count = 8
 playback_speed = 6.0

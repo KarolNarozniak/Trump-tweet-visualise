@@ -187,6 +187,7 @@ class ForecastAppSettings:
     default_mode: str
     horizon_weeks: int
     lookback_weeks: int
+    comparison_lookback_weeks: int
     node_types: tuple[str, ...]
     min_node_count: int
     playback_speed: float
@@ -920,6 +921,14 @@ def load_settings(config_path: Path | None = None, env_path: Path | None = None)
             config_data=config_data,
             dotenv_data=dotenv_data,
             default_value=12,
+            parser=_to_int,
+        ),
+        comparison_lookback_weeks=_resolve_value(
+            env_name="TG_FORECAST_APP_COMPARISON_LOOKBACK_WEEKS",
+            config_keys=("forecast_app", "comparison_lookback_weeks"),
+            config_data=config_data,
+            dotenv_data=dotenv_data,
+            default_value=52,
             parser=_to_int,
         ),
         node_types=_resolve_value(

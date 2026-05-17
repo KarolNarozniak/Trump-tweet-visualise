@@ -50,3 +50,30 @@ Each model writes:
 - `data/processed_forecast/<model_key>/metrics.json`
 
 The Forecast page reads these directly.
+
+## Current Benchmark Snapshot
+
+Metrics from the latest `data/processed_forecast/*/metrics.json` files:
+
+| Model | Best Val Loss | MAE | RMSE | Train Seconds |
+|---|---:|---:|---:|---:|
+| TGN | 0.071403 | 0.154438 | 0.495866 | 46.441 |
+| EvolveGCN-H | 0.134911 | 0.219941 | 0.754413 | 86.546 |
+| GConvGRU | 0.064649 | 0.133381 | 0.506902 | 215.194 |
+
+Interpretation:
+
+- GConvGRU currently gives the lowest validation loss and MAE.
+- TGN is close in RMSE and trains much faster.
+- EvolveGCN-H is ready and valid, but currently underperforms the other two.
+
+## Recommended Next Training Pass
+
+A short run can converge quickly on this weekly dataset, but stronger comparison usually needs multiple seeds and longer schedules.
+
+Recommended next step:
+
+1. run each model with seeds `42, 43, 44, 45, 46`
+2. increase epochs to `60` with best-checkpoint selection
+3. keep `validation_weeks=12` fixed for fair comparison
+4. compare mean and std of MAE/RMSE across seeds

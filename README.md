@@ -251,6 +251,12 @@ The Streamlit header includes an **Open Docs** button that links directly to the
 The app includes routes for `?page=graph`, `?page=semantic`, `?page=forecast`, and `?page=about`.
 Legacy `?page=truth` is redirected to `?page=semantic`.
 
+Forecast page behavior:
+
+- renders a 2x2 comparison grid (Original, TGN, EvolveGCN-H, GConvGRU)
+- all panels use fixed node coordinates for visual consistency
+- timelines start from a shared anchor (default 52 weeks before history end)
+
 ## Deployment Workflow
 
 ### Windows

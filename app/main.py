@@ -37,6 +37,8 @@ from trump_graph.forecast import build_baseline_forecast_payload
 from trump_graph.forecast_registry import FORECAST_MODEL_REGISTRY
 from trump_graph.settings import ProjectSettings, load_settings
 
+FORECAST_COMPARISON_MODEL_KEYS: tuple[str, ...] = ("tgn", "evolvegcn", "gconvgru")
+
 
 @st.cache_data(show_spinner=False)
 def _cached_week_index(processed_dir: str):
@@ -354,6 +356,19 @@ def _forecast_model_status_rows(forecast_root: Path) -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 
+def _history_week_count(payload: dict[str, object]) -> int:
+    weeks = payload.get("weeks", [])
+    history_count = sum(1 for week in weeks if isinstance(week, dict) and not bool(week.get("is_forecast", False)))
+    if history_count > 0:
+        return int(history_count)
+    return int(len(weeks))
+
+
+def _comparison_start_week_index(payload: dict[str, object], lookback_weeks: int) -> int:
+    history_weeks = _history_week_count(payload)
+    return max(0, int(history_weeks) - max(1, int(lookback_weeks)))
+
+
 def _format_semantic_dataset_summary(
     week_index: pd.DataFrame,
     enriched_posts: pd.DataFrame,
@@ -651,8 +666,6 @@ def _render_semantic_page(settings: ProjectSettings) -> None:
     )
 
     _render_footer_links(settings)
-
-
 def _render_forecast_page(settings: ProjectSettings) -> None:
     st.sidebar.header("Temporal NN Controls")
     semantic_dir_input = st.sidebar.text_input(
@@ -663,33 +676,23 @@ def _render_forecast_page(settings: ProjectSettings) -> None:
         "Forecast models root directory",
         value=str(settings.forecast_app.forecast_processed_dir),
     )
-    default_mode = settings.forecast_app.default_mode.strip().lower()
-    forecast_source_options = ["baseline"] + [model["key"] for model in FORECAST_MODEL_REGISTRY]
-    if default_mode not in forecast_source_options:
-        default_mode = "baseline"
-    mode = st.sidebar.selectbox(
-        "Forecast source",
-        options=forecast_source_options,
-        index=forecast_source_options.index(default_mode),
-        format_func=lambda key: (
-            "Baseline preview"
-            if key == "baseline"
-            else next((f"{model['label']} ({model['category']})" for model in FORECAST_MODEL_REGISTRY if model["key"] == key), key)
-        ),
-    )
     horizon_weeks = st.sidebar.slider(
-        "Future horizon (weeks)",
+        "Fallback horizon (weeks)",
         min_value=2,
         max_value=52,
         value=int(max(2, min(52, settings.forecast_app.horizon_weeks))),
         step=1,
     )
     lookback_weeks = st.sidebar.slider(
-        "Baseline lookback (weeks)",
+        "Fallback lookback (weeks)",
         min_value=2,
         max_value=52,
         value=int(max(2, min(52, settings.forecast_app.lookback_weeks))),
         step=1,
+    )
+    comparison_lookback_weeks = max(1, int(settings.forecast_app.comparison_lookback_weeks))
+    st.sidebar.caption(
+        f"Comparison anchor: {comparison_lookback_weeks} weeks before the end of observed history."
     )
     playback_speed = st.sidebar.slider(
         "Initial playback speed (weeks/sec)",
@@ -741,38 +744,7 @@ def _render_forecast_page(settings: ProjectSettings) -> None:
         st.error(f"Failed to read semantic source payload: {error}")
         return
 
-    payload_to_render: dict[str, object]
-    backend_label = "Baseline preview"
-    forecast_root = Path(forecast_root_input)
-    if mode != "baseline":
-        model_dir = _forecast_model_output_dir(forecast_root, mode)
-        try:
-            payload_to_render = _cached_forecast_animation_payload(str(model_dir))
-            payload_to_render = _ensure_delta_sets(payload_to_render)
-            model_label = next((model["label"] for model in FORECAST_MODEL_REGISTRY if model["key"] == mode), mode)
-            backend_label = f"{model_label} trained model output"
-        except FileNotFoundError:
-            st.warning(
-                f"Model artifact not found for `{mode}` at `{model_dir / 'forecast_graph' / 'animation_state.json'}`. Using baseline preview."
-            )
-            payload_to_render = build_baseline_forecast_payload(
-                semantic_payload,
-                horizon_weeks=horizon_weeks,
-                lookback_weeks=lookback_weeks,
-            )
-            payload_to_render = _ensure_delta_sets(payload_to_render)
-        except ValueError as error:
-            st.error(f"Forecast artifact schema issue: {error}")
-            return
-    else:
-        payload_to_render = build_baseline_forecast_payload(
-            semantic_payload,
-            horizon_weeks=horizon_weeks,
-            lookback_weeks=lookback_weeks,
-        )
-        payload_to_render = _ensure_delta_sets(payload_to_render)
-
-    available_node_types = payload_to_render.get("available_node_types", ["topic", "per", "org", "loc"])
+    available_node_types = semantic_payload.get("available_node_types", ["topic", "per", "org", "loc"])
     default_node_types = [node_type for node_type in settings.forecast_app.node_types if node_type in available_node_types]
     selected_node_types = st.sidebar.multiselect(
         "Forecast node types",
@@ -792,39 +764,129 @@ def _render_forecast_page(settings: ProjectSettings) -> None:
 
     st.subheader("Temporal Neural Network Forecast")
     st.caption(
-        f"Source: {backend_label}. This page is prepared for your trained model artifacts and can already preview future dynamics."
+        "Comparison view: original timeline plus trained model forecasts (TGN, EvolveGCN-H, GConvGRU)."
     )
     with st.expander("Three Planned Temporal Models"):
         for model in FORECAST_MODEL_REGISTRY:
             st.markdown(
                 f"- **{model['label']}** ({model['category']}): {model['desc']} "
-                f"[Paper]({model['paper_url']}) · [Implementation Reference]({model['impl_url']})"
+                f"[Paper]({model['paper_url']}) | [Implementation Reference]({model['impl_url']})"
             )
-    graph_html = build_truth_semantic_animation_html(
-        payload=payload_to_render,
-        included_node_types=set(selected_node_types),
-        min_total_count=min_node_count,
-        delta_set_name="all",
-        initial_speed=playback_speed,
-        node_size_multiplier=node_size_multiplier,
-        initial_zoom_boost=initial_zoom_boost,
-        layout_spread=layout_spread,
-        height_px=graph_height,
-    )
-    graph_iframe = _graph_iframe_path(graph_html)
-    st.iframe(graph_iframe, width="stretch", height=graph_height + 180)
-    st.caption(
-        "Future weeks are appended after historical weeks; keep node positions fixed and compare heat/edge growth through time."
+
+    forecast_root = Path(forecast_root_input)
+    original_payload = _ensure_delta_sets(dict(semantic_payload))
+    baseline_fallback_payload = _ensure_delta_sets(
+        build_baseline_forecast_payload(
+            semantic_payload,
+            horizon_weeks=horizon_weeks,
+            lookback_weeks=lookback_weeks,
+        )
     )
 
-    weeks = payload_to_render.get("weeks", [])
-    history_weeks = sum(1 for week in weeks if not bool(week.get("is_forecast", False)))
-    forecast_weeks = sum(1 for week in weeks if bool(week.get("is_forecast", False)))
+    panel_specs: list[dict[str, object]] = [
+        {
+            "key": "original",
+            "title": "Original Timeline (Ground Truth)",
+            "payload": original_payload,
+            "status": "ready",
+            "note": "Historical unified semantic data without synthetic forecast weeks.",
+            "metrics": {},
+        }
+    ]
+    for model_key in FORECAST_COMPARISON_MODEL_KEYS:
+        model_meta = next((model for model in FORECAST_MODEL_REGISTRY if model["key"] == model_key), None)
+        model_title = str(model_meta["label"]) if model_meta is not None else model_key
+        model_dir = _forecast_model_output_dir(forecast_root, model_key)
+        metrics = _load_optional_model_metrics(model_dir)
+        note = f"{model_title} trained output."
+        status = "ready"
+        try:
+            payload = _ensure_delta_sets(_cached_forecast_animation_payload(str(model_dir)))
+        except FileNotFoundError:
+            payload = baseline_fallback_payload
+            status = "fallback"
+            note = (
+                f"{model_title} artifact missing at "
+                f"`{model_dir / 'forecast_graph' / 'animation_state.json'}`. Showing baseline fallback."
+            )
+        except ValueError as error:
+            payload = baseline_fallback_payload
+            status = "fallback"
+            note = f"{model_title} artifact schema issue ({error}). Showing baseline fallback."
+        panel_specs.append(
+            {
+                "key": model_key,
+                "title": model_title,
+                "payload": payload,
+                "status": status,
+                "note": note,
+                "metrics": metrics,
+            }
+        )
+
+    original_history_weeks = _history_week_count(original_payload)
+    original_start_index = _comparison_start_week_index(original_payload, comparison_lookback_weeks)
+    original_weeks = original_payload.get("weeks", [])
+    start_week_label = "-"
+    if original_weeks:
+        start_week_record = original_weeks[min(original_start_index, len(original_weeks) - 1)]
+        if isinstance(start_week_record, dict):
+            start_week_label = str(start_week_record.get("week_id", "-"))
+
     metric_cols = st.columns(4)
-    metric_cols[0].metric("History weeks", f"{history_weeks:,}")
-    metric_cols[1].metric("Forecast weeks", f"{forecast_weeks:,}")
-    metric_cols[2].metric("Total nodes", f"{len(payload_to_render.get('global_nodes', [])):,}")
-    metric_cols[3].metric("Total edges", f"{len(payload_to_render.get('global_edges', [])):,}")
+    metric_cols[0].metric("History weeks", f"{original_history_weeks:,}")
+    metric_cols[1].metric("Comparison start", start_week_label)
+    metric_cols[2].metric("Total nodes", f"{len(original_payload.get('global_nodes', [])):,}")
+    metric_cols[3].metric("Total edges", f"{len(original_payload.get('global_edges', [])):,}")
+
+    st.caption(
+        "All panels start from the same anchor week (default: 52 weeks before history ends) for direct model-vs-history comparison."
+    )
+
+    row_one = st.columns(2)
+    row_two = st.columns(2)
+    panel_columns = [row_one[0], row_one[1], row_two[0], row_two[1]]
+    for column, panel in zip(panel_columns, panel_specs):
+        panel_payload = panel["payload"]
+        panel_start_index = _comparison_start_week_index(panel_payload, comparison_lookback_weeks)
+        panel_history_weeks = _history_week_count(panel_payload)
+        panel_forecast_weeks = max(0, len(panel_payload.get("weeks", [])) - panel_history_weeks)
+        with column:
+            with st.container(border=True):
+                st.markdown(f"**{panel['title']}**")
+                panel_status = str(panel["status"])
+                if panel_status != "ready":
+                    st.warning(str(panel["note"]))
+                else:
+                    st.caption(str(panel["note"]))
+
+                graph_html = build_truth_semantic_animation_html(
+                    payload=panel_payload,
+                    included_node_types=set(selected_node_types),
+                    min_total_count=min_node_count,
+                    delta_set_name="all",
+                    initial_week_index=panel_start_index,
+                    initial_speed=playback_speed,
+                    node_size_multiplier=node_size_multiplier,
+                    initial_zoom_boost=initial_zoom_boost,
+                    layout_spread=layout_spread,
+                    height_px=graph_height,
+                )
+                graph_iframe = _graph_iframe_path(graph_html)
+                st.iframe(graph_iframe, width="stretch", height=graph_height + 180)
+                st.caption(f"History weeks: {panel_history_weeks:,} | Forecast weeks: {panel_forecast_weeks:,}")
+
+                panel_metrics = panel.get("metrics", {})
+                if isinstance(panel_metrics, dict) and panel_metrics:
+                    best_val_score = panel_metrics.get("best_val_score")
+                    mae = panel_metrics.get("mae")
+                    rmse = panel_metrics.get("rmse")
+                    st.caption(
+                        "Validation: "
+                        f"best_val_score={best_val_score if best_val_score is not None else 'n/a'}, "
+                        f"MAE={mae if mae is not None else 'n/a'}, "
+                        f"RMSE={rmse if rmse is not None else 'n/a'}"
+                    )
 
     st.subheader("Model Comparison Readiness")
     model_status_df = _forecast_model_status_rows(forecast_root)
@@ -839,11 +901,11 @@ def _render_forecast_page(settings: ProjectSettings) -> None:
         "- Optional model metrics: `data/processed_forecast/<model_key>/metrics.json` with fields like `best_val_score`, `mae`, `rmse`, `map` for comparison table."
     )
 
-    payload_export = json.dumps(payload_to_render, indent=2).encode("utf-8")
+    payload_export = json.dumps(original_payload, indent=2).encode("utf-8")
     st.download_button(
-        label="Download rendered forecast payload",
+        label="Download original reference payload",
         data=payload_export,
-        file_name="forecast_animation_state.json",
+        file_name="forecast_reference_payload.json",
         mime="application/json",
     )
 

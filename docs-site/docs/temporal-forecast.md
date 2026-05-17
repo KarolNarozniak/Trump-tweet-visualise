@@ -1,6 +1,6 @@
 # Temporal Forecast
 
-The Forecast page is the frontend entrypoint for temporal neural network outputs.
+The Forecast page is the comparison workspace for temporal model outputs.
 
 ## Endpoint
 
@@ -8,12 +8,36 @@ The Forecast page is the frontend entrypoint for temporal neural network outputs
 http://localhost:3001/?page=forecast
 ```
 
-## Modes
+## 4-Panel Comparison Layout
 
-- `tgn`: load trained TGN output
-- `evolvegcn`: load trained EvolveGCN output
-- `gconvgru`: load trained GConvGRU output
-- `baseline`: local preview built from semantic history while training is in progress
+The page renders a fixed 2x2 grid:
+
+1. Original timeline (ground truth)
+2. TGN forecast
+3. EvolveGCN-H forecast
+4. GConvGRU forecast
+
+All four panels use the same node positions and independent timeline controls.
+
+## Comparison Anchor
+
+Each panel starts from the same anchor week so comparisons are fair:
+
+- default anchor: 52 weeks before observed history ends
+- configured by `forecast_app.comparison_lookback_weeks`
+- env override: `TG_FORECAST_APP_COMPARISON_LOOKBACK_WEEKS`
+
+This gives a side-by-side "last year of history + forecast horizon" view.
+
+## Latest Training Snapshot
+
+Current metrics from `data/processed_forecast/*/metrics.json`:
+
+| Model | Best Val Loss | MAE | RMSE | Train Seconds | Device |
+|---|---:|---:|---:|---:|---|
+| TGN | 0.071403 | 0.154438 | 0.495866 | 46.441 | cuda |
+| EvolveGCN-H | 0.134911 | 0.219941 | 0.754413 | 86.546 | cuda |
+| GConvGRU | 0.064649 | 0.133381 | 0.506902 | 215.194 | cuda |
 
 ## Training CLI
 
@@ -23,7 +47,7 @@ python -m trump_graph train-forecast --model evolvegcn --device cuda
 python -m trump_graph train-forecast --model gconvgru --device cuda
 ```
 
-You can tune horizon and optimization:
+Tuned example:
 
 ```bash
 python -m trump_graph train-forecast \
@@ -39,7 +63,7 @@ For `evolvegcn` and `gconvgru`, install compatible PyG wheels before training.
 
 ## Model Cards
 
-Generate model cards after training:
+Generate or refresh model cards:
 
 ```bash
 python -m trump_graph build-model-cards \
@@ -54,9 +78,7 @@ Outputs:
 - `data/processed_forecast/gconvgru/MODEL_CARD.md`
 - `data/processed_forecast/MODEL_CARDS_INDEX.md`
 
-## Expected Model Artifact
-
-Path:
+## Required Artifact Path
 
 - `data/processed_forecast/<model_key>/forecast_graph/animation_state.json`
 
@@ -71,27 +93,7 @@ Required keys:
 - `heat_scale`
 - `max_cumulative_edge`
 
-Optional key:
+Optional:
 
-- `delta_sets` (if omitted, app uses top-level deltas as `all`)
-
-Optional sidecar metrics:
-
+- `delta_sets`
 - `data/processed_forecast/<model_key>/metrics.json`
-
-## UX Behavior
-
-- layout remains fixed between history and forecast
-- future weeks are appended after historical weeks
-- node heat indicates predicted weekly activation
-- edge width shows cumulative predicted co-activation over time
-
-## Why Baseline Exists
-
-Baseline mode is intentionally simple. It lets you verify:
-
-- graph rendering
-- week extension mechanics
-- export and playback flow
-
-before plugging in trained model outputs from remote training runs.

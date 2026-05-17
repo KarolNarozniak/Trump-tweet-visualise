@@ -87,6 +87,7 @@ def _clean_overrides(monkeypatch) -> None:
         "TG_FORECAST_APP_DEFAULT_MODE",
         "TG_FORECAST_APP_HORIZON_WEEKS",
         "TG_FORECAST_APP_LOOKBACK_WEEKS",
+        "TG_FORECAST_APP_COMPARISON_LOOKBACK_WEEKS",
         "TG_FORECAST_APP_NODE_TYPES",
         "TG_FORECAST_APP_MIN_NODE_COUNT",
         "TG_FORECAST_APP_PLAYBACK_SPEED",
@@ -184,6 +185,7 @@ TG_APP_PLAYBACK_SPEED=6.0
         assert settings.unified_build.semantic_backend == "hf"
         assert settings.semantic_app.processed_dir.name == "processed_unified"
         assert settings.forecast_app.default_mode == "baseline"
+        assert settings.forecast_app.comparison_lookback_weeks == 52
         assert settings.forecast_train.output_dir.name == "processed_forecast"
         assert settings.forecast_train.epochs == 30
     finally:
