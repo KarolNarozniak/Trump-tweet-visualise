@@ -19,6 +19,13 @@ The page renders a fixed 2x2 grid:
 
 All four panels use the same node positions and independent timeline controls.
 
+Update: controls are now unified at the top of the 4-grid component:
+
+- shared Play/Pause and Stop
+- shared speed control
+- shared week scrubber
+- all panels step together on the same week index
+
 ## Comparison Anchor
 
 Each panel starts from the same anchor week so comparisons are fair:
@@ -28,6 +35,14 @@ Each panel starts from the same anchor week so comparisons are fair:
 - env override: `TG_FORECAST_APP_COMPARISON_LOOKBACK_WEEKS`
 
 This gives a side-by-side "last year of history + forecast horizon" view.
+
+## Live Numeric Comparison
+
+Each panel includes a live table that updates with the current week:
+
+- "Top active nodes by type (current week)"
+- per type top-3 rows
+- updated during playback and manual scrubbing
 
 ## Latest Training Snapshot
 

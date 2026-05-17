@@ -3,6 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from trump_graph.app import (
+    build_forecast_comparison_animation_html,
     build_truth_semantic_animation_html,
     load_unified_animation_artifacts,
     load_unified_enriched_posts,
@@ -76,3 +77,25 @@ def test_unified_helpers_load_and_render(
         initial_speed=2.0,
     )
     assert "truth-week-slider" in forecast_html
+
+    comparison_html = build_forecast_comparison_animation_html(
+        [
+            {"key": "original", "title": "Original", "payload": payload, "status": "ready", "note": "Base", "metrics": {}},
+            {
+                "key": "baseline",
+                "title": "Baseline",
+                "payload": forecast_payload,
+                "status": "ready",
+                "note": "Forecast preview",
+                "metrics": {"best_val_score": 0.1, "mae": 0.2, "rmse": 0.3},
+            },
+        ],
+        included_node_types={"topic", "per", "org", "loc", "hashtag", "mention"},
+        min_total_count=1,
+        delta_set_name="all",
+        initial_week_index=0,
+        initial_speed=2.0,
+    )
+    assert "cmp-week-slider" in comparison_html
+    assert "cmp-play" in comparison_html
+    assert "Top active nodes by type" in comparison_html

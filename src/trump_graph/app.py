@@ -891,6 +891,668 @@ def build_global_animation_html(
 """
 
 
+def build_forecast_comparison_animation_html(
+    panels: list[dict[str, Any]],
+    *,
+    included_node_types: set[str],
+    min_total_count: int,
+    delta_set_name: str,
+    initial_week_index: int,
+    initial_speed: float = 6.0,
+    node_size_multiplier: float = 1.8,
+    initial_zoom_boost: float = 0.85,
+    layout_spread: float = 1.15,
+    graph_height_px: int = 620,
+    transition_steps: int = 5,
+) -> str:
+    if not panels:
+        raise ValueError("Comparison view requires at least one panel payload.")
+
+    filtered_panels: list[dict[str, Any]] = []
+    max_week_index = 0
+    for panel in panels:
+        filtered_payload = _filtered_truth_animation_payload(
+            panel.get("payload", {}),
+            included_node_types=included_node_types,
+            min_total_count=max(1, int(min_total_count)),
+            delta_set_name=delta_set_name,
+        )
+        weeks = filtered_payload.get("weeks", [])
+        if not weeks:
+            continue
+        max_week_index = max(max_week_index, len(weeks) - 1)
+        metrics_raw = panel.get("metrics", {})
+        metrics = metrics_raw if isinstance(metrics_raw, dict) else {}
+        filtered_panels.append(
+            {
+                "key": str(panel.get("key", "")),
+                "title": str(panel.get("title", "Panel")),
+                "status": str(panel.get("status", "ready")),
+                "note": str(panel.get("note", "")),
+                "metrics": {
+                    "best_val_score": metrics.get("best_val_score"),
+                    "mae": metrics.get("mae"),
+                    "rmse": metrics.get("rmse"),
+                },
+                "payload": filtered_payload,
+            }
+        )
+
+    if not filtered_panels:
+        raise ValueError("No non-empty comparison panels are available after filtering.")
+
+    initial_index = max(0, min(max_week_index, int(initial_week_index)))
+    speed_value = max(0.5, min(8.0, float(initial_speed)))
+    size_multiplier = max(0.4, min(3.0, float(node_size_multiplier)))
+    zoom_boost = max(0.55, min(2.5, float(initial_zoom_boost)))
+    spread_value = max(0.6, min(4.0, float(layout_spread)))
+    panel_height = max(360, int(graph_height_px))
+    panels_json = json.dumps(filtered_panels, separators=(",", ":"), ensure_ascii=True)
+
+    panel_slots = "\n".join(
+        [
+            (
+                f'<section class="cmp-panel" id="cmp-panel-{index}">'
+                '<div class="cmp-panel-head">'
+                f'<h3>{panel["title"]}</h3>'
+                '<div class="cmp-model-metrics"></div>'
+                "</div>"
+                f'<div class="cmp-note">{panel["note"]}</div>'
+                f'<div class="cmp-graph" style="height:{panel_height}px;"></div>'
+                '<div class="cmp-week-label"></div>'
+                '<div class="cmp-table-wrap">'
+                '<div class="cmp-table-title">Top active nodes by type (current week)</div>'
+                "<table>"
+                "<thead><tr><th>Type</th><th>Node</th><th>Weekly count</th></tr></thead>"
+                '<tbody class="cmp-table-body"></tbody>'
+                "</table>"
+                "</div>"
+                "</section>"
+            )
+            for index, panel in enumerate(filtered_panels)
+        ]
+    )
+
+    return f"""
+<div class="cmp-root">
+  <div class="cmp-controls">
+    <button id="cmp-play" type="button">Play</button>
+    <button id="cmp-stop" type="button">Stop</button>
+    <label for="cmp-speed">Speed</label>
+    <input id="cmp-speed" type="range" min="0.5" max="8" step="0.5" value="{speed_value:.1f}" />
+    <span id="cmp-speed-value">{speed_value:.1f} w/s</span>
+    <span id="cmp-week-text"></span>
+  </div>
+  <input id="cmp-week-slider" type="range" min="0" max="{max_week_index}" step="1" value="{initial_index}" />
+  <div id="cmp-week-meta"></div>
+  <div class="cmp-grid">
+    {panel_slots}
+  </div>
+</div>
+
+<style>
+  .cmp-root {{
+    width: 100%;
+    border: 1px solid #1f2937;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #000000;
+    color: #f8fafc;
+  }}
+  .cmp-controls {{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    padding: 10px 12px;
+    background: #030303;
+    border-bottom: 1px solid #1f2937;
+  }}
+  .cmp-controls button {{
+    border: 1px solid #334155;
+    border-radius: 6px;
+    padding: 4px 10px;
+    background: #111827;
+    color: #e2e8f0;
+    cursor: pointer;
+    font-size: 13px;
+  }}
+  #cmp-speed {{
+    width: 150px;
+  }}
+  #cmp-week-slider {{
+    width: calc(100% - 24px);
+    margin: 10px 12px 4px 12px;
+  }}
+  #cmp-week-meta {{
+    padding: 0 12px 10px 12px;
+    color: #94a3b8;
+    font-size: 12px;
+    border-bottom: 1px solid #1f2937;
+  }}
+  .cmp-grid {{
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    padding: 10px;
+    background: #000000;
+  }}
+  .cmp-panel {{
+    border: 1px solid #1f2937;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #000000;
+  }}
+  .cmp-panel-head {{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px 6px 10px;
+    border-bottom: 1px solid #111827;
+    background: #020617;
+  }}
+  .cmp-panel-head h3 {{
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: #f8fafc;
+  }}
+  .cmp-model-metrics {{
+    font-size: 11px;
+    color: #94a3b8;
+    text-align: right;
+  }}
+  .cmp-note {{
+    padding: 6px 10px;
+    font-size: 12px;
+    color: #cbd5e1;
+    border-bottom: 1px solid #0f172a;
+    background: #020617;
+  }}
+  .cmp-note.cmp-warning {{
+    color: #fde68a;
+  }}
+  .cmp-graph {{
+    width: 100%;
+    background: #000000;
+  }}
+  .cmp-week-label {{
+    font-size: 12px;
+    color: #cbd5e1;
+    padding: 6px 10px;
+    border-top: 1px solid #0f172a;
+  }}
+  .cmp-table-wrap {{
+    border-top: 1px solid #0f172a;
+    padding: 6px 10px 10px 10px;
+    background: #010409;
+  }}
+  .cmp-table-title {{
+    font-size: 12px;
+    color: #e2e8f0;
+    margin-bottom: 6px;
+  }}
+  .cmp-table-wrap table {{
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11px;
+  }}
+  .cmp-table-wrap th,
+  .cmp-table-wrap td {{
+    border-top: 1px solid #1e293b;
+    padding: 4px 6px;
+    text-align: left;
+    color: #e2e8f0;
+  }}
+  @media (max-width: 1200px) {{
+    .cmp-grid {{
+      grid-template-columns: 1fr;
+    }}
+  }}
+</style>
+
+<script src="https://unpkg.com/vis-network@9.1.2/standalone/umd/vis-network.min.js"></script>
+<script>
+(() => {{
+  const panelSpecs = {panels_json};
+  const transitionSteps = {int(max(1, transition_steps))};
+  const nodeSizeMultiplier = {size_multiplier:.3f};
+  const initialZoomBoost = {zoom_boost:.3f};
+  const layoutSpread = {spread_value:.3f};
+
+  const playButton = document.getElementById("cmp-play");
+  const stopButton = document.getElementById("cmp-stop");
+  const speedInput = document.getElementById("cmp-speed");
+  const speedValueElement = document.getElementById("cmp-speed-value");
+  const weekSlider = document.getElementById("cmp-week-slider");
+  const weekTextElement = document.getElementById("cmp-week-text");
+  const weekMetaElement = document.getElementById("cmp-week-meta");
+
+  if (typeof vis === "undefined") {{
+    weekMetaElement.textContent = "Unable to load vis-network library.";
+    return;
+  }}
+
+  function clamp(value, min, max) {{
+    return Math.max(min, Math.min(max, value));
+  }}
+
+  function heatColor(intensity, alpha = 1.0) {{
+    const stops = [
+      [0.00, [255, 224, 170]],
+      [0.35, [255, 170, 74]],
+      [0.65, [255, 96, 45]],
+      [0.85, [255, 54, 39]],
+      [1.00, [255, 245, 170]]
+    ];
+    const t = clamp(intensity, 0, 1);
+    for (let i = 1; i < stops.length; i += 1) {{
+      const left = stops[i - 1];
+      const right = stops[i];
+      if (t <= right[0]) {{
+        const localT = (t - left[0]) / (right[0] - left[0]);
+        const r = Math.round(left[1][0] + (right[1][0] - left[1][0]) * localT);
+        const g = Math.round(left[1][1] + (right[1][1] - left[1][1]) * localT);
+        const b = Math.round(left[1][2] + (right[1][2] - left[1][2]) * localT);
+        return `rgba(${{r}}, ${{g}}, ${{b}}, ${{alpha.toFixed(3)}})`;
+      }}
+    }}
+    return `rgba(253, 255, 182, ${{alpha.toFixed(3)}})`;
+  }}
+
+  function edgeWidth(cumulative, maxCumulativeEdge) {{
+    if (cumulative <= 0) return 0;
+    return 0.8 + 7.2 * Math.sqrt(clamp(cumulative / maxCumulativeEdge, 0, 1));
+  }}
+
+  function edgeColor(cumulative, weekly, maxCumulativeEdge, edgeScale) {{
+    if (weekly > 0) {{
+      return heatColor(Math.sqrt(clamp(weekly / edgeScale, 0, 1)), 0.96);
+    }}
+    const alpha = 0.14 + (0.56 * Math.sqrt(clamp(cumulative / maxCumulativeEdge, 0, 1)));
+    return `rgba(241, 245, 249, ${{alpha.toFixed(3)}})`;
+  }}
+
+  function formatMetricValue(value) {{
+    const numeric = Number(value);
+    if (!Number.isFinite(numeric)) return "n/a";
+    return numeric.toFixed(6);
+  }}
+
+  function typeLabel(typeName) {{
+    const map = {{
+      topic: "Topic",
+      per: "Person",
+      org: "Org",
+      loc: "Location",
+      hashtag: "Hashtag",
+      mention: "Mention"
+    }};
+    return map[typeName] || typeName;
+  }}
+
+  function escapeHtml(input) {{
+    return String(input)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+  }}
+
+  function createPanel(spec, index) {{
+    const panelRoot = document.getElementById(`cmp-panel-${{index}}`);
+    const graphElement = panelRoot.querySelector(".cmp-graph");
+    const noteElement = panelRoot.querySelector(".cmp-note");
+    const metricsElement = panelRoot.querySelector(".cmp-model-metrics");
+    const weekLabelElement = panelRoot.querySelector(".cmp-week-label");
+    const tableBodyElement = panelRoot.querySelector(".cmp-table-body");
+
+    const payload = spec.payload || {{}};
+    const nodeData = payload.global_nodes || [];
+    const edgeData = payload.global_edges || [];
+    const weekData = payload.weeks || [];
+    const nodeWeekDeltas = payload.node_week_deltas || [];
+    const edgeWeekDeltas = payload.edge_week_deltas || [];
+    const maxCumulativeEdge = Math.max(1, Number(payload.max_cumulative_edge || 1));
+    const topLabelSet = new Set(payload.top_label_nodes || []);
+    const nodeIds = nodeData.map((node) => String(node.id));
+    const edgeIds = edgeData.map((edge) => String(edge.id));
+    const nodeInfoById = new Map(nodeData.map((node) => [String(node.id), node]));
+    const edgeInfoById = new Map(edgeData.map((edge) => [String(edge.id), edge]));
+
+    const typeBorders = {{
+      topic: "#facc15",
+      per: "#38bdf8",
+      org: "#a78bfa",
+      loc: "#34d399",
+      hashtag: "#f472b6",
+      mention: "#cbd5e1"
+    }};
+    const baseNodeColor = "rgba(248, 250, 252, 0.94)";
+
+    const positiveNodeDeltas = nodeWeekDeltas
+      .flatMap((entries) => entries.map((entry) => Number(entry[1] || 0)))
+      .filter((value) => value > 0)
+      .sort((a, b) => a - b);
+    const positiveEdgeDeltas = edgeWeekDeltas
+      .flatMap((entries) => entries.map((entry) => Number(entry[1] || 0)))
+      .filter((value) => value > 0)
+      .sort((a, b) => a - b);
+    const nodeScale = Math.max(1, positiveNodeDeltas[Math.floor((positiveNodeDeltas.length - 1) * 0.95)] || 1);
+    const edgeScale = Math.max(1, positiveEdgeDeltas[Math.floor((positiveEdgeDeltas.length - 1) * 0.95)] || 1);
+
+    const metrics = spec.metrics || {{}};
+    metricsElement.textContent = `val=${{formatMetricValue(metrics.best_val_score)}} | MAE=${{formatMetricValue(metrics.mae)}} | RMSE=${{formatMetricValue(metrics.rmse)}}`;
+    if (String(spec.status || "").toLowerCase() !== "ready") {{
+      noteElement.classList.add("cmp-warning");
+    }}
+
+    const nodes = new vis.DataSet(nodeData.map((node) => {{
+      const nodeId = String(node.id);
+      const nodeType = String(node.node_type || "topic");
+      return {{
+        id: nodeId,
+        label: "",
+        title: `${{node.label || nodeId}}<br>Type: ${{nodeType}}<br>Total: ${{Number(node.total_count || 0).toLocaleString()}}`,
+        size: Math.max(2.0, Number(node.size || 8) * nodeSizeMultiplier),
+        x: Number(node.x || 0) * layoutSpread,
+        y: Number(node.y || 0) * layoutSpread,
+        fixed: {{ x: true, y: true }},
+        physics: false,
+        color: {{
+          background: baseNodeColor,
+          border: typeBorders[nodeType] || "#cbd5e1",
+          highlight: {{ background: baseNodeColor, border: "#ffffff" }},
+          hover: {{ background: baseNodeColor, border: "#ffffff" }}
+        }},
+        font: {{ color: "#f8fafc", size: 11, strokeColor: "#000000", strokeWidth: 4 }}
+      }};
+    }}));
+
+    const edges = new vis.DataSet(edgeData.map((edge) => ({{
+      id: String(edge.id),
+      from: String(edge.source),
+      to: String(edge.target),
+      hidden: true,
+      width: 0,
+      color: {{ color: "rgba(241, 245, 249, 0.25)", inherit: false, opacity: 1.0 }},
+      smooth: false,
+      title: `${{edge.source}} <> ${{edge.target}}`
+    }})));
+
+    const network = new vis.Network(graphElement, {{ nodes, edges }}, {{
+      autoResize: true,
+      physics: false,
+      interaction: {{ hover: true, navigationButtons: true, keyboard: true, tooltipDelay: 70 }},
+      nodes: {{ shape: "dot", borderWidth: 1.5 }},
+      edges: {{ smooth: false, color: {{ inherit: false }} }}
+    }});
+    network.fit({{ nodes: nodeIds, animation: false }});
+    network.moveTo({{ scale: network.getScale() * initialZoomBoost, animation: false }});
+
+    let currentWeekIndex = clamp({initial_index}, 0, Math.max(0, weekData.length - 1));
+    let animating = false;
+    let nodeWeekly = Object.fromEntries(nodeIds.map((id) => [id, 0]));
+    let nodeSeen = Object.fromEntries(nodeIds.map((id) => [id, 0]));
+    let edgeCum = Object.fromEntries(edgeIds.map((id) => [id, 0]));
+    let edgeWeekly = Object.fromEntries(edgeIds.map((id) => [id, 0]));
+
+    function resetState() {{
+      nodeWeekly = Object.fromEntries(nodeIds.map((id) => [id, 0]));
+      nodeSeen = Object.fromEntries(nodeIds.map((id) => [id, 0]));
+      edgeCum = Object.fromEntries(edgeIds.map((id) => [id, 0]));
+      edgeWeekly = Object.fromEntries(edgeIds.map((id) => [id, 0]));
+    }}
+
+    function applyDeltaForWeek(indexValue) {{
+      for (const nodeId of nodeIds) nodeWeekly[nodeId] = 0;
+      for (const edgeId of edgeIds) edgeWeekly[edgeId] = 0;
+      for (const [nodeIdRaw, deltaRaw] of nodeWeekDeltas[indexValue] || []) {{
+        const nodeId = String(nodeIdRaw);
+        const delta = Number(deltaRaw);
+        if (nodeId in nodeWeekly) {{
+          nodeWeekly[nodeId] = delta;
+          nodeSeen[nodeId] += delta;
+        }}
+      }}
+      for (const [edgeIdRaw, deltaRaw] of edgeWeekDeltas[indexValue] || []) {{
+        const edgeId = String(edgeIdRaw);
+        const delta = Number(deltaRaw);
+        if (edgeId in edgeCum) {{
+          edgeWeekly[edgeId] = delta;
+          edgeCum[edgeId] += delta;
+        }}
+      }}
+    }}
+
+    function recomputeTo(targetWeekIndex) {{
+      resetState();
+      for (let indexValue = 0; indexValue <= targetWeekIndex; indexValue += 1) {{
+        applyDeltaForWeek(indexValue);
+      }}
+    }}
+
+    function updatePanelWeekLabel() {{
+      const record = weekData[currentWeekIndex] || {{}};
+      weekLabelElement.textContent = `${{record.week_id || ""}} (${{record.week_start || ""}} to ${{record.week_end || ""}})`;
+    }}
+
+    function updateTopTable() {{
+      const activeByType = new Map();
+      for (const nodeId of nodeIds) {{
+        const weeklyValue = Number(nodeWeekly[nodeId] || 0);
+        const seenValue = Number(nodeSeen[nodeId] || 0);
+        if (weeklyValue <= 0 || seenValue <= 0) continue;
+        const info = nodeInfoById.get(nodeId) || {{}};
+        const nodeType = String(info.node_type || "other");
+        const row = {{ label: String(info.label || nodeId), weekly: weeklyValue }};
+        if (!activeByType.has(nodeType)) {{
+          activeByType.set(nodeType, [row]);
+        }} else {{
+          activeByType.get(nodeType).push(row);
+        }}
+      }}
+
+      const orderedTypes = ["topic", "per", "org", "loc", "hashtag", "mention"];
+      const htmlRows = [];
+      for (const nodeType of orderedTypes) {{
+        const rows = (activeByType.get(nodeType) || []).sort((left, right) => right.weekly - left.weekly).slice(0, 3);
+        if (!rows.length) {{
+          htmlRows.push(
+            `<tr><td>${{escapeHtml(typeLabel(nodeType))}}</td><td>-</td><td>0</td></tr>`
+          );
+          continue;
+        }}
+        for (const row of rows) {{
+          htmlRows.push(
+            `<tr><td>${{escapeHtml(typeLabel(nodeType))}}</td><td>${{escapeHtml(row.label)}}</td><td>${{Number(row.weekly).toLocaleString()}}</td></tr>`
+          );
+        }}
+      }}
+      tableBodyElement.innerHTML = htmlRows.join("");
+    }}
+
+    function nodeLabel(nodeId, weekly) {{
+      if (weekly > 0 || topLabelSet.has(nodeId)) {{
+        return String(nodeInfoById.get(nodeId).label || nodeId);
+      }}
+      return "";
+    }}
+
+    function renderFromState(weeklyState, seenState, edgeState, edgeWeeklyState) {{
+      nodes.update(nodeIds.map((nodeId) => {{
+        const info = nodeInfoById.get(nodeId);
+        const weekly = Number(weeklyState[nodeId] || 0);
+        const seen = Number(seenState[nodeId] || 0);
+        if (seen <= 0) return {{ id: nodeId, hidden: true, label: "" }};
+        const nodeType = String(info.node_type || "topic");
+        const active = weekly > 0;
+        const fill = active ? heatColor(Math.sqrt(clamp(weekly / nodeScale, 0, 1)), 0.96) : baseNodeColor;
+        return {{
+          id: nodeId,
+          hidden: false,
+          label: nodeLabel(nodeId, weekly),
+          title: `${{info.label || nodeId}}<br>Type: ${{nodeType}}<br>This week: ${{weekly.toLocaleString()}}<br>Cumulative: ${{seen.toLocaleString()}}`,
+          color: {{
+            background: fill,
+            border: active ? "#111111" : (typeBorders[nodeType] || "#cbd5e1"),
+            highlight: {{ background: fill, border: "#ffffff" }},
+            hover: {{ background: fill, border: "#ffffff" }}
+          }}
+        }};
+      }}));
+      edges.update(edgeIds.map((edgeId) => {{
+        const info = edgeInfoById.get(edgeId);
+        const cumulative = Number(edgeState[edgeId] || 0);
+        const weekly = Number(edgeWeeklyState[edgeId] || 0);
+        const colorValue = edgeColor(cumulative, weekly, maxCumulativeEdge, edgeScale);
+        if (cumulative <= 0) return {{ id: edgeId, hidden: true, width: 0 }};
+        return {{
+          id: edgeId,
+          hidden: false,
+          width: edgeWidth(cumulative, maxCumulativeEdge),
+          color: {{ color: colorValue, highlight: colorValue, hover: colorValue, inherit: false, opacity: 1.0 }},
+          title: `${{info.source}} <> ${{info.target}}<br>This week: ${{weekly.toLocaleString()}}<br>Cumulative: ${{cumulative.toLocaleString()}}`
+        }};
+      }}));
+      updatePanelWeekLabel();
+      updateTopTable();
+    }}
+
+    function transitionRender(previousWeekly, previousSeen, previousEdge, previousEdgeWeekly, nextWeekly, nextSeen, nextEdge, nextEdgeWeekly, done) {{
+      let step = 0;
+      function tick() {{
+        step += 1;
+        const t = step / Math.max(1, transitionSteps);
+        const blendedWeekly = {{}};
+        const blendedSeen = {{}};
+        const blendedEdge = {{}};
+        const blendedEdgeWeekly = {{}};
+        for (const nodeId of nodeIds) {{
+          blendedWeekly[nodeId] = Number(previousWeekly[nodeId] || 0) + (Number(nextWeekly[nodeId] || 0) - Number(previousWeekly[nodeId] || 0)) * t;
+          blendedSeen[nodeId] = Number(previousSeen[nodeId] || 0) + (Number(nextSeen[nodeId] || 0) - Number(previousSeen[nodeId] || 0)) * t;
+        }}
+        for (const edgeId of edgeIds) {{
+          blendedEdge[edgeId] = Number(previousEdge[edgeId] || 0) + (Number(nextEdge[edgeId] || 0) - Number(previousEdge[edgeId] || 0)) * t;
+          blendedEdgeWeekly[edgeId] = Number(previousEdgeWeekly[edgeId] || 0) + (Number(nextEdgeWeekly[edgeId] || 0) - Number(previousEdgeWeekly[edgeId] || 0)) * t;
+        }}
+        renderFromState(blendedWeekly, blendedSeen, blendedEdge, blendedEdgeWeekly);
+        if (step < transitionSteps) {{
+          window.requestAnimationFrame(tick);
+        }} else {{
+          done();
+        }}
+      }}
+      window.requestAnimationFrame(tick);
+    }}
+
+    function setWeek(globalIndex, animate = true) {{
+      const boundedTarget = clamp(Number(globalIndex), 0, Math.max(0, weekData.length - 1));
+      if (animating || boundedTarget === currentWeekIndex) return;
+      const previousWeekly = Object.assign({{}}, nodeWeekly);
+      const previousSeen = Object.assign({{}}, nodeSeen);
+      const previousEdge = Object.assign({{}}, edgeCum);
+      const previousEdgeWeekly = Object.assign({{}}, edgeWeekly);
+      if (boundedTarget === currentWeekIndex + 1) {{
+        applyDeltaForWeek(boundedTarget);
+      }} else {{
+        recomputeTo(boundedTarget);
+      }}
+      const nextWeekly = Object.assign({{}}, nodeWeekly);
+      const nextSeen = Object.assign({{}}, nodeSeen);
+      const nextEdge = Object.assign({{}}, edgeCum);
+      const nextEdgeWeekly = Object.assign({{}}, edgeWeekly);
+      currentWeekIndex = boundedTarget;
+      if (!animate) {{
+        renderFromState(nextWeekly, nextSeen, nextEdge, nextEdgeWeekly);
+        return;
+      }}
+      animating = true;
+      transitionRender(previousWeekly, previousSeen, previousEdge, previousEdgeWeekly, nextWeekly, nextSeen, nextEdge, nextEdgeWeekly, () => {{
+        animating = false;
+        renderFromState(nodeWeekly, nodeSeen, edgeCum, edgeWeekly);
+      }});
+    }}
+
+    recomputeTo(currentWeekIndex);
+    renderFromState(nodeWeekly, nodeSeen, edgeCum, edgeWeekly);
+
+    return {{
+      spec,
+      weekData,
+      isAnimating: () => animating,
+      setWeek,
+      getWeekIndex: () => currentWeekIndex,
+      getWeekRecord: (globalIndex) => weekData[clamp(Number(globalIndex), 0, Math.max(0, weekData.length - 1))] || {{}}
+    }};
+  }}
+
+  const panelControllers = panelSpecs.map((spec, index) => createPanel(spec, index));
+  let currentWeekIndex = clamp(Number(weekSlider.value || 0), 0, {max_week_index});
+  let playbackSpeed = clamp(Number(speedInput.value || 2.0), 0.5, 8.0);
+  let playing = false;
+  let playTimer = null;
+
+  function updateGlobalWeekLabels() {{
+    const record = panelControllers[0].getWeekRecord(currentWeekIndex);
+    weekTextElement.textContent = `${{record.week_id || ""}}  (${{record.week_start || ""}} to ${{record.week_end || ""}})`;
+    weekMetaElement.textContent = `Posts: ${{Number(record.posts_processed || 0).toLocaleString()}} | Reposts: ${{Number(record.reposts || record.retruths || 0).toLocaleString()}} | Nodes: ${{Number(record.unique_nodes || 0).toLocaleString()}} | Edges: ${{Number(record.edge_count || 0).toLocaleString()}}`;
+  }}
+
+  function setGlobalWeek(targetIndex, animate = true) {{
+    currentWeekIndex = clamp(Number(targetIndex), 0, {max_week_index});
+    weekSlider.value = String(currentWeekIndex);
+    for (const controller of panelControllers) {{
+      controller.setWeek(currentWeekIndex, animate);
+    }}
+    updateGlobalWeekLabels();
+  }}
+
+  function anyPanelAnimating() {{
+    return panelControllers.some((controller) => controller.isAnimating());
+  }}
+
+  function stopPlayback() {{
+    if (playTimer) window.clearInterval(playTimer);
+    playTimer = null;
+    playing = false;
+    playButton.textContent = "Play";
+  }}
+
+  function startPlayback() {{
+    stopPlayback();
+    playing = true;
+    playButton.textContent = "Pause";
+    playTimer = window.setInterval(() => {{
+      if (anyPanelAnimating()) return;
+      setGlobalWeek((currentWeekIndex + 1) % ({max_week_index} + 1), true);
+    }}, Math.max(80, Math.round(1000 / playbackSpeed)));
+  }}
+
+  speedInput.addEventListener("input", () => {{
+    playbackSpeed = clamp(Number(speedInput.value || 2.0), 0.5, 8.0);
+    speedValueElement.textContent = `${{playbackSpeed.toFixed(1)}} w/s`;
+    if (playing) startPlayback();
+  }});
+
+  playButton.addEventListener("click", () => {{
+    if (playing) stopPlayback();
+    else startPlayback();
+  }});
+  stopButton.addEventListener("click", stopPlayback);
+  weekSlider.addEventListener("input", () => {{
+    stopPlayback();
+    setGlobalWeek(Number(weekSlider.value || currentWeekIndex), true);
+  }});
+
+  setGlobalWeek(currentWeekIndex, false);
+}})();
+</script>
+"""
+
+
 def _filtered_truth_animation_payload(
     payload: dict[str, Any],
     *,

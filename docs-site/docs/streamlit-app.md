@@ -70,3 +70,5 @@ All panels keep fixed coordinates and start from the same comparison anchor:
 
 - default: 52 weeks before history end
 - config key: `forecast_app.comparison_lookback_weeks`
+- shared top controller drives all panels at once
+- each panel includes a live "top active nodes by type" table for numeric comparison

@@ -15,6 +15,7 @@ if str(SRC_DIR) not in sys.path:
     sys.path.insert(0, str(SRC_DIR))
 
 from trump_graph.app import (
+    build_forecast_comparison_animation_html,
     build_global_animation_html,
     build_truth_semantic_animation_html,
     load_forecast_animation_artifacts,
@@ -843,50 +844,21 @@ def _render_forecast_page(settings: ProjectSettings) -> None:
         "All panels start from the same anchor week (default: 52 weeks before history ends) for direct model-vs-history comparison."
     )
 
-    row_one = st.columns(2)
-    row_two = st.columns(2)
-    panel_columns = [row_one[0], row_one[1], row_two[0], row_two[1]]
-    for column, panel in zip(panel_columns, panel_specs):
-        panel_payload = panel["payload"]
-        panel_start_index = _comparison_start_week_index(panel_payload, comparison_lookback_weeks)
-        panel_history_weeks = _history_week_count(panel_payload)
-        panel_forecast_weeks = max(0, len(panel_payload.get("weeks", [])) - panel_history_weeks)
-        with column:
-            with st.container(border=True):
-                st.markdown(f"**{panel['title']}**")
-                panel_status = str(panel["status"])
-                if panel_status != "ready":
-                    st.warning(str(panel["note"]))
-                else:
-                    st.caption(str(panel["note"]))
-
-                graph_html = build_truth_semantic_animation_html(
-                    payload=panel_payload,
-                    included_node_types=set(selected_node_types),
-                    min_total_count=min_node_count,
-                    delta_set_name="all",
-                    initial_week_index=panel_start_index,
-                    initial_speed=playback_speed,
-                    node_size_multiplier=node_size_multiplier,
-                    initial_zoom_boost=initial_zoom_boost,
-                    layout_spread=layout_spread,
-                    height_px=graph_height,
-                )
-                graph_iframe = _graph_iframe_path(graph_html)
-                st.iframe(graph_iframe, width="stretch", height=graph_height + 180)
-                st.caption(f"History weeks: {panel_history_weeks:,} | Forecast weeks: {panel_forecast_weeks:,}")
-
-                panel_metrics = panel.get("metrics", {})
-                if isinstance(panel_metrics, dict) and panel_metrics:
-                    best_val_score = panel_metrics.get("best_val_score")
-                    mae = panel_metrics.get("mae")
-                    rmse = panel_metrics.get("rmse")
-                    st.caption(
-                        "Validation: "
-                        f"best_val_score={best_val_score if best_val_score is not None else 'n/a'}, "
-                        f"MAE={mae if mae is not None else 'n/a'}, "
-                        f"RMSE={rmse if rmse is not None else 'n/a'}"
-                    )
+    comparison_html = build_forecast_comparison_animation_html(
+        panel_specs,
+        included_node_types=set(selected_node_types),
+        min_total_count=min_node_count,
+        delta_set_name="all",
+        initial_week_index=original_start_index,
+        initial_speed=playback_speed,
+        node_size_multiplier=node_size_multiplier,
+        initial_zoom_boost=initial_zoom_boost,
+        layout_spread=layout_spread,
+        graph_height_px=graph_height,
+    )
+    comparison_iframe = _graph_iframe_path(comparison_html)
+    comparison_iframe_height = (graph_height + 230) * 2 + 200
+    st.iframe(comparison_iframe, width="stretch", height=comparison_iframe_height)
 
     st.subheader("Model Comparison Readiness")
     model_status_df = _forecast_model_status_rows(forecast_root)

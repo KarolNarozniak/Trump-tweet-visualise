@@ -256,6 +256,8 @@ Forecast page behavior:
 - renders a 2x2 comparison grid (Original, TGN, EvolveGCN-H, GConvGRU)
 - all panels use fixed node coordinates for visual consistency
 - timelines start from a shared anchor (default 52 weeks before history end)
+- one shared top timeline controller (play/pause/stop/speed/week) drives all 4 panels
+- each panel shows a live "top active nodes by type" table for week-by-week numeric comparison
 
 ## Deployment Workflow
 
