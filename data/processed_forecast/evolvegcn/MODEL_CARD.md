@@ -8,6 +8,22 @@ tags:
 - model:evolvegcn
 datasets:
 - trump-graph-unified-semantic
+model-index:
+- name: Evolving Graph Convolutional Networks
+  results:
+  - task:
+      type: graph-forecasting
+      name: Weekly node activity forecast
+    dataset:
+      type: trump-graph-unified-semantic
+      name: Trump Graph Unified Semantic Timeline
+    metrics:
+    - type: best_val_score
+      value: 0.134911
+    - type: mae
+      value: 0.219941
+    - type: rmse
+      value: 0.754413
 ---
 
 # EvolveGCN-H Model Card
@@ -35,26 +51,26 @@ This model forecasts weekly semantic graph activity (node mentions and edge co-o
 
 - source: unified semantic timeline produced by `build-unified`
 - time granularity: weekly snapshots
-- total_weeks_in_payload: 780
+- total_weeks_in_payload: 796
 - nodes_in_payload: 3009
 - edges_in_payload: 99766
-- forecast_weeks_in_payload: 0
+- forecast_weeks_in_payload: 16
 
 ## Training Procedure
 
-- epochs: n/a
-- validation_weeks: n/a
-- horizon_weeks: n/a
-- device_used: n/a
+- epochs: 30
+- validation_weeks: 12
+- horizon_weeks: 16
+- device_used: cuda
 
 ## Evaluation Results
 
 | Metric | Value |
 |---|---:|
-| best_val_score | n/a |
-| mae | n/a |
-| rmse | n/a |
-| train_seconds | n/a |
+| best_val_score | 0.134911 |
+| mae | 0.219941 |
+| rmse | 0.754413 |
+| train_seconds | 86.546 |
 
 ## Limitations, Bias, and Risks
 
@@ -64,13 +80,7 @@ This model forecasts weekly semantic graph activity (node mentions and edge co-o
 
 ## Status
 
-- status: **missing**
-- generated_at_utc: `2026-05-17T17:37:38.614827+00:00`
-- artifact_path: `data\processed_forecast\evolvegcn\forecast_graph\animation_state.json`
-- metrics_path: `data\processed_forecast\evolvegcn\metrics.json`
-
-### Missing Artifact Checklist
-
-1. Train the model with `python -m trump_graph train-forecast --model evolvegcn --device cuda`.
-2. Confirm `forecast_graph/animation_state.json` and `metrics.json` exist.
-3. Restart Streamlit if table status is cached.
+- status: **ready**
+- generated_at_utc: `2026-05-17T17:45:11.547634+00:00`
+- artifact_path: `data/processed_forecast/evolvegcn/forecast_graph/animation_state.json`
+- metrics_path: `data/processed_forecast/evolvegcn/metrics.json`

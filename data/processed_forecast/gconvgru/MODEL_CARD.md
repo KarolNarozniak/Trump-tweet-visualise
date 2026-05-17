@@ -81,6 +81,6 @@ This model forecasts weekly semantic graph activity (node mentions and edge co-o
 ## Status
 
 - status: **ready**
-- generated_at_utc: `2026-05-17T17:37:38.868207+00:00`
-- artifact_path: `data\processed_forecast\gconvgru\forecast_graph\animation_state.json`
-- metrics_path: `data\processed_forecast\gconvgru\metrics.json`
+- generated_at_utc: `2026-05-17T17:45:12.001469+00:00`
+- artifact_path: `data/processed_forecast/gconvgru/forecast_graph/animation_state.json`
+- metrics_path: `data/processed_forecast/gconvgru/metrics.json`
