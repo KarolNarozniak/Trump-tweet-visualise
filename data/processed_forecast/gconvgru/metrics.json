@@ -1,0 +1,16 @@
+{
+  "best_val_score": 0.06464900355786085,
+  "device_used": "cuda",
+  "edges_seen": 99766,
+  "epochs": 30,
+  "generated_at_utc": "2026-05-15T11:00:21.302013+00:00",
+  "horizon_weeks": 16,
+  "lookback_weeks": 12,
+  "mae": 0.13338106436034045,
+  "model_key": "gconvgru",
+  "nodes_seen": 3009,
+  "rmse": 0.5069024128218492,
+  "train_seconds": 215.194,
+  "validation_weeks": 12,
+  "weeks_seen": 780
+}

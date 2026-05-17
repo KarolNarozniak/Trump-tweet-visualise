@@ -1,0 +1,16 @@
+{
+  "best_val_score": 0.07140287725875775,
+  "device_used": "cuda",
+  "edges_seen": 99766,
+  "epochs": 30,
+  "generated_at_utc": "2026-05-15T10:56:24.635902+00:00",
+  "horizon_weeks": 16,
+  "lookback_weeks": 12,
+  "mae": 0.15443832923968634,
+  "model_key": "tgn",
+  "nodes_seen": 3009,
+  "rmse": 0.49586596339941025,
+  "train_seconds": 46.441,
+  "validation_weeks": 12,
+  "weeks_seen": 780
+}
