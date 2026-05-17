@@ -209,6 +209,14 @@ Baseline payload generation (no training loop):
 python -m trump_graph train-forecast --model baseline
 ```
 
+Generate/refresh model cards for all forecast model directories:
+
+```bash
+python -m trump_graph build-model-cards \
+  --forecast-dir data/processed_forecast \
+  --semantic-input-dir data/processed_unified
+```
+
 ## Run App and Docs Together
 
 ### Windows
@@ -384,6 +392,8 @@ Optional forecast model output directory: `data/processed_forecast`
 - `evolvegcn/forecast_graph/animation_state.json`
 - `gconvgru/forecast_graph/animation_state.json`
 - `<model_key>/metrics.json`
+- `<model_key>/MODEL_CARD.md`
+- `MODEL_CARDS_INDEX.md`
 
 If a selected model artifact is not present, the Forecast page falls back to a baseline future preview generated from semantic artifacts.
 

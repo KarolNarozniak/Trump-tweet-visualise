@@ -34,37 +34,8 @@ from trump_graph.app import (
     load_week_index,
 )
 from trump_graph.forecast import build_baseline_forecast_payload
+from trump_graph.forecast_registry import FORECAST_MODEL_REGISTRY
 from trump_graph.settings import ProjectSettings, load_settings
-
-FORECAST_MODEL_REGISTRY: tuple[dict[str, str], ...] = (
-    {
-        "key": "tgn",
-        "label": "TGN",
-        "name": "Temporal Graph Network",
-        "category": "Continuous-time event model",
-        "paper_url": "https://arxiv.org/abs/2006.10637",
-        "impl_url": "https://pytorch-geometric.readthedocs.io/en/2.6.1/generated/torch_geometric.nn.models.TGNMemory.html",
-        "desc": "Memory-based temporal message passing over timestamped events.",
-    },
-    {
-        "key": "evolvegcn",
-        "label": "EvolveGCN-H",
-        "name": "Evolving Graph Convolutional Networks",
-        "category": "Snapshot recurrent graph convolution",
-        "paper_url": "https://ojs.aaai.org/index.php/AAAI/article/view/5984",
-        "impl_url": "https://pytorch-geometric-temporal.readthedocs.io/en/latest/modules/root.html",
-        "desc": "Evolves GCN parameters through time with recurrent dynamics.",
-    },
-    {
-        "key": "gconvgru",
-        "label": "GConvGRU",
-        "name": "Graph Convolutional Recurrent Network",
-        "category": "Snapshot graph recurrent sequence model",
-        "paper_url": "https://arxiv.org/abs/1612.07659",
-        "impl_url": "https://pytorch-geometric-temporal.readthedocs.io/en/latest/modules/root.html",
-        "desc": "Combines graph convolution and GRU for temporal graph snapshots.",
-    },
-)
 
 
 @st.cache_data(show_spinner=False)
@@ -352,21 +323,32 @@ def _load_optional_model_metrics(model_dir: Path) -> dict[str, object]:
 
 def _forecast_model_status_rows(forecast_root: Path) -> pd.DataFrame:
     rows: list[dict[str, object]] = []
+
+    def _metric_as_text(raw_value: object) -> str:
+        if raw_value is None or raw_value == "":
+            return "n/a"
+        try:
+            return f"{float(raw_value):.6f}"
+        except (TypeError, ValueError):
+            return "n/a"
+
     for model in FORECAST_MODEL_REGISTRY:
         model_key = model["key"]
         model_dir = _forecast_model_output_dir(forecast_root, model_key)
         artifact_path = model_dir / "forecast_graph" / "animation_state.json"
         metrics = _load_optional_model_metrics(model_dir)
+        model_card_path = model_dir / "MODEL_CARD.md"
         rows.append(
             {
                 "model": model["label"],
                 "category": model["category"],
                 "status": "ready" if artifact_path.exists() else "missing",
                 "artifact_path": str(artifact_path),
-                "best_val_score": metrics.get("best_val_score", ""),
-                "mae": metrics.get("mae", ""),
-                "rmse": metrics.get("rmse", ""),
-                "map": metrics.get("map", ""),
+                "model_card": str(model_card_path) if model_card_path.exists() else "missing",
+                "best_val_score": _metric_as_text(metrics.get("best_val_score")),
+                "mae": _metric_as_text(metrics.get("mae")),
+                "rmse": _metric_as_text(metrics.get("rmse")),
+                "map": _metric_as_text(metrics.get("map")),
             }
         )
     return pd.DataFrame(rows)

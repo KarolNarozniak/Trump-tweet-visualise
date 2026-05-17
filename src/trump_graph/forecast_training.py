@@ -12,14 +12,14 @@ from typing import Any, Mapping
 import numpy as np
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
 
 from .app import load_unified_animation_artifacts
 from .forecast import build_baseline_forecast_payload, build_forecast_payload_with_future_deltas
+from .forecast_registry import SUPPORTED_FORECAST_MODEL_KEYS
 from .io import ensure_directory
 
 
-SUPPORTED_FORECAST_MODELS = ("baseline", "tgn", "evolvegcn", "gconvgru")
+SUPPORTED_FORECAST_MODELS = ("baseline", *SUPPORTED_FORECAST_MODEL_KEYS)
 
 
 @dataclass(frozen=True)
@@ -231,6 +231,12 @@ class _TemporalNodeForecaster(nn.Module):
     def reset_temporal_state(self) -> None:
         return None
 
+    def detach_temporal_state(self) -> None:
+        return None
+
+    def supports_stepwise_optimization(self) -> bool:
+        return True
+
     def init_hidden(self, num_nodes: int, device: torch.device) -> torch.Tensor | None:
         return None
 
@@ -289,6 +295,17 @@ class _EvolveGCNForecaster(_TemporalNodeForecaster):
     def reset_temporal_state(self) -> None:
         if hasattr(self.cell, "reinitialize_weight"):
             self.cell.reinitialize_weight()
+
+    def detach_temporal_state(self) -> None:
+        weight = getattr(self.cell, "weight", None)
+        if isinstance(weight, torch.Tensor):
+            self.cell.weight = weight.detach()
+
+    def supports_stepwise_optimization(self) -> bool:
+        # EvolveGCN carries internal recurrent weight state across steps.
+        # Step-wise backward + immediate graph freeing causes "backward a second time" errors.
+        # We therefore backprop once per full sequence.
+        return False
 
     def forward_step(
         self,
@@ -367,6 +384,8 @@ def _run_sequence_pass(
     model.reset_temporal_state()
     hidden = model.init_hidden(num_nodes=x_sequence.shape[1], device=x_sequence.device)
     losses: list[float] = []
+    loss_tensors: list[torch.Tensor] = []
+    use_stepwise_optimization = optimizer is not None and model.supports_stepwise_optimization()
 
     for week_idx in train_indices:
         x_t = x_sequence[week_idx]
@@ -380,14 +399,26 @@ def _run_sequence_pass(
         )
         loss = _weighted_mse_loss(prediction, y_t)
         losses.append(float(loss.detach().cpu().item()))
+        if optimizer is not None and not use_stepwise_optimization:
+            loss_tensors.append(loss)
 
-        if optimizer is not None:
+        if use_stepwise_optimization and optimizer is not None:
             optimizer.zero_grad(set_to_none=True)
             loss.backward()
             nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
             optimizer.step()
             if hidden is not None:
                 hidden = hidden.detach()
+            model.detach_temporal_state()
+
+    if optimizer is not None and not use_stepwise_optimization and loss_tensors:
+        optimizer.zero_grad(set_to_none=True)
+        sequence_loss = torch.stack(loss_tensors).mean()
+        sequence_loss.backward()
+        nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
+        optimizer.step()
+        model.detach_temporal_state()
+
     return float(np.mean(losses)) if losses else float("nan")
 
 

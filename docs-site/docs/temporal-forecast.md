@@ -37,6 +37,23 @@ python -m trump_graph train-forecast \
 
 For `evolvegcn` and `gconvgru`, install compatible PyG wheels before training.
 
+## Model Cards
+
+Generate model cards after training:
+
+```bash
+python -m trump_graph build-model-cards \
+  --forecast-dir data/processed_forecast \
+  --semantic-input-dir data/processed_unified
+```
+
+Outputs:
+
+- `data/processed_forecast/tgn/MODEL_CARD.md`
+- `data/processed_forecast/evolvegcn/MODEL_CARD.md`
+- `data/processed_forecast/gconvgru/MODEL_CARD.md`
+- `data/processed_forecast/MODEL_CARDS_INDEX.md`
+
 ## Expected Model Artifact
 
 Path:

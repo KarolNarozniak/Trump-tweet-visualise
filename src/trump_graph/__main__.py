@@ -6,7 +6,9 @@ from pathlib import Path
 
 from .app import load_unified_animation_artifacts
 from .forecast import build_baseline_forecast_payload
+from .forecast_registry import SUPPORTED_FORECAST_MODEL_KEYS
 from .io import ensure_directory
+from .model_cards import write_forecast_model_cards
 from .pipeline import build_weekly_artifacts
 from .truth_pipeline import build_truth_artifacts
 from .truth_semantics import TruthSemanticConfig
@@ -178,7 +180,7 @@ def _build_parser() -> argparse.ArgumentParser:
     )
     forecast_parser.add_argument(
         "--model",
-        choices=("baseline", "tgn", "evolvegcn", "gconvgru"),
+        choices=("baseline", *SUPPORTED_FORECAST_MODEL_KEYS),
         default="baseline",
         help="Forecast backend to train/build.",
     )
@@ -203,6 +205,23 @@ def _build_parser() -> argparse.ArgumentParser:
     forecast_parser.add_argument("--learning-rate", type=float, default=settings.forecast_train.learning_rate)
     forecast_parser.add_argument("--weight-decay", type=float, default=settings.forecast_train.weight_decay)
     forecast_parser.add_argument("--seed", type=int, default=settings.forecast_train.seed)
+
+    cards_parser = subparsers.add_parser(
+        "build-model-cards",
+        help="Generate MODEL_CARD.md files for forecast model directories.",
+    )
+    cards_parser.add_argument(
+        "--forecast-dir",
+        type=Path,
+        default=settings.forecast_train.output_dir,
+        help="Forecast root directory (contains tgn/evolvegcn/gconvgru subdirs).",
+    )
+    cards_parser.add_argument(
+        "--semantic-input-dir",
+        type=Path,
+        default=settings.forecast_train.semantic_input_dir,
+        help="Unified semantic source directory used for model-card dataset context.",
+    )
     return parser
 
 
@@ -321,6 +340,7 @@ def main(argv: list[str] | None = None) -> int:
                 ),
                 encoding="utf-8",
             )
+            write_forecast_model_cards(args.out, args.input_dir)
             print("Forecast model: baseline")
             print(f"Artifacts written to: {output_dir}")
             return 0
@@ -356,6 +376,15 @@ def main(argv: list[str] | None = None) -> int:
         print(f"RMSE: {stats.rmse:.6f}")
         print(f"Device used: {stats.device_used}")
         print(f"Artifacts written to: {stats.output_dir}")
+        write_forecast_model_cards(args.out, args.input_dir)
+        print(f"Model cards refreshed in: {args.out}")
+        return 0
+
+    if args.command == "build-model-cards":
+        written_paths = write_forecast_model_cards(args.forecast_dir, args.semantic_input_dir)
+        print(f"Model cards written: {len(written_paths)}")
+        for path in written_paths:
+            print(path)
         return 0
 
     parser.error(f"Unsupported command: {args.command}")
